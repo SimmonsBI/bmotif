@@ -2,21 +2,38 @@
 % Please edit documentation in R/mprofile.R
 \name{mprofile}
 \alias{mprofile}
-\title{Count motifs in a network}
+\title{Count bipartite motifs}
 \usage{
 mprofile(M, normalise)
 }
 \arguments{
 \item{M}{A numeric matrix representing interactions between two groups of species. Each row corresponds to a species in one level
-and each column corresponds to a species in the other level. Elements of M are positive numbers if species do interact, and 0 
+and each column corresponds to a species in the other level. Elements of M are positive numbers if species do interact, and 0
 otherwise. Formally, M is an incidence matrix. When species i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
 If interactions are weighted (matrix elements are greater than 1), the function will automatically convert the matrix to a binary
 matrix.}
 
 \item{normalise}{Logical; should motif frequencies be normalised to control for network size?}
 }
+\value{
+By default (\code{normalise} = FALSE), \code{mprofile} returns a data frame with 17 rows (one for each motif) and 3 columns.
+The first column (\code{motif}) indicates the motif ID as described in Simmons et al. (2017) (and originally in Appendix 1 of Baker et al. (2015)). The second column
+(\code{nodes}) indicates how many nodes the motif contains. The third column (\code{frequency}) is the number of times each motif appears in the network.
+
+If \code{normalise} = TRUE, three additional columns are added to the output data frame, each corresponding to a different method of normalising motif
+frequencies. The first column (\code{normalise_sum}) converts each frequency to a relative frequency by expressing counts as a proportion of the total number
+of motifs in the network. The second column (\code{normalise_sizeclass}) uses a similar approach, but expresses counts as a proportion of the total number of
+motifs within each motif size class (the number of nodes a motif contains). For example, the relative frequency of all two-node motifs will sum to one,
+as will the relative frequency of all three-, four- and five- node motifs. The final column (\code{normalise_speciessets}) expresses frequencies as the number
+of species sets that are involved in a motif as a proportion of the number of species sets that could be involved in that motif. For example, in a motif
+with three species in one level (A) and two species in the other level (P), the maximum number of species sets which could be involved in the motif is
+given by the product of binomial coefficients, choosing three species from A and two from P.
+}
 \description{
-This function counts the number of times each of the 17 motifs up to five nodes occurs in a network
+Counts occurrences of motifs in a bipartite network
+}
+\details{
+Counts the number of times each of the 17 bipartite motifs up to five nodes occurs in a network.
 }
 \examples{
 set.seed(123)
@@ -24,5 +41,10 @@ row <- 100
 col <- 100
 m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
 mprofile(M = m, normalise = TRUE)
+}
+\references{
+Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ roles in food webs show fidelity across a highly variable oak forest. Ecography, 38(2):130–139.
+
+Simmons, B I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and di Clemente, R. bmotif: a package for counting motifs in bipartite networks
 }
 

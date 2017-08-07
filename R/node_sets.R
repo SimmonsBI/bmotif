@@ -1,31 +1,31 @@
-species_sets <- function(M){
+node_sets <- function(M){
   # clean matrix
   M[M > 0] <- 1 # ensure M is binary
   dimnames(M) <- NULL # strip row and column names
-  
+
   # create results container
-  spp_sets <- setNames(object = rep(NA, 17), nm = paste0("m",1:17))
-  
+  sets <- setNames(object = rep(NA, 17), nm = paste0("m",1:17))
+
   # record rows and columns
   nr <- nrow(M)
   nc <- ncol(M)
-  
-  # calculate possible species sets, given in the format m_rows_columns in the motif
+
+  # calculate possible node sets, given in the format m_rows_columns in the motif
   m1_1 <- choose(nr,1) * choose(nc,1)
-  
+
   m1_2 <- choose(nr,1) * choose(nc,2)
   m2_1 <- choose(nr,2) * choose(nc,1)
-  
+
   m3_1 <- choose(nr,3) * choose(nc,1)
   m2_2 <- choose(nr,2) * choose(nc,2)
   m1_3 <- choose(nr,1) * choose(nc,3)
-  
+
   m4_1 <- choose(nr,4) * choose(nc,1)
   m3_2 <- choose(nr,3) * choose(nc,2)
   m2_3 <- choose(nr,2) * choose(nc,3)
   m1_4 <- choose(nr,1) * choose(nc,4)
-  
-  spp_sets <- setNames(c(m1_1,
+
+  sets <- setNames(c(m1_1,
                          m1_2,
                          m2_1,
                          m3_1,
@@ -36,7 +36,7 @@ species_sets <- function(M){
                          rep(m2_3,4),
                          m1_4),
                        nm = paste0("m", 1:17))
-  
+
   # output
-  return(spp_sets)
+  return(sets)
 }

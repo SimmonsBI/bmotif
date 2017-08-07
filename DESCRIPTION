@@ -1,11 +1,14 @@
 Package: bmotif
-Title: counts motifs
+Title: bmotif: Counting Motifs, and Node Positions Within Motifs, in Bipartite Networks
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: c(
+    person("Benno", "Simmons", email = "bis22@cam.ac.uk", role = c("aut", "cre")),
+    person("Michelle", "Sweering", email = "mjms5@cam.ac.uk", role = c("aut")),
+    person("Riccardo", "di Clemente", email = "rdicle@mit.edu", role = c("aut")))
+Description: bmotif counts occurrences of motifs in bipartite networks, as well as the number of times each node appears in each unique position within motifs. bmotif was intended for use in ecology but its methods are general and can be applied to any bipartite graph. bmotif uses operations directly on the incidence matrix so that analyses are fast, even for large matrices.
 Depends:
     R (>= 3.2.3)
-License: What license is it under?
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1

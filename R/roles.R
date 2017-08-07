@@ -1,24 +1,29 @@
 roles <- function(M, level = "all", normalisation = "none"){
-  #' Compute species' structural roles
+  #' Compute node structural roles
   #'
-  #' This function counts the number of times each species in a network occurs in each of the 46 positions found within the 17 motifs up to five nodes
-  #' @param M A numeric matrix representing interactions between two groups of species. Each row corresponds to a species in one level
-  #' and each column corresponds to a species in the other level. Elements of M are positive numbers if species do interact, and 0
-  #' otherwise. Formally, M is an incidence matrix. When species i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
+  #' Counts the number of times each node in a network occurs in each of the 46 positions found within the 17 motifs up to five nodes
+  #' @param M A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
+  #' and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes do interact, and 0
+  #' otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
   #' If interactions are weighted (non-zero matrix elements can take values greater than 1), the function will automatically convert the matrix to a binary
   #' matrix.
-  #' @param  level Which species level should roles be calculated for: \code{rows}, \code{columns} or \code{all}?  Defaults to \code{all}.
+  #' @param  level Which node level should roles be calculated for: \code{rows}, \code{columns} or \code{all}?  Defaults to \code{all}.
   #' @param normalisation Which normalisation should be used: \code{none}, \code{across} or \code{within}?  Defaults to \code{none}.
-  #' @details The \code{level} arguent controls which species' roles are calculated for. \code{rows} returns position counts for all species in rows, \code{columns}
-  #' returns counts for all species in columns, and \code{all} return counts for all spcies in the network.
+  #' @details The \code{level} argument controls which node's group roles are calculated for. \code{rows} returns position counts for all nodes in rows, \code{columns}
+  #' returns counts for all nodes in columns, and \code{all} return counts for all nodes in the network.
   #'
-  #' Species with more interactions will tend to appear in more positions. Normalisation helps control for this.
+  #' Nodes with more interactions will tend to appear in more positions. Normalisation helps control for this.
   #' \code{none} performs no normalisation and will return the raw position counts.
-  #' \code{across} divides position counts for each species by the total number of times that species appears in any position.
-  #' \code{within} divides position counts for each species by the total number of times that species appears in any position within the same motif size class.
+  #' \code{across} divides position counts for each node by the total number of times that node appears in any position.
+  #' \code{within} divides position counts for each node by the total number of times that node appears in any position within the same motif size class.
   #' Which normalisation is most appropriate will depend on the question being asked.
   #' @return
-  #' It returns a data frame with A + P rows and 46 columns, corresponding to the 46 unique positions (Figure 1). In addition to the input network, roles has two other arguments. The ‘level’ argument allows the user to specify if they want to calculate positions for ‘row’ species only, ‘column’ species only, or all species.
+  #' \code{roles} returns a data frame with 46 columns, one for each motif position.
+  #' For a network with A rows and P columns, by default (where \code{level} = "all") the data frame has A + P rows, one for each node. If \code{level} = "rows", the data frame will have A rows, one for each row node;
+  #' if \code{level} = "columns", it will have P rows, one for each column node.
+  #'
+  #' By default, the elements of this data frame will be the raw position counts. If \code{normalisation} is set to "within" or "across", the elements will be
+  #' the normalised position counts.
   #' @export
   #' @examples
   #' set.seed(123)

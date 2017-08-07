@@ -14,10 +14,3 @@ devtools::install_github("SimmonsBI/bmotif")
 bmotif considers all 17 unique bipartite motifs up to five nodes. Within these motifs there are 46 unique positions.
 
 `bmotif` has two main functions: `mprofile` and `positions`. `mprofile` counts occurrences of motifs in a bipartite network. `positions` counts the number of times each node in a network occurs in each of the positions within the motifs.
-
-## Installation
-
-```{r, eval = FALSE}
-# install.packages("devtools")
-devtools::install_github("SimmonsBI/bmotif")
-```

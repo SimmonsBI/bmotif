@@ -6,5 +6,5 @@ bmotif counts occurrences of motifs in bipartite networks, as well as the number
 
 ```{r, eval = FALSE}
 # install.packages("devtools")
-devtools::install_github("tidyverse/ggplot2")
+devtools::install_github("SimmonsBI/bmotif")
 ```

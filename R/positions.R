@@ -1,5 +1,5 @@
-roles <- function(M, level = "all", normalisation = "none"){
-  #' Compute node structural roles
+positions <- function(M, level = "all", normalisation = "none"){
+  #' Compute node position vectors
   #'
   #' Counts the number of times each node in a network occurs in each of the 46 positions found within the 17 motifs up to five nodes
   #' @param M A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
@@ -7,9 +7,9 @@ roles <- function(M, level = "all", normalisation = "none"){
   #' otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
   #' If interactions are weighted (non-zero matrix elements can take values greater than 1), the function will automatically convert the matrix to a binary
   #' matrix.
-  #' @param  level Which node level should roles be calculated for: \code{rows}, \code{columns} or \code{all}?  Defaults to \code{all}.
+  #' @param  level Which node level should positions be calculated for: \code{rows}, \code{columns} or \code{all}?  Defaults to \code{all}.
   #' @param normalisation Which normalisation should be used: \code{none}, \code{across} or \code{within}?  Defaults to \code{none}.
-  #' @details The \code{level} argument controls which node's group roles are calculated for. \code{rows} returns position counts for all nodes in rows, \code{columns}
+  #' @details The \code{level} argument controls which node group positions are calculated for. \code{rows} returns position counts for all nodes in rows, \code{columns}
   #' returns counts for all nodes in columns, and \code{all} return counts for all nodes in the network.
   #'
   #' Nodes with more interactions will tend to appear in more positions. Normalisation helps control for this.
@@ -18,7 +18,7 @@ roles <- function(M, level = "all", normalisation = "none"){
   #' \code{within} divides position counts for each node by the total number of times that node appears in any position within the same motif size class.
   #' Which normalisation is most appropriate will depend on the question being asked.
   #' @return
-  #' \code{roles} returns a data frame with 46 columns, one for each motif position.
+  #' \code{positions} returns a data frame with 46 columns, one for each motif position.
   #' For a network with A rows and P columns, by default (where \code{level} = "all") the data frame has A + P rows, one for each node. If \code{level} = "rows", the data frame will have A rows, one for each row node;
   #' if \code{level} = "columns", it will have P rows, one for each column node.
   #'
@@ -30,7 +30,7 @@ roles <- function(M, level = "all", normalisation = "none"){
   #' row <- 100
   #' col <- 100
   #' m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
-  #' roles(M = m, level = "all", normalisation = "none")
+  #' positions(M = m, level = "all", normalisation = "none")
 
   # check inputs
   if(class(M) != "matrix"){stop("'M' must be an object of class 'matrix'")} # make sure M is a matrix
@@ -90,8 +90,8 @@ roles <- function(M, level = "all", normalisation = "none"){
 
   # normalisation
   if(normalisation != "none"){
-    pos_row <- normalise_roles(M = pos_row, type = normalisation)
-    pos_col <- normalise_roles(M = pos_col, type = normalisation)
+    pos_row <- normalise_positions(M = pos_row, type = normalisation)
+    pos_col <- normalise_positions(M = pos_col, type = normalisation)
   }
 
   # output

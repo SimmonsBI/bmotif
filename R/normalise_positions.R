@@ -1,4 +1,4 @@
-normalise_roles <- function(M,type){
+normalise_positions <- function(M,type){
   if(type == "within"){
     M[,paste0("p",1:2)] <- M[,paste0("p",1:2)]/apply(M[,paste0("p",1:2)], 1, sum)
     M[,paste0("p",3:6)] <- M[,paste0("p",3:6)]/apply(M[,paste0("p",3:6)], 1, sum)

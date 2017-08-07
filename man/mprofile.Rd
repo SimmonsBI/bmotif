@@ -7,9 +7,9 @@
 mprofile(M, normalise)
 }
 \arguments{
-\item{M}{A numeric matrix representing interactions between two groups of species. Each row corresponds to a species in one level
-and each column corresponds to a species in the other level. Elements of M are positive numbers if species do interact, and 0
-otherwise. Formally, M is an incidence matrix. When species i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
+\item{M}{A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
+and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes do interact, and 0
+otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
 If interactions are weighted (matrix elements are greater than 1), the function will automatically convert the matrix to a binary
 matrix.}
 
@@ -24,10 +24,10 @@ If \code{normalise} = TRUE, three additional columns are added to the output dat
 frequencies. The first column (\code{normalise_sum}) converts each frequency to a relative frequency by expressing counts as a proportion of the total number
 of motifs in the network. The second column (\code{normalise_sizeclass}) uses a similar approach, but expresses counts as a proportion of the total number of
 motifs within each motif size class (the number of nodes a motif contains). For example, the relative frequency of all two-node motifs will sum to one,
-as will the relative frequency of all three-, four- and five- node motifs. The final column (\code{normalise_speciessets}) expresses frequencies as the number
-of species sets that are involved in a motif as a proportion of the number of species sets that could be involved in that motif. For example, in a motif
-with three species in one level (A) and two species in the other level (P), the maximum number of species sets which could be involved in the motif is
-given by the product of binomial coefficients, choosing three species from A and two from P.
+as will the relative frequency of all three-, four- and five- node motifs. The final column (\code{normalise_nodesets}) expresses frequencies as the number
+of node sets that are involved in a motif as a proportion of the number of node sets that could be involved in that motif. For example, in a motif
+with three nodes in one level (A) and two nodes in the other level (P), the maximum number of node sets which could be involved in the motif is
+given by the product of binomial coefficients, choosing three nodes from A and two from P.
 }
 \description{
 Counts occurrences of motifs in a bipartite network

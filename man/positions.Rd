@@ -2,7 +2,7 @@
 % Please edit documentation in R/positions.R
 \name{positions}
 \alias{positions}
-\title{Compute node position vectors}
+\title{Calculate node position vectors}
 \usage{
 positions(M, level = "all", normalisation = "none")
 }
@@ -18,7 +18,7 @@ matrix.}
 \item{normalisation}{Which normalisation should be used: \code{none}, \code{across} or \code{within}?  Defaults to \code{none}.}
 }
 \value{
-\code{positions} returns a data frame with 46 columns, one for each motif position.
+Returns a data frame with 46 columns, one for each motif position.
 For a network with A rows and P columns, by default (where \code{level} = "all") the data frame has A + P rows, one for each node. If \code{level} = "rows", the data frame will have A rows, one for each row node;
 if \code{level} = "columns", it will have P rows, one for each column node.
 
@@ -36,7 +36,6 @@ Nodes with more interactions will tend to appear in more positions. Normalisatio
 \code{none} performs no normalisation and will return the raw position counts.
 \code{across} divides position counts for each node by the total number of times that node appears in any position.
 \code{within} divides position counts for each node by the total number of times that node appears in any position within the same motif size class.
-Which normalisation is most appropriate will depend on the question being asked.
 }
 \examples{
 set.seed(123)

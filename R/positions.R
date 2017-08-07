@@ -1,5 +1,5 @@
 positions <- function(M, level = "all", normalisation = "none"){
-  #' Compute node position vectors
+  #' Calculate node position vectors
   #'
   #' Counts the number of times each node in a network occurs in each of the 46 positions found within the 17 motifs up to five nodes
   #' @param M A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
@@ -16,9 +16,8 @@ positions <- function(M, level = "all", normalisation = "none"){
   #' \code{none} performs no normalisation and will return the raw position counts.
   #' \code{across} divides position counts for each node by the total number of times that node appears in any position.
   #' \code{within} divides position counts for each node by the total number of times that node appears in any position within the same motif size class.
-  #' Which normalisation is most appropriate will depend on the question being asked.
   #' @return
-  #' \code{positions} returns a data frame with 46 columns, one for each motif position.
+  #' Returns a data frame with 46 columns, one for each motif position.
   #' For a network with A rows and P columns, by default (where \code{level} = "all") the data frame has A + P rows, one for each node. If \code{level} = "rows", the data frame will have A rows, one for each row node;
   #' if \code{level} = "columns", it will have P rows, one for each column node.
   #'

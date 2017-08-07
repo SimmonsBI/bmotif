@@ -4,13 +4,13 @@ bmotif counts occurrences of motifs in bipartite networks, as well as the number
 
 ## Installation
 
-Install the devtools package.
+Install the devtools package:
 
 ```{r, eval = FALSE}
 install.packages("devtools")
 ```
 
-Install `bmotif`
+Install `bmotif`:
 
 ```{r, eval = FALSE}
 devtools::install_github("SimmonsBI/bmotif")

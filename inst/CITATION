@@ -1,0 +1,22 @@
+citHeader("To cite bmotif in publications use:")
+
+citEntry(entry = "Article",
+  title        = "bmotif: a package for counting motifs in bipartite networks",
+  author       = personList(as.person("B. I. Simmons"),
+                   as.person("M. J. M. Sweering"),
+                   as.person("L. V. Dicks")
+                   as.person("W. J. Sutherland")
+                   as.person("R. Di Clemente")),
+  journal      = "XXXX",
+  year         = "2017",
+  volume       = "XX",
+  number       = "X",
+  pages        = "X--XX",
+  url          = "XXXX",
+
+  textVersion  =
+  paste("Simmons, B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J., Di Clemente, R. (2017).",
+        "bmotif: a package for counting motifs in bipartite networks.",
+        "XXXX, XX(X), X-XX.",
+        "URL XXXX.")
+)

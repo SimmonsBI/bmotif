@@ -1,4 +1,4 @@
-positions <- function(M, level = "all", normalisation = "none"){
+positions <- function(M, six_node = FALSE, level = "all", normalisation = "none"){
   #' Calculate node position vectors
   #'
   #' Counts the number of times each node in a network occurs in each of the 46 positions found within the 17 motifs up to five nodes
@@ -7,6 +7,7 @@ positions <- function(M, level = "all", normalisation = "none"){
   #' otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
   #' If interactions are weighted (non-zero matrix elements can take values greater than 1), the function will automatically convert the matrix to a binary
   #' matrix.
+  #' @param six_node Logical; should six node motifs be counted? Defaults to FALSE.
   #' @param  level Which node level should positions be calculated for: \code{rows}, \code{columns} or \code{all}?  Defaults to \code{all}.
   #' @param normalisation Which normalisation should be used: \code{none}, \code{across} or \code{within}?  Defaults to \code{none}.
   #' @details The \code{level} argument controls which node group positions are calculated for. \code{rows} returns position counts for all nodes in rows, \code{columns}
@@ -16,8 +17,10 @@ positions <- function(M, level = "all", normalisation = "none"){
   #' \code{none} performs no normalisation and will return the raw position counts.
   #' \code{across} divides position counts for each node by the total number of times that node appears in any position.
   #' \code{within} divides position counts for each node by the total number of times that node appears in any position within the same motif size class.
+  #'
+  #' Warning: including six node motifs may make the function slow for large networks.
   #' @return
-  #' Returns a data frame with 46 columns, one for each motif position.
+  #' By default, returns a data frame with 46 columns, one for each motif position. If \code{six_node} is TRUE, there will be 144 columns (one for each position).
   #' For a network with A rows and P columns, by default (where \code{level} = "all") the data frame has A + P rows, one for each node. If \code{level} = "rows", the data frame will have A rows, one for each row node;
   #' if \code{level} = "columns", it will have P rows, one for each column node.
   #'
@@ -48,21 +51,42 @@ positions <- function(M, level = "all", normalisation = "none"){
   dimnames(M) <- NULL # strip row and column names
 
   # calculate inputs
-  Z <- nrow(M)
-  P <- ncol(M)
+  Z <- nrow(M) # number of row species
+  P <- ncol(M) # number of column species
 
-  jZ <- matrix(rep(1, Z))
-  jP <- matrix(rep(1, P))
-  J <- matrix(rep(1, Z * P), nrow = Z, ncol = P)
-  JP <- matrix(rep(1, P * P), nrow = P, ncol = P)
-  JZ <- matrix(rep(1, Z * Z), nrow = Z, ncol = Z)
+  jZ <- matrix(rep(1, Z)) # Z x 1 vector of ones
+  jP <- matrix(rep(1, P)) # P x 1 vector of ones
+  J <- matrix(rep(1, Z * P), nrow = Z, ncol = P) # Z x P matrix of ones
+  JP <- matrix(rep(1, P * P), nrow = P, ncol = P) # P x P matrix of ones
+  JZ <- matrix(rep(1, Z * Z), nrow = Z, ncol = Z) # Z x Z matrix of ones
 
-  MT <- t(M)
-  N <- J - M
-  NT <- t(N)
+  if(six_node == TRUE){
+    JP3 <- array(rep(1, P * P * P), c(P, P, P)) # P x P x P array of ones
+    JZ3 <- array(rep(1, Z * Z * Z), c(Z, Z, Z)) # Z x Z x Z array of ones
+    KP3 <- JP3 # P x P x P matrix, 0 if two indices are equal, 1 otherwise
+    for (i in 1 : P){
+      for (j in 1 : P){
+        KP3[i,j,j] <- 0
+        KP3[j,i,j] <- 0
+        KP3[j,j,i] <- 0
+      }
+    }
+    KZ3 <- JZ3 # Z x Z x Z matrix, 0 if two indices are equal, 1 otherwise
+    for (i in 1 : Z){
+      for (j in 1 : Z){
+        KZ3[i,j,j] <- 0
+        KZ3[j,i,j] <- 0
+        KZ3[j,j,i] <- 0
+      }
+    }
+  }
 
-  dZ <- M %*% jP
-  dP <- MT %*% jZ
+  MT <- t(M) # transpose of M
+  N <- J - M # complement of M
+  NT <- t(N) # transpose of the complement of M
+
+  dZ <- M %*% jP # degrees of the row species
+  dP <- MT %*% jZ # degrees of the column species
 
   Z <- M %*% MT
   Y <- M %*% NT
@@ -72,20 +96,68 @@ positions <- function(M, level = "all", normalisation = "none"){
   Q <- MT %*% N
   R <- NT %*% M
 
+  if(six_node == TRUE){
+    AZ <- maketensor(M, M)
+    BZ <- maketensor(M, N)
+    CZ <- maketensor(N, M)
+    DZ <- maketensor(N, N)
+
+    AP <- maketensor(MT, MT)
+    BP <- maketensor(MT, NT)
+    CP <- maketensor(NT, MT)
+    DP <- maketensor(NT, NT)
+
+    MTA <- multtensor(MT, AZ)
+    MTB <- multtensor(MT, BZ)
+    MTC <- multtensor(MT, CZ)
+    MTD <- multtensor(MT, DZ)
+
+    MA <- multtensor(M, AP)
+    MB <- multtensor(M, BP)
+    MC <- multtensor(M, CP)
+    MD <- multtensor(M, DP)
+
+    NTA <- multtensor(NT, AZ)
+    NTB <- multtensor(NT, BZ)
+    NTC <- multtensor(NT, CZ)
+
+    Na <- multtensor(N, AP) # because NA already means something
+    NB <- multtensor(N, BP)
+    NC <- multtensor(N, CP)
+  }
+
   # create results containers
-  pos_row <- matrix(0, ncol = 46, nrow = nrow(M), dimnames = list(rn,paste0("p",1:46)))
-  pos_col <- matrix(0, ncol = 46, nrow = ncol(M), dimnames = list(cn,paste0("p",1:46)))
+  if(six_node == FALSE){
+    pos_row <- matrix(0, ncol = 46, nrow = nrow(M), dimnames = list(rn,paste0("p",1:46)))
+    pos_col <- matrix(0, ncol = 46, nrow = ncol(M), dimnames = list(cn,paste0("p",1:46)))
+  } else {
+    pos_row <- matrix(0, ncol = 148, nrow = nrow(M), dimnames = list(rn,paste0("p",1:148)))
+    pos_col <- matrix(0, ncol = 148, nrow = ncol(M), dimnames = list(cn,paste0("p",1:148)))
+  }
 
   # count positions
-  for(i in 1:46){
-    rc <- rowcolumn(i)
-    f <- countposition(M = M, p = i, jZ = jZ, jP = jP, J = J, JP = JP, JZ = JZ, MT = MT, N = N, NT = NT, dZ = dZ, dP = dP, Z = Z, Y = Y, X = X, P = P, Q = Q, R = R)
-    if(rc == "row"){
-      pos_row[,i] <- f
-    } else {
-      pos_col[,i] <- f
+  if(six_node == FALSE){
+    for(i in 1:46){
+      rc <- rowcolumn(i)
+      f <- countposition(M = M, p = i, jZ = jZ, jP = jP, J = J, JP = JP, JZ = JZ, MT = MT, N = N, NT = NT, dZ = dZ, dP = dP, Z = Z, Y = Y, X = X, P = P, Q = Q, R = R)
+      if(rc == "row"){
+        pos_row[,i] <- f
+      } else {
+        pos_col[,i] <- f
+      }
+    }
+  } else {
+    for(i in 1:148){
+      rc <- rowcolumn(i)
+      f <- countposition(M = M, p = i, jZ = jZ, jP = jP, JP = JP, JZ = JZ, JP3 = JP3, JZ3 = JZ3, KP3 = KP3, KZ3 = KZ3, MT = MT, N = N, NT = NT, dZ = dZ, dP = dP, Z = Z, Y = Y, X = X, P = P, Q = Q, R = R, MTA = MTA, MTB = MTB, MTC = MTC, MTD = MTD, MA = MA, MB = MB, MC = MC, MD = MD, NTA = NTA, NTB = NTB, NTC = NTC, Na = Na, NB = NB, NC = NC)
+      if(rc == "row"){
+        pos_row[,i] <- f
+      } else {
+        pos_col[,i] <- f
+      }
     }
   }
+
 
   # normalisation
   if(normalisation != "none"){

@@ -4,7 +4,7 @@
 \alias{mprofile}
 \title{Count bipartite motifs}
 \usage{
-mprofile(M, normalise)
+mprofile(M, six_node = FALSE, normalise)
 }
 \arguments{
 \item{M}{A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
@@ -13,12 +13,15 @@ otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij
 If interactions are weighted (matrix elements are greater than 1), the function will automatically convert the matrix to a binary
 matrix.}
 
+\item{six_node}{Logical; should six node motifs be counted? Defaults to FALSE.}
+
 \item{normalise}{Logical; should motif frequencies be normalised to control for network size?}
 }
 \value{
 By default (\code{normalise} = FALSE), \code{mprofile} returns a data frame with 17 rows (one for each motif) and 3 columns.
 The first column (\code{motif}) indicates the motif ID as described in Simmons et al. (2017) (and originally in Appendix 1 of Baker et al. (2015)). The second column
-(\code{nodes}) indicates how many nodes the motif contains. The third column (\code{frequency}) is the number of times each motif appears in the network.
+(\code{nodes}) indicates how many nodes the motif contains. The third column (\code{frequency}) is the number of times each motif appears in the network. If \code{six_node} is TRUE
+the returned data frame is 44 rows (one for each motif).
 
 If \code{normalise} = TRUE, three additional columns are added to the output data frame, each corresponding to a different method of normalising motif
 frequencies. The first column (\code{normalise_sum}) converts each frequency to a relative frequency by expressing counts as a proportion of the total number
@@ -34,6 +37,8 @@ Counts occurrences of motifs in a bipartite network
 }
 \details{
 Counts the number of times each of the 17 bipartite motifs up to five nodes occurs in a network.
+
+Warning: including six node motifs may make the function slow for large networks.
 }
 \examples{
 set.seed(123)

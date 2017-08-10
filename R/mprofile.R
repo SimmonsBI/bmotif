@@ -1,4 +1,4 @@
-mprofile <- function(M, normalise){
+mprofile <- function(M, six_node = FALSE, normalise){
   #' Count bipartite motifs
   #'
   #' Counts occurrences of motifs in a bipartite network
@@ -7,12 +7,16 @@ mprofile <- function(M, normalise){
   #' otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
   #' If interactions are weighted (matrix elements are greater than 1), the function will automatically convert the matrix to a binary
   #' matrix.
+  #' @param six_node Logical; should six node motifs be counted? Defaults to FALSE.
   #' @param normalise Logical; should motif frequencies be normalised to control for network size?
   #' @details Counts the number of times each of the 17 bipartite motifs up to five nodes occurs in a network.
+  #'
+  #' Warning: including six node motifs may make the function slow for large networks.
   #' @return
   #' By default (\code{normalise} = FALSE), \code{mprofile} returns a data frame with 17 rows (one for each motif) and 3 columns.
   #' The first column (\code{motif}) indicates the motif ID as described in Simmons et al. (2017) (and originally in Appendix 1 of Baker et al. (2015)). The second column
-  #' (\code{nodes}) indicates how many nodes the motif contains. The third column (\code{frequency}) is the number of times each motif appears in the network.
+  #' (\code{nodes}) indicates how many nodes the motif contains. The third column (\code{frequency}) is the number of times each motif appears in the network. If \code{six_node} is TRUE
+  #' the returned data frame is 44 rows (one for each motif).
   #'
   #' If \code{normalise} = TRUE, three additional columns are added to the output data frame, each corresponding to a different method of normalising motif
   #' frequencies. The first column (\code{normalise_sum}) converts each frequency to a relative frequency by expressing counts as a proportion of the total number
@@ -47,23 +51,109 @@ mprofile <- function(M, normalise){
   dimnames(M) <- NULL # strip row and column names
 
   # calculate inputs
-  z <- dim(M)[1]
   p <- dim(M)[2]
+  z <- dim(M)[1]
   Tz <- M %*% t(M)
   Tp <- t(M) %*% M
   lTz <- dim(Tz)[2]
   lTp <- dim(Tp)[2]
+  if(six_node == TRUE){
+    J <- matrix(rep(1, z * p), nrow = z, ncol = p)
+    JP <- matrix(rep(1, p * p), nrow = p, ncol = p)
+    JZ <- matrix(rep(1, z * z), nrow = z, ncol = z)
+    MT <- t(M)
+    N <- J - M
+    NT <- t(N)
+    P <- MT %*% M
+    Q <- MT %*% N
+    R <- NT %*% M
+    Z <- M %*% MT
+    Y <- M %*% NT
+    X <- N %*% MT
+    dP <- apply(M, MARGIN = 2, sum)
+    jP <- rep(1, p)
+    # z <- dim(M)[1]
+    dZ <- apply(M, MARGIN = 1, sum)
+    jZ <- rep(1, z)
+
+    if (p < z) {
+      J3 <- array(rep(1, p * p * p), c(p, p, p))
+      AP <- maketensor(M, M)
+      BP <- maketensor(M, N)
+      CP <- maketensor(N, M)
+      DP <- maketensor(N, N)
+      MA <- tensor(MT, AP, 2, 1)
+      MB <- tensor(MT, BP, 2, 1)
+      MC <- tensor(MT, CP, 2, 1)
+      MD <- tensor(MT, DP, 2, 1)
+      Na <- tensor(NT, AP, 2, 1)
+      NB <- tensor(NT, BP, 2, 1)
+      NC <- tensor(NT, CP, 2, 1)
+      K3 <- J3
+      for (i in 1 : p){
+        for (j in 1 : p){
+          K3[i,j,j] <- 0
+          K3[j,i,j] <- 0
+          K3[j,j,i] <- 0
+        }
+      }
+    }
+    if (p >= z) {
+      J3 <- array(rep(1, z * z * z), c(z, z, z))
+      AP <- maketensor(MT, MT)
+      BP <- maketensor(MT, NT)
+      CP <- maketensor(NT, MT)
+      DP <- maketensor(NT, NT)
+      MA <- tensor(M, AP, 2, 1)
+      MB <- tensor(M, BP, 2, 1)
+      MC <- tensor(M, CP, 2, 1)
+      MD <- tensor(M, DP, 2, 1)
+      Na <- tensor(N, AP, 2, 1)
+      NB <- tensor(N, BP, 2, 1)
+      NC <- tensor(N, CP, 2, 1)
+      K3 <- J3
+      for (i in 1 : z){
+        for (j in 1 : z){
+          K3[i,j,j] <- 0
+          K3[j,i,j] <- 0
+          K3[j,j,i] <- 0
+        }
+      }
+    }
+
+    MA <- MA * K3
+    MB <- MB * K3
+    MC <- MC * K3
+    MD <- MD * K3
+    Na <- Na * K3
+    NB <- NB * K3
+    NC <- NC * K3
+  }
 
   # create results container
-  if(normalise == TRUE){
-    out <- data.frame(motif = 1:17, nodes = c(1,rep(2,2),rep(4,4),rep(5,10)), frequency = NA, normalise_sum = NA, normalise_sizeclass = NA, normalise_nodesets = NA)
+  if(six_node == FALSE){
+    if(normalise == TRUE){
+      out <- data.frame(motif = 1:17, nodes = c(1,rep(2,2),rep(4,4),rep(5,10)), frequency = NA, normalise_sum = NA, normalise_sizeclass = NA, normalise_nodesets = NA)
+    } else {
+      out <- data.frame(motif = 1:17, nodes = c(1,rep(2,2),rep(4,4),rep(5,10)), frequency = NA)
+    }
   } else {
-    out <- data.frame(motif = 1:17, nodes = c(1,rep(2,2),rep(4,4),rep(5,10)), frequency = NA)
+    if(normalise == TRUE){
+      out <- data.frame(motif = 1:44, nodes = c(1,rep(2,2),rep(4,4),rep(5,10),rep(6,27)), frequency = NA, normalise_sum = NA, normalise_sizeclass = NA, normalise_nodesets = NA)
+    } else {
+      out <- data.frame(motif = 1:44, nodes = c(1,rep(2,2),rep(4,4),rep(5,10),rep(6,27)), frequency = NA)
+    }
   }
 
   # count motifs
-  for(i in 1:17){
-    out[i,"frequency"] <- countmotif(x = M, motif =  i, z = z, p = p, Tz = Tz, Tp = Tp, lTz = lTz, lTp = lTp)
+  if(six_node == FALSE){
+    for(i in 1:17){
+      out[i,"frequency"] <- countmotif(x = M, motif =  i, z = z, p = p, Tz = Tz, Tp = Tp, lTz = lTz, lTp = lTp)
+    }
+  } else {
+    for(i in 1:44){
+      out[i,"frequency"] <- countmotif(x = M, motif =  i, z = z, p = p, Tz = Tz, Tp = Tp, lTz = lTz, lTp = lTp, JP = JP, JZ = JZ, P = P, Q = Q, R = R, Z = Z, Y = Y, X = X, dP = dP, jP = jP, dZ = dZ, jZ = jZ, J3 = J3, MA = MA, MB = MB, MC = MC, MD = MD, Na = Na, NB = NB, NC = NC)
+    }
   }
 
   # normalisations
@@ -77,7 +167,7 @@ mprofile <- function(M, normalise){
     )
 
     # calculate normalised frequency as proportion of possible node sets
-    sets <- node_sets(M)
+    sets <- node_sets(M, six_node = six_node)
     out$normalise_nodesets <- out$frequency/sets
   }
 

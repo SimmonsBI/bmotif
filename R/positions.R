@@ -139,7 +139,7 @@ positions <- function(M, six_node = FALSE, level = "all", normalisation = "none"
   if(six_node == FALSE){
     for(i in 1:46){
       rc <- rowcolumn(i)
-      f <- countposition(M = M, p = i, jZ = jZ, jP = jP, J = J, JP = JP, JZ = JZ, MT = MT, N = N, NT = NT, dZ = dZ, dP = dP, Z = Z, Y = Y, X = X, P = P, Q = Q, R = R)
+      f <- countposition(M = M, p = i, jZ = jZ, jP = jP, JP = JP, JZ = JZ, MT = MT, N = N, NT = NT, dZ = dZ, dP = dP, Z = Z, Y = Y, X = X, P = P, Q = Q, R = R)
       if(rc == "row"){
         pos_row[,i] <- f
       } else {

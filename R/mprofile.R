@@ -26,6 +26,7 @@ mprofile <- function(M, six_node = FALSE, normalise){
   #' of node sets that are involved in a motif as a proportion of the number of node sets that could be involved in that motif. For example, in a motif
   #' with three nodes in one level (A) and two nodes in the other level (P), the maximum number of node sets which could be involved in the motif is
   #' given by the product of binomial coefficients, choosing three nodes from A and two from P.
+  #' @importFrom tensor tensor
   #' @export
   #' @references
   #' Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ roles in food webs show fidelity across a highly variable oak forest. Ecography, 38(2):130–139.

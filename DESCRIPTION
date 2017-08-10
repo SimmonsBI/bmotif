@@ -8,7 +8,7 @@ Authors@R: c(
 Description: bmotif counts occurrences of motifs in bipartite networks, as well as the number of times each node appears in each unique position within motifs. bmotif was intended for use in ecology but its methods are general and can be applied to any bipartite graph. bmotif uses operations directly on the incidence matrix so that analyses are fast, even for large matrices.
 Depends:
     R (>= 3.2.3)
-License: MIT + file LICENSE
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1

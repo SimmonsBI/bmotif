@@ -4,8 +4,8 @@ citEntry(entry = "Article",
   title        = "bmotif: a package for counting motifs in bipartite networks",
   author       = personList(as.person("B. I. Simmons"),
                    as.person("M. J. M. Sweering"),
-                   as.person("L. V. Dicks")
-                   as.person("W. J. Sutherland")
+                   as.person("L. V. Dicks"),
+                   as.person("W. J. Sutherland"),
                    as.person("R. Di Clemente")),
   journal      = "XXXX",
   year         = "2017",

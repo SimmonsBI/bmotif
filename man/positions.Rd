@@ -39,7 +39,7 @@ Nodes with more interactions will tend to appear in more positions. Normalisatio
 \code{across} divides position counts for each node by the total number of times that node appears in any position.
 \code{within} divides position counts for each node by the total number of times that node appears in any position within the same motif size class.
 
-Warning: including six node motifs may make the function slow for large networks.
+Warning: including six node motifs is fine for most networks. However, for large networks, counting six node motifs can be slow and memory intensive. In some cases, R can crash if there is not enough memory.
 }
 \examples{
 set.seed(123)

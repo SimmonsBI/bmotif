@@ -46,6 +46,14 @@ positions <- function(M, six_node, level = "all", normalisation = "none"){
 
   # clean matrix
   M[M > 0] <- 1 # ensure M is binary
+  if(is.null(rownames(M))){ # if M has no row names, give it some
+    rownames(M) <- paste0("R", 1:nrow(M))
+    warning("M had no row names and so has been assigned default row names")
+  }
+  if(is.null(colnames(M))){ # if M has no column names, give it some
+    colnames(M) <- paste0("C", 1:ncol(M))
+    warning("M had no column names and so has been assigned default column names")
+  }
   rn <- rownames(M) # record row names
   cn <- colnames(M) # record column names
   dimnames(M) <- NULL # strip row and column names

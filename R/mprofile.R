@@ -31,13 +31,13 @@ mprofile <- function(M, six_node = FALSE, normalise){
   #' @references
   #' Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ roles in food webs show fidelity across a highly variable oak forest. Ecography, 38(2):130–139.
   #'
-  #' Simmons, B I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and di Clemente, R. bmotif: a package for counting motifs in bipartite networks
+  #' Simmons, B I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks
   #' @examples
   #' set.seed(123)
-  #' row <- 100
-  #' col <- 100
+  #' row <- 10
+  #' col <- 10
   #' m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
-  #' mprofile(M = m, normalise = TRUE)
+  #' mprofile(M = m, six_node = TRUE, normalise = TRUE)
 
 
   # check inputs

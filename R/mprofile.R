@@ -11,7 +11,7 @@ mprofile <- function(M, six_node, normalise){
   #' @param normalise Logical; should motif frequencies be normalised to control for network size?
   #' @details Counts the number of times each of the 17 bipartite motifs up to five nodes occurs in a network.
   #'
-  #' Warning: including six node motifs may make the function slow for large networks.
+  #' Warning: including six node motifs is fine for most networks. However, for large networks, counting six node motifs can be slow and memory intensive. In some cases, R can crash if there is not enough memory.
   #' @return
   #' By default (\code{normalise} = FALSE), \code{mprofile} returns a data frame with 17 rows (one for each motif) and 3 columns.
   #' The first column (\code{motif}) indicates the motif ID as described in Simmons et al. (2017) (and originally in Appendix 1 of Baker et al. (2015)). The second column

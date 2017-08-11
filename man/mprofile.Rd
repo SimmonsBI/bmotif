@@ -38,7 +38,7 @@ Counts occurrences of motifs in a bipartite network
 \details{
 Counts the number of times each of the 17 bipartite motifs up to five nodes occurs in a network.
 
-Warning: including six node motifs may make the function slow for large networks.
+Warning: including six node motifs is fine for most networks. However, for large networks counting six node motifs can be slow and memory intensive. In some cases, R can crash if there is not enough memory.
 }
 \examples{
 set.seed(123)

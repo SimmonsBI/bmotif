@@ -18,7 +18,7 @@ positions <- function(M, six_node, level = "all", normalisation = "none"){
   #' \code{across} divides position counts for each node by the total number of times that node appears in any position.
   #' \code{within} divides position counts for each node by the total number of times that node appears in any position within the same motif size class.
   #'
-  #' Warning: including six node motifs may make the function slow for large networks.
+  #' Warning: including six node motifs is fine for most networks. However, for large networks, counting six node motifs can be slow and memory intensive. In some cases, R can crash if there is not enough memory.
   #' @return
   #' By default, returns a data frame with 46 columns, one for each motif position. If \code{six_node} is TRUE, there will be 144 columns (one for each position).
   #' For a network with A rows and P columns, by default (where \code{level} = "all") the data frame has A + P rows, one for each node. If \code{level} = "rows", the data frame will have A rows, one for each row node;

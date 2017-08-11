@@ -4,7 +4,7 @@
 \alias{mprofile}
 \title{Count bipartite motifs}
 \usage{
-mprofile(M, six_node = FALSE, normalise)
+mprofile(M, six_node, normalise)
 }
 \arguments{
 \item{M}{A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
@@ -13,7 +13,7 @@ otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij
 If interactions are weighted (matrix elements are greater than 1), the function will automatically convert the matrix to a binary
 matrix.}
 
-\item{six_node}{Logical; should six node motifs be counted? Defaults to FALSE.}
+\item{six_node}{Logical; should six node motifs be counted?}
 
 \item{normalise}{Logical; should motif frequencies be normalised to control for network size?}
 }

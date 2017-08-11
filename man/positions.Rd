@@ -4,7 +4,7 @@
 \alias{positions}
 \title{Calculate node position vectors}
 \usage{
-positions(M, six_node = FALSE, level = "all", normalisation = "none")
+positions(M, six_node, level = "all", normalisation = "none")
 }
 \arguments{
 \item{M}{A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
@@ -13,7 +13,7 @@ otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij
 If interactions are weighted (non-zero matrix elements can take values greater than 1), the function will automatically convert the matrix to a binary
 matrix.}
 
-\item{six_node}{Logical; should six node motifs be counted? Defaults to FALSE.}
+\item{six_node}{Logical; should six node motifs be counted?}
 
 \item{level}{Which node level should positions be calculated for: \code{rows}, \code{columns} or \code{all}?  Defaults to \code{all}.}
 
@@ -43,9 +43,9 @@ Warning: including six node motifs may make the function slow for large networks
 }
 \examples{
 set.seed(123)
-row <- 100
-col <- 100
+row <- 15
+col <- 15
 m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
-positions(M = m, level = "all", normalisation = "none")
+positions(M = m, six_node = TRUE, level = "all", normalisation = "none")
 }
 

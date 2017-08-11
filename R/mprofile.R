@@ -1,4 +1,4 @@
-mprofile <- function(M, six_node = FALSE, normalise){
+mprofile <- function(M, six_node, normalise){
   #' Count bipartite motifs
   #'
   #' Counts occurrences of motifs in a bipartite network
@@ -7,7 +7,7 @@ mprofile <- function(M, six_node = FALSE, normalise){
   #' otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
   #' If interactions are weighted (matrix elements are greater than 1), the function will automatically convert the matrix to a binary
   #' matrix.
-  #' @param six_node Logical; should six node motifs be counted? Defaults to FALSE.
+  #' @param six_node Logical; should six node motifs be counted?
   #' @param normalise Logical; should motif frequencies be normalised to control for network size?
   #' @details Counts the number of times each of the 17 bipartite motifs up to five nodes occurs in a network.
   #'
@@ -134,15 +134,15 @@ mprofile <- function(M, six_node = FALSE, normalise){
   # create results container
   if(six_node == FALSE){
     if(normalise == TRUE){
-      out <- data.frame(motif = 1:17, nodes = c(1,rep(2,2),rep(4,4),rep(5,10)), frequency = NA, normalise_sum = NA, normalise_sizeclass = NA, normalise_nodesets = NA)
+      out <- data.frame(motif = 1:17, nodes = c(2,rep(3,2),rep(4,4),rep(5,10)), frequency = NA, normalise_sum = NA, normalise_sizeclass = NA, normalise_nodesets = NA)
     } else {
-      out <- data.frame(motif = 1:17, nodes = c(1,rep(2,2),rep(4,4),rep(5,10)), frequency = NA)
+      out <- data.frame(motif = 1:17, nodes = c(2,rep(3,2),rep(4,4),rep(5,10)), frequency = NA)
     }
   } else {
     if(normalise == TRUE){
-      out <- data.frame(motif = 1:44, nodes = c(1,rep(2,2),rep(4,4),rep(5,10),rep(6,27)), frequency = NA, normalise_sum = NA, normalise_sizeclass = NA, normalise_nodesets = NA)
+      out <- data.frame(motif = 1:44, nodes = c(2,rep(3,2),rep(4,4),rep(5,10),rep(6,27)), frequency = NA, normalise_sum = NA, normalise_sizeclass = NA, normalise_nodesets = NA)
     } else {
-      out <- data.frame(motif = 1:44, nodes = c(1,rep(2,2),rep(4,4),rep(5,10),rep(6,27)), frequency = NA)
+      out <- data.frame(motif = 1:44, nodes = c(2,rep(3,2),rep(4,4),rep(5,10),rep(6,27)), frequency = NA)
     }
   }
 

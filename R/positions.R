@@ -176,11 +176,10 @@ positions <- function(M, six_node, level = "all", normalisation = "none"){
     }
   }
 
-
   # normalisation
   if(normalisation != "none"){
-    pos_row <- normalise_positions(M = pos_row, type = normalisation)
-    pos_col <- normalise_positions(M = pos_col, type = normalisation)
+    pos_row <- normalise_positions(pc = pos_row, type = normalisation)
+    pos_col <- normalise_positions(pc = pos_col, type = normalisation)
   }
 
   # output

@@ -1,4 +1,5 @@
 normalise_positions <- function(pc,type){
+  if(!ncol(pc) %in% c(46, 148)){stop("Something has gone very wrong: pc does not have 46 or 148 columns")}
   if(type == "size class"){
     pc[,paste0("p",1:2)] <- pc[,paste0("p",1:2)]/apply(pc[,paste0("p",1:2)], 1, sum)
     pc[,paste0("p",3:6)] <- pc[,paste0("p",3:6)]/apply(pc[,paste0("p",3:6)], 1, sum)

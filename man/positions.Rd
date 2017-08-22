@@ -15,9 +15,9 @@ matrix.}
 
 \item{six_node}{Logical; should six node motifs be counted?}
 
-\item{level}{Which node level should positions be calculated for: \code{rows}, \code{columns} or \code{all}?  Defaults to \code{all}.}
+\item{level}{Which node level should positions be calculated for: "rows", "columns" or "all"?  Defaults to "all".}
 
-\item{normalisation}{Which normalisation should be used: \code{none}, \code{across} or \code{within}?  Defaults to \code{none}.}
+\item{normalisation}{Which normalisation should be used: "none", "sum" or "size class"?  Defaults to "none".}
 }
 \value{
 Returns a data frame with one column for each motif position: 46 columns if \code{six_node} is FALSE, and 148 columns if \code{six_node} is TRUE.
@@ -26,7 +26,7 @@ Columns names are given as "px" where x is the ID of the position as described i
 For a network with A rows and P columns, by default (where \code{level} = "all") the data frame has A + P rows, one for each node. If \code{level} = "rows", the data frame will have A rows, one for each row node;
 if \code{level} = "columns", it will have P rows, one for each column node.
 
-By default, the elements of this data frame will be the raw position counts. If \code{normalisation} is set to "within" or "across", the elements will be
+By default, the elements of this data frame will be the raw position counts. If \code{normalisation} is set to "sum" or "size class", the elements will be
 normalised position counts as described above.
 }
 \description{
@@ -35,13 +35,13 @@ Counts the frequency with which nodes occur in different positions within motifs
 \details{
 Counts the number of times each node in a network occurs in each of the 46 (if \code{six_node} = FALSE) or 148 (if \code{six_node} = TRUE) unique positions within motifs (to quantify a node's structural role).
 
-The \code{level} argument controls which node group positions are calculated for: \code{rows} returns position counts for all nodes in rows, \code{columns}
-returns counts for all nodes in columns, and \code{all} return counts for all nodes in the network.
+The \code{level} argument controls which node group positions are calculated for: "rows" returns position counts for all nodes in rows, "columns"
+returns counts for all nodes in columns, and "all" return counts for all nodes in the network.
 
 Nodes with more interactions will tend to appear in more positions. Normalisation helps control for this effect.
-\code{none} performs no normalisation and will return the raw position counts.
-\code{across} divides position counts for each node by the total number of times that node appears in any position.
-\code{within} divides position counts for each node by the total number of times that node appears in any position within the same motif size class.
+"none" performs no normalisation and will return the raw position counts.
+"sum" divides position counts for each node by the total number of times that node appears in any position.
+"size class" divides position counts for each node by the total number of times that node appears in any position within the same motif size class.
 
 Warning: including six node motifs is fine for most networks. However, for large networks, counting six node motifs can be slow and memory intensive. In some cases, R can crash if there is not enough memory.
 }

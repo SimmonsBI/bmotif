@@ -8,17 +8,17 @@ positions <- function(M, six_node, level = "all", normalisation = "none"){
   #' If interactions are weighted (non-zero matrix elements can take values greater than 1), the function will automatically convert the matrix to a binary
   #' matrix.
   #' @param six_node Logical; should six node motifs be counted?
-  #' @param  level Which node level should positions be calculated for: \code{rows}, \code{columns} or \code{all}?  Defaults to \code{all}.
-  #' @param normalisation Which normalisation should be used: \code{none}, \code{across} or \code{within}?  Defaults to \code{none}.
+  #' @param  level Which node level should positions be calculated for: "rows", "columns" or "all"?  Defaults to "all".
+  #' @param normalisation Which normalisation should be used: "none", "sum" or "size class"?  Defaults to "none".
   #' @details Counts the number of times each node in a network occurs in each of the 46 (if \code{six_node} = FALSE) or 148 (if \code{six_node} = TRUE) unique positions within motifs (to quantify a node's structural role).
   #'
-  #' The \code{level} argument controls which node group positions are calculated for: \code{rows} returns position counts for all nodes in rows, \code{columns}
-  #' returns counts for all nodes in columns, and \code{all} return counts for all nodes in the network.
+  #' The \code{level} argument controls which node group positions are calculated for: "rows" returns position counts for all nodes in rows, "columns"
+  #' returns counts for all nodes in columns, and "all" return counts for all nodes in the network.
   #'
   #' Nodes with more interactions will tend to appear in more positions. Normalisation helps control for this effect.
-  #' \code{none} performs no normalisation and will return the raw position counts.
-  #' \code{across} divides position counts for each node by the total number of times that node appears in any position.
-  #' \code{within} divides position counts for each node by the total number of times that node appears in any position within the same motif size class.
+  #' "none" performs no normalisation and will return the raw position counts.
+  #' "sum" divides position counts for each node by the total number of times that node appears in any position.
+  #' "size class" divides position counts for each node by the total number of times that node appears in any position within the same motif size class.
   #'
   #' Warning: including six node motifs is fine for most networks. However, for large networks, counting six node motifs can be slow and memory intensive. In some cases, R can crash if there is not enough memory.
   #' @return
@@ -28,7 +28,7 @@ positions <- function(M, six_node, level = "all", normalisation = "none"){
   #' For a network with A rows and P columns, by default (where \code{level} = "all") the data frame has A + P rows, one for each node. If \code{level} = "rows", the data frame will have A rows, one for each row node;
   #' if \code{level} = "columns", it will have P rows, one for each column node.
   #'
-  #' By default, the elements of this data frame will be the raw position counts. If \code{normalisation} is set to "within" or "across", the elements will be
+  #' By default, the elements of this data frame will be the raw position counts. If \code{normalisation} is set to "sum" or "size class", the elements will be
   #' normalised position counts as described above.
   #' @export
   #' @references
@@ -52,7 +52,7 @@ positions <- function(M, six_node, level = "all", normalisation = "none"){
   if(class(level) != "character"){stop("'level' must be of class 'character'")} # make sure level is a character
   if(!level %in% c("rows","columns","all")){stop("'level' must equal 'rows', 'columns' or 'all'")} # make sure level equals 'rows', 'columns' or 'all'
   if(class(normalisation) != "character"){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
-  if(!normalisation %in% c("none","within","across")){stop("'normalisation' must equal 'none', 'within' or 'across'")} # make sure normalisation equals 'none', 'within' or 'across'
+  if(!normalisation %in% c("none","sum","size class")){stop("'normalisation' must equal 'none', 'sum' or 'size class'")} # make sure normalisation equals 'none', 'sum' or 'size class'
 
   # clean matrix
   M[M > 0] <- 1 # ensure M is binary

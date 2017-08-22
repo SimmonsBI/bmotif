@@ -1,7 +1,7 @@
 positions <- function(M, six_node, level = "all", normalisation = "none"){
   #' Calculate node position vectors
   #'
-  #' Counts the number of times each node in a network occurs in each of the 46 positions found within the 17 motifs up to five nodes
+  #' Counts the frequency with which nodes occur in different positions within motifs.
   #' @param M A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
   #' and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes do interact, and 0
   #' otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
@@ -10,28 +10,38 @@ positions <- function(M, six_node, level = "all", normalisation = "none"){
   #' @param six_node Logical; should six node motifs be counted?
   #' @param  level Which node level should positions be calculated for: \code{rows}, \code{columns} or \code{all}?  Defaults to \code{all}.
   #' @param normalisation Which normalisation should be used: \code{none}, \code{across} or \code{within}?  Defaults to \code{none}.
-  #' @details The \code{level} argument controls which node group positions are calculated for. \code{rows} returns position counts for all nodes in rows, \code{columns}
+  #' @details Counts the number of times each node in a network occurs in each of the 46 (if \code{six_node} = FALSE) or 148 (if \code{six_node} = TRUE) unique positions within motifs (to quantify a node's structural role).
+  #'
+  #' The \code{level} argument controls which node group positions are calculated for: \code{rows} returns position counts for all nodes in rows, \code{columns}
   #' returns counts for all nodes in columns, and \code{all} return counts for all nodes in the network.
   #'
-  #' Nodes with more interactions will tend to appear in more positions. Normalisation helps control for this.
+  #' Nodes with more interactions will tend to appear in more positions. Normalisation helps control for this effect.
   #' \code{none} performs no normalisation and will return the raw position counts.
   #' \code{across} divides position counts for each node by the total number of times that node appears in any position.
   #' \code{within} divides position counts for each node by the total number of times that node appears in any position within the same motif size class.
   #'
   #' Warning: including six node motifs is fine for most networks. However, for large networks, counting six node motifs can be slow and memory intensive. In some cases, R can crash if there is not enough memory.
   #' @return
-  #' By default, returns a data frame with 46 columns, one for each motif position. If \code{six_node} is TRUE, there will be 144 columns (one for each position).
+  #' Returns a data frame with one column for each motif position: 46 columns if \code{six_node} is FALSE, and 148 columns if \code{six_node} is TRUE.
+  #' Columns names are given as "px" where x is the ID of the position as described in Simmons et al. (2017) (and originally in Appendix 1 of Baker et al. (2015))
+  #'
   #' For a network with A rows and P columns, by default (where \code{level} = "all") the data frame has A + P rows, one for each node. If \code{level} = "rows", the data frame will have A rows, one for each row node;
   #' if \code{level} = "columns", it will have P rows, one for each column node.
   #'
   #' By default, the elements of this data frame will be the raw position counts. If \code{normalisation} is set to "within" or "across", the elements will be
-  #' the normalised position counts.
+  #' normalised position counts as described above.
   #' @export
+  #' @references
+  #' Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ roles in food webs show fidelity across a highly variable oak forest. Ecography, 38(2):130–139.
+  #'
+  #' Simmons, B I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks
   #' @examples
   #' set.seed(123)
   #' row <- 15
   #' col <- 15
   #' m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
+  #' rownames(m) <- paste0("R", 1:nrow(m)) # give the matrix row names
+  #' colnames(m) <- paste0("C", 1:ncol(m)) # give the matrix column names
   #' positions(M = m, six_node = TRUE, level = "all", normalisation = "none")
 
   # check inputs

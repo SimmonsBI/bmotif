@@ -9,23 +9,25 @@ mprofile <- function(M, six_node, normalise){
   #' matrix.
   #' @param six_node Logical; should six node motifs be counted?
   #' @param normalise Logical; should motif frequencies be normalised to control for network size?
-  #' @details Counts the number of times each of the 17 bipartite motifs up to five nodes occurs in a network.
+  #' @details Counts the number of times each of the 17 motifs up to five nodes (if \code{six_node} = FALSE), or 44 motifs up to six nodes (if \code{six_node} = TRUE), occurs in a network.
   #'
-  #' Warning: including six node motifs is fine for most networks. However, for large networks, counting six node motifs can be slow and memory intensive. In some cases, R can crash if there is not enough memory.
-  #' @return
-  #' By default (\code{normalise} = FALSE), \code{mprofile} returns a data frame with 17 rows (one for each motif) and 3 columns.
-  #' The first column (\code{motif}) indicates the motif ID as described in Simmons et al. (2017) (and originally in Appendix 1 of Baker et al. (2015)). The second column
-  #' (\code{nodes}) indicates how many nodes the motif contains. The third column (\code{frequency}) is the number of times each motif appears in the network. If \code{six_node} is TRUE
-  #' the returned data frame is 44 rows (one for each motif).
-  #'
-  #' If \code{normalise} = TRUE, three additional columns are added to the output data frame, each corresponding to a different method of normalising motif
-  #' frequencies. The first column (\code{normalise_sum}) converts each frequency to a relative frequency by expressing counts as a proportion of the total number
-  #' of motifs in the network. The second column (\code{normalise_sizeclass}) uses a similar approach, but expresses counts as a proportion of the total number of
+  #' Larger networks tend to contain more motifs. Controlling for this effect by normalising motif counts is important if different sized networks are being compared.
+  #' If \code{normalise} = TRUE, motif frequencies are normalised in three ways. The first method ("normalise_sum") converts each frequency to a relative frequency by expressing counts as
+  #' a proportion of the total number of motifs in the network. The second method ("normalise_sizeclass") uses a similar approach, but expresses counts as a proportion of the total number of
   #' motifs within each motif size class (the number of nodes a motif contains). For example, the relative frequency of all two-node motifs will sum to one,
-  #' as will the relative frequency of all three-, four- and five- node motifs. The final column (\code{normalise_nodesets}) expresses frequencies as the number
+  #' as will the relative frequency of all three-, four-, five- and six-node motifs. The final method ("normalise_nodesets") expresses frequencies as the number
   #' of node sets that are involved in a motif as a proportion of the number of node sets that could be involved in that motif. For example, in a motif
   #' with three nodes in one level (A) and two nodes in the other level (P), the maximum number of node sets which could be involved in the motif is
   #' given by the product of binomial coefficients, choosing three nodes from A and two from P.
+  #'
+  #' Warning: including six node motifs is fine for most networks. However, for large networks, counting six node motifs can be slow and memory intensive. In some cases, R can crash if there is not enough memory.
+  #' @return
+  #' Returns a data frame with one row for each motif: either 17 rows (if \code{six_node} = FALSE) or 44 rows (if \code{six_node} = TRUE). The data frame has three columns.
+  #' The first column ("motif") indicates the motif ID as described in Simmons et al. (2017) (and originally in Appendix 1 of Baker et al. (2015)). The second column
+  #' ("nodes") indicates how many nodes the motif contains. The third column ("frequency") is the number of times each motif appears in the network.
+  #'
+  #' If \code{normalise} = TRUE, three additional columns are added to the output data frame, each corresponding to a different method of normalising motif
+  #' frequencies as described above.
   #' @importFrom tensor tensor
   #' @export
   #' @references

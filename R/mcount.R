@@ -1,4 +1,4 @@
-mprofile <- function(M, six_node, normalise){
+mcount <- function(M, six_node, normalise){
   #' Count bipartite motifs
   #'
   #' Counts occurrences of motifs in a bipartite network

@@ -39,7 +39,7 @@ mcount <- function(M, six_node, normalise){
   #' row <- 10
   #' col <- 10
   #' m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
-  #' mprofile(M = m, six_node = TRUE, normalise = TRUE)
+  #' mcount(M = m, six_node = TRUE, normalise = TRUE)
 
 
   # check inputs

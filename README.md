@@ -27,4 +27,4 @@ Use
 
 bmotif considers all 44 unique bipartite motifs up to six nodes. Within these motifs there are 148 unique positions.
 
-`bmotif` has two main functions: `mprofile` and `positions`. `mprofile` counts occurrences of motifs in a bipartite network. `positions` counts the number of times each node in a network occurs in each of the positions within the motifs.
+`bmotif` has two main functions: `mcount` and `positions`. `mcount` counts occurrences of motifs in a bipartite network. `positions` counts the number of times each node in a network occurs in each of the positions within the motifs.

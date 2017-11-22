@@ -1,4 +1,4 @@
-countmotif2 <- function(x, motif, z, p, JP, JZ, P, Q, R, Z, Y, X = NULL, dP, jP, dZ, jZ, J3 = NULL, MA = NULL, MB = NULL, MC = NULL, MD = NULL, Na = NULL, NB = NULL, NC = NULL){
+countmotif2 <- function(x, motif, z, p, JP, JZ, P, Q, R, Z, Y, X, dP, jP, dZ, jZ, J3 = NULL, MA = NULL, MB = NULL, MC = NULL, MD = NULL, Na = NULL, NB = NULL, NC = NULL){
   if(motif == 1){
     sum(x)
   } else if(motif == 2){
@@ -22,17 +22,17 @@ countmotif2 <- function(x, motif, z, p, JP, JZ, P, Q, R, Z, Y, X = NULL, dP, jP,
   } else if(motif == 11){
     sum(P * (P - JP) * Q) / 2
   } else if(motif == 12){
-    sum(P * (P - JP) * (P - 2 * JP)) / 12 - sum(dP * (dP - jP) * (dP - 2 * jP)) / 3
+    sum(P * (P - JP) * (P - 2 * JP)) / 12 - sum(dP * (dP - jP) * (dP - 2 * jP)) / 6
   } else if(motif == 13){
     sum(Z * Y * (Y - JZ)) / 2
   } else if(motif == 14){
-    sum(Z * Y * Z) / 2
+    sum(Z * Y * X) / 2
   } else if(motif == 15){
     sum(Z * (Z - JZ) * Y) / 2
   } else if(motif == 16){
     sum(Z * (Z - JZ) * (Z - 2 * JZ)) / 12 - sum(dZ * (dZ - jZ) * (dZ - 2 * jZ)) / 6
   } else if(motif == 17){
-    sum(dZ * (dZ - 2) * (dZ - 3) * (dZ - 4)) / 24
+    sum(dZ * (dZ - jZ) * (dZ - 2 * jZ) * (dZ - 3 * jZ)) / 24
   } else if(motif == 18){
     sum(dP * (dP - jP) * (dP - 2 * jP) * (dP - 3 * jP) * (dP - 4 * jP)) / 120
   } else if(motif == 19){

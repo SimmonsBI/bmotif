@@ -68,13 +68,13 @@ mcount2 <- function(M, six_node, normalise){
   R <- NT %*% M
   Z <- M %*% MT
   Y <- M %*% NT
+  X <- N %*% MT
   dP <- apply(M, MARGIN = 2, sum)
   jP <- rep(1, p)
   dZ <- apply(M, MARGIN = 1, sum)
   jZ <- rep(1, z)
 
   if(six_node == TRUE){
-    X <- N %*% MT
     if (p < z) {
       J3 <- array(rep(1, p * p * p), c(p, p, p))
       AP <- maketensor(M, M)
@@ -146,7 +146,7 @@ mcount2 <- function(M, six_node, normalise){
   # count motifs
   if(six_node == FALSE){
     for(i in 1:17){
-      out[i,"frequency"] <- countmotif2(x = M, motif =  i, z = z, p = p, JP = JP, JZ = JZ, P = P, Q = Q, R = R, Z = Z, Y = Y, dP = dP, jP = jP, dZ = dZ, jZ = jZ)
+      out[i,"frequency"] <- countmotif2(x = M, motif =  i, z = z, p = p, JP = JP, JZ = JZ, P = P, Q = Q, R = R, Z = Z, Y = Y, X = X, dP = dP, jP = jP, dZ = dZ, jZ = jZ)
     }
   } else {
     for(i in 1:44){

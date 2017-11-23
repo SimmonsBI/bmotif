@@ -41,7 +41,6 @@ mcount <- function(M, six_node, normalise){
   #' m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
   #' mcount(M = m, six_node = TRUE, normalise = TRUE)
 
-
   # check inputs
   if(class(M) != "matrix"){stop("'M' must be an object of class 'matrix'")} # make sure M is a matrix
   if(!all(apply(M, 1:2, is.numeric))){stop("Elements of 'M' must be numeric")} # make sure all elements of M are numbers
@@ -57,29 +56,24 @@ mcount <- function(M, six_node, normalise){
   # calculate inputs
   p <- dim(M)[2]
   z <- dim(M)[1]
-  Tz <- M %*% t(M)
-  Tp <- t(M) %*% M
-  lTz <- dim(Tz)[2]
-  lTp <- dim(Tp)[2]
-  if(six_node == TRUE){
-    J <- matrix(rep(1, z * p), nrow = z, ncol = p)
-    JP <- matrix(rep(1, p * p), nrow = p, ncol = p)
-    JZ <- matrix(rep(1, z * z), nrow = z, ncol = z)
-    MT <- t(M)
-    N <- J - M
-    NT <- t(N)
-    P <- MT %*% M
-    Q <- MT %*% N
-    R <- NT %*% M
-    Z <- M %*% MT
-    Y <- M %*% NT
-    X <- N %*% MT
-    dP <- apply(M, MARGIN = 2, sum)
-    jP <- rep(1, p)
-    # z <- dim(M)[1]
-    dZ <- apply(M, MARGIN = 1, sum)
-    jZ <- rep(1, z)
+  J <- matrix(rep(1, z * p), nrow = z, ncol = p)
+  JP <- matrix(rep(1, p * p), nrow = p, ncol = p)
+  JZ <- matrix(rep(1, z * z), nrow = z, ncol = z)
+  MT <- t(M)
+  N <- J - M
+  NT <- t(N)
+  P <- MT %*% M
+  Q <- MT %*% N
+  R <- NT %*% M
+  Z <- M %*% MT
+  Y <- M %*% NT
+  X <- N %*% MT
+  dP <- apply(M, MARGIN = 2, sum)
+  jP <- rep(1, p)
+  dZ <- apply(M, MARGIN = 1, sum)
+  jZ <- rep(1, z)
 
+  if(six_node == TRUE){
     if (p < z) {
       J3 <- array(rep(1, p * p * p), c(p, p, p))
       AP <- maketensor(M, M)
@@ -124,7 +118,6 @@ mcount <- function(M, six_node, normalise){
         }
       }
     }
-
     MA <- MA * K3
     MB <- MB * K3
     MC <- MC * K3
@@ -152,11 +145,11 @@ mcount <- function(M, six_node, normalise){
   # count motifs
   if(six_node == FALSE){
     for(i in 1:17){
-      out[i,"frequency"] <- countmotif(x = M, motif =  i, z = z, p = p, Tz = Tz, Tp = Tp, lTz = lTz, lTp = lTp)
+      out[i,"frequency"] <- countmotif2(x = M, motif =  i, z = z, p = p, JP = JP, JZ = JZ, P = P, Q = Q, R = R, Z = Z, Y = Y, X = X, dP = dP, jP = jP, dZ = dZ, jZ = jZ)
     }
   } else {
     for(i in 1:44){
-      out[i,"frequency"] <- countmotif(x = M, motif =  i, z = z, p = p, Tz = Tz, Tp = Tp, lTz = lTz, lTp = lTp, JP = JP, JZ = JZ, P = P, Q = Q, R = R, Z = Z, Y = Y, X = X, dP = dP, jP = jP, dZ = dZ, jZ = jZ, J3 = J3, MA = MA, MB = MB, MC = MC, MD = MD, Na = Na, NB = NB, NC = NC)
+      out[i,"frequency"] <- countmotif2(x = M, motif =  i, z = z, p = p, JP = JP, JZ = JZ, P = P, Q = Q, R = R, Z = Z, Y = Y, X = X, dP = dP, jP = jP, dZ = dZ, jZ = jZ, J3 = J3, MA = MA, MB = MB, MC = MC, MD = MD, Na = Na, NB = NB, NC = NC)
     }
   }
 

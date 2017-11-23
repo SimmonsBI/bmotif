@@ -145,11 +145,11 @@ mcount <- function(M, six_node, normalise){
   # count motifs
   if(six_node == FALSE){
     for(i in 1:17){
-      out[i,"frequency"] <- countmotif2(x = M, motif =  i, z = z, p = p, JP = JP, JZ = JZ, P = P, Q = Q, R = R, Z = Z, Y = Y, X = X, dP = dP, jP = jP, dZ = dZ, jZ = jZ)
+      out[i,"frequency"] <- countmotif(x = M, motif =  i, z = z, p = p, JP = JP, JZ = JZ, P = P, Q = Q, R = R, Z = Z, Y = Y, X = X, dP = dP, jP = jP, dZ = dZ, jZ = jZ)
     }
   } else {
     for(i in 1:44){
-      out[i,"frequency"] <- countmotif2(x = M, motif =  i, z = z, p = p, JP = JP, JZ = JZ, P = P, Q = Q, R = R, Z = Z, Y = Y, X = X, dP = dP, jP = jP, dZ = dZ, jZ = jZ, J3 = J3, MA = MA, MB = MB, MC = MC, MD = MD, Na = Na, NB = NB, NC = NC)
+      out[i,"frequency"] <- countmotif(x = M, motif =  i, z = z, p = p, JP = JP, JZ = JZ, P = P, Q = Q, R = R, Z = Z, Y = Y, X = X, dP = dP, jP = jP, dZ = dZ, jZ = jZ, J3 = J3, MA = MA, MB = MB, MC = MC, MD = MD, Na = Na, NB = NB, NC = NC)
     }
   }
 

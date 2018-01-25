@@ -4,8 +4,12 @@ language: R
 sudo: false
 cache: packages
 
+r_packages:
+   - covr
+   - testthat
+   
 r_github_packages:
   - SimmonsBI/bmotif
 
 after_success:
-  - Rscript -e 'covr::codecov()'
+   - Rscript -e 'library(covr); covr::codecov()'

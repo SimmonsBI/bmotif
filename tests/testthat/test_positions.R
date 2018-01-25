@@ -1,4 +1,12 @@
 test_that("positions behaves as expected",{
+  expect_error(object = positions("a"), "'M' must be an object of class 'matrix'")
+  expect_error(object = positions(matrix("a",3,3)), "Elements of 'M' must be numeric")
+  expect_error(object = positions(matrix(-1,3,3)), "Elements of 'M' must be greater than or equal to zero")
+  expect_error(object = positions(matrix(1,3,3), six_node = TRUE, level = 7, normalisation = "none"), "'level' must be of class 'character'")
+  expect_error(object = positions(matrix(1,3,3), six_node = TRUE, level = "wrong", normalisation = "none"), "'level' must equal 'rows', 'columns' or 'all'")
+  expect_error(object = positions(matrix(1,3,3), six_node = TRUE, level = "all", normalisation = 7), "'normalisation' must be of class 'character'")
+  expect_error(object = positions(matrix(1,3,3), six_node = TRUE, level = "all", normalisation = "wrong"), "'normalisation' must equal 'none', 'sum' or 'size class'")
+
   expect_identical(positions(M = mat, six_node = TRUE, level = "all", normalisation = "none"),positions_T_all_none)
   expect_identical(positions(M = mat, six_node = TRUE, level = "all", normalisation = "sum"), positions_T_all_sum)
   expect_identical(positions(M = mat, six_node = TRUE, level = "all", normalisation = "size class"), positions_T_all_sc)

@@ -9,7 +9,7 @@ test_that("mcount behaves as expected",{
   expect_identical(mcount(M = t(mat), six_node = FALSE, normalise = FALSE), mcount_transpose_SF_NF)
 
   expect_error(object = mcount("a"), "'M' must be an object of class 'matrix'")
-
+  expect_error(object = mcount(matrix("a",3,3)), "Elements of 'M' must be numeric")
 
 
   # if(class(M) != "matrix"){stop("'M' must be an object of class 'matrix'")} # make sure M is a matrix

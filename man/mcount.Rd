@@ -36,7 +36,7 @@ If \code{normalise} = TRUE, motif frequencies are normalised in three ways. The 
 a proportion of the total number of motifs in the network. The second method ("normalise_sizeclass") uses a similar approach, but expresses counts as a proportion of the total number of
 motifs within each motif size class (the number of nodes a motif contains). For example, the relative frequency of all two-node motifs will sum to one,
 as will the relative frequency of all three-, four-, five- and six-node motifs. The final method ("normalise_nodesets") expresses frequencies as the number
-of node sets that are involved in a motif as a proportion of the number of node sets that could be involved in that motif. For example, in a motif
+of node sets that are involved in a motif as a proportion of the number of node sets that could be involved in that motif, following Poisot and Stouffer (2017). For example, in a motif
 with three nodes in one level (A) and two nodes in the other level (P), the maximum number of node sets which could be involved in the motif is
 given by the product of binomial coefficients, choosing three nodes from A and two from P.
 
@@ -51,6 +51,8 @@ mcount(M = m, six_node = TRUE, normalise = TRUE)
 }
 \references{
 Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ roles in food webs show fidelity across a highly variable oak forest. Ecography, 38(2):130–139.
+
+Poisot, T. & Stouffer, D. (2016). How ecological networks evolve. bioRxiv.
 
 Simmons, B I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks
 }

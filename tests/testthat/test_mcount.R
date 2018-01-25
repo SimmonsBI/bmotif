@@ -3,7 +3,7 @@ test_that("mcount behaves as expected",{
   expect_error(object = mcount(matrix("a",3,3)), "Elements of 'M' must be numeric")
   expect_error(object = mcount(matrix(-1,3,3)), "Elements of 'M' must be greater than or equal to zero")
   expect_error(object = mcount(matrix(1,3,3), six_node = TRUE, normalise = 7), "'normalise' must be of class 'logical' i.e. TRUE or FALSE")
-  expect_error(object = mcount(matrix(1,3,3), six_node = 7, normalise = TRUE), "'six node' must be of class 'logical' i.e. TRUE or FALSE")
+  expect_error(object = mcount(matrix(1,3,3), six_node = 7, normalise = TRUE), "'six_node' must be of class 'logical' i.e. TRUE or FALSE")
 
   expect_identical(object = mcount(M = mat, six_node = FALSE, normalise = FALSE), mcount_SF_NF)
   expect_identical(object = mcount(M = mat, six_node = TRUE, normalise = FALSE), mcount_ST_NF)

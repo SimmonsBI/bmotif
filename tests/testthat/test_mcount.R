@@ -10,7 +10,8 @@ test_that("mcount behaves as expected",{
 
   expect_error(object = mcount("a"), "'M' must be an object of class 'matrix'")
   expect_error(object = mcount(matrix("a",3,3)), "Elements of 'M' must be numeric")
-  expect_error(object = mcount(matrix(numeric(0),3,3)), "Elements of 'M' cannot have length zero")
+  # expect_error(object = mcount(numeric(0)), "Elements of 'M' cannot have length zero")
+  expect_error(object = mcount(matrix(1,3,3), six_node = TRUE, normalise = 7), "'normalise' must be of class 'logical' i.e. TRUE or FALSE")
 
   # if(class(M) != "matrix"){stop("'M' must be an object of class 'matrix'")} # make sure M is a matrix
   # if(!all(apply(M, 1:2, is.numeric))){stop("Elements of 'M' must be numeric")} # make sure all elements of M are numbers

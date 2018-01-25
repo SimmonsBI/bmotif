@@ -17,5 +17,4 @@ test_that("positions behaves as expected",{
   expect_identical(positions(M = mat, six_node = FALSE, level = "columns", normalisation = "none"), positions_F_columns_none)
   expect_identical(positions(M = mat, six_node = FALSE, level = "columns", normalisation = "sum"), positions_F_columns_sum)
   expect_identical(positions(M = mat, six_node = FALSE, level = "columns", normalisation = "size class"), positions_F_columns_sc)
-
 })

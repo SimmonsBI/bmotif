@@ -1,6 +1,6 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[![Build Status](https://travis-ci.com/SimmonsBI/bmotif.svg?token=bn892aeHTKUVCHrEyGsh&branch=master)](https://travis-ci.com/SimmonsBI/bmotif)
+[![Build Status](https://travis-ci.com/SimmonsBI/bmotif.svg?token=bn892aeHTKUVCHrEyGsh&branch=master)](https://travis-ci.com/SimmonsBI/bmotif) [![codecov](https://codecov.io/gh/SimmonsBI/bmotif/branch/master/graph/badge.svg?token=FUl5mkF5TQ)](https://codecov.io/gh/SimmonsBI/bmotif)
 
 Overview
 --------

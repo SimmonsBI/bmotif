@@ -1,0 +1,4 @@
+1.0.0
+=====
+- mcount() counts the number of motifs up to 6 nodes in a bipartite network.
+- positions() counts the number of times each node in a bipartite network occurs in each unique position in each of the motifs up to 6 nodes.

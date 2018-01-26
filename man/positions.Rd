@@ -59,4 +59,3 @@ Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ rol
 
 Simmons, B I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks
 }
-

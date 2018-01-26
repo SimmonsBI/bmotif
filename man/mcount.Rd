@@ -56,4 +56,3 @@ Poisot, T. & Stouffer, D. (2016). How ecological networks evolve. bioRxiv.
 
 Simmons, B I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks
 }
-

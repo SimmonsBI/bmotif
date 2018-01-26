@@ -28,7 +28,6 @@ mcount <- function(M, six_node, normalise){
   #'
   #' If \code{normalise} = TRUE, three additional columns are added to the output data frame, each corresponding to a different method of normalising motif
   #' frequencies as described above.
-  #' @importFrom tensor tensor
   #' @export
   #' @references
   #' Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ roles in food webs show fidelity across a highly variable oak forest. Ecography, 38(2):130–139.
@@ -82,13 +81,13 @@ mcount <- function(M, six_node, normalise){
       BP <- maketensor(M, N)
       CP <- maketensor(N, M)
       DP <- maketensor(N, N)
-      MA <- tensor(MT, AP, 2, 1)
-      MB <- tensor(MT, BP, 2, 1)
-      MC <- tensor(MT, CP, 2, 1)
-      MD <- tensor(MT, DP, 2, 1)
-      Na <- tensor(NT, AP, 2, 1)
-      NB <- tensor(NT, BP, 2, 1)
-      NC <- tensor(NT, CP, 2, 1)
+      MA <- tensor::tensor(MT, AP, 2, 1)
+      MB <- tensor::tensor(MT, BP, 2, 1)
+      MC <- tensor::tensor(MT, CP, 2, 1)
+      MD <- tensor::tensor(MT, DP, 2, 1)
+      Na <- tensor::tensor(NT, AP, 2, 1)
+      NB <- tensor::tensor(NT, BP, 2, 1)
+      NC <- tensor::tensor(NT, CP, 2, 1)
       K3 <- J3
       for (i in 1 : p){
         for (j in 1 : p){
@@ -104,13 +103,13 @@ mcount <- function(M, six_node, normalise){
       BP <- maketensor(MT, NT)
       CP <- maketensor(NT, MT)
       DP <- maketensor(NT, NT)
-      MA <- tensor(M, AP, 2, 1)
-      MB <- tensor(M, BP, 2, 1)
-      MC <- tensor(M, CP, 2, 1)
-      MD <- tensor(M, DP, 2, 1)
-      Na <- tensor(N, AP, 2, 1)
-      NB <- tensor(N, BP, 2, 1)
-      NC <- tensor(N, CP, 2, 1)
+      MA <- tensor::tensor(M, AP, 2, 1)
+      MB <- tensor::tensor(M, BP, 2, 1)
+      MC <- tensor::tensor(M, CP, 2, 1)
+      MD <- tensor::tensor(M, DP, 2, 1)
+      Na <- tensor::tensor(N, AP, 2, 1)
+      NB <- tensor::tensor(N, BP, 2, 1)
+      NC <- tensor::tensor(N, CP, 2, 1)
       K3 <- J3
       for (i in 1 : z){
         for (j in 1 : z){

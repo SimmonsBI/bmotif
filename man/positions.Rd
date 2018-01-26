@@ -10,7 +10,7 @@ positions(M, six_node, level = "all", normalisation = "none")
 \item{M}{A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
 and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes do interact, and 0
 otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
-If interactions are weighted (non-zero matrix elements can take values greater than 1), the function will automatically convert the matrix to a binary
+If interactions are weighted (non-zero matrix elements take values greater than 1), the function will automatically convert the matrix to a binary
 matrix.}
 
 \item{six_node}{Logical; should six node motifs be counted?}

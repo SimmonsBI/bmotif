@@ -12,7 +12,7 @@ Description: Counts occurrences of motifs in bipartite networks, as well as the 
     bipartite network. Uses operations directly on the incidence matrix so that
     analyses are fast, even for large matrices.
 Depends:
-    R (>= 3.2.3)
+    R (>= 3.4.3)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

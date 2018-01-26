@@ -1,5 +1,5 @@
 Package: bmotif
-Title: bmotif: Counting Motifs, and Node Positions Within Motifs, in Bipartite Networks
+Title: Counting Motifs, and Node Positions Within Motifs, in Bipartite Networks
 Version: 1.0.0
 Date: 2018-01-24
 Authors@R: c(

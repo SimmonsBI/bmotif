@@ -4,7 +4,7 @@ node_sets <- function(M, six_node){
   dimnames(M) <- NULL # strip row and column names
 
   # create results container
-  sets <- setNames(object = rep(NA, 17), nm = paste0("m",1:17))
+  sets <- stats::setNames(object = rep(NA, 17), nm = paste0("m",1:17))
 
   # record rows and columns
   nr <- nrow(M)
@@ -34,7 +34,7 @@ node_sets <- function(M, six_node){
   }
 
   if(six_node == TRUE){
-    sets <- setNames(c(m1_1,
+    sets <- stats::setNames(c(m1_1,
                        m1_2,
                        m2_1,
                        m3_1,
@@ -51,7 +51,7 @@ node_sets <- function(M, six_node){
                        m1_5),
                      nm = paste0("m", 1:44))
   } else {
-    sets <- setNames(c(m1_1,
+    sets <- stats::setNames(c(m1_1,
                        m1_2,
                        m2_1,
                        m3_1,

@@ -16,7 +16,7 @@ mcount <- function(M, six_node, normalise){
   #' a proportion of the total number of motifs in the network. The second method ("normalise_sizeclass") uses a similar approach, but expresses counts as a proportion of the total number of
   #' motifs within each motif size class (the number of nodes a motif contains). For example, the relative frequency of all two-node motifs will sum to one,
   #' as will the relative frequency of all three-, four-, five- and six-node motifs. The final method ("normalise_nodesets") expresses frequencies as the number
-  #' of node sets that are involved in a motif as a proportion of the number of node sets that could be involved in that motif, following Poisot and Stouffer (2017). For example, in a motif
+  #' of node sets that are involved in a motif as a proportion of the number of node sets that could be involved in that motif (Poisot and Stouffer, 2017). For example, in a motif
   #' with three nodes in one level (A) and two nodes in the other level (P), the maximum number of node sets which could be involved in the motif is
   #' given by the product of binomial coefficients, choosing three nodes from A and two from P.
   #'

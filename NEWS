@@ -1,3 +1,7 @@
+1.0.0.9000
+=====
+- Updated README with citation, license and references section. Added links to MATLAB and Python versions.
+
 1.0.0
 =====
 - mcount() counts the number of motifs up to 6 nodes in a bipartite network.

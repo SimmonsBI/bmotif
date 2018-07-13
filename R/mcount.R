@@ -40,7 +40,7 @@ mcount <- function(M, six_node, normalisation){
   #' row <- 10
   #' col <- 10
   #' m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
-  #' mcount(M = m, six_node = TRUE, normalise = TRUE)
+  #' mcount(M = m, six_node = TRUE, normalisation = TRUE)
 
   # check inputs
   if(class(M) != "matrix"){stop("'M' must be an object of class 'matrix'")} # make sure M is a matrix

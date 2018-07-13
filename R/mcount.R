@@ -1,4 +1,4 @@
-mcount <- function(M, six_node, normalise){
+mcount <- function(M, six_node, normalisation){
   #' Count bipartite motifs
   #'
   #' Counts occurrences of motifs in a bipartite network
@@ -8,7 +8,7 @@ mcount <- function(M, six_node, normalise){
   #' If interactions are weighted (matrix elements are greater than 1), the function will automatically convert the matrix to a binary
   #' matrix.
   #' @param six_node Logical; should six node motifs be counted?
-  #' @param normalise Logical; should motif frequencies be normalised to control for network size?
+  #' @param normalisation Logical; should motif frequencies be normalised to control for network size?
   #' @details Counts the number of times each of the 17 motifs up to five nodes (if \code{six_node} = FALSE), or 44 motifs up to six nodes (if \code{six_node} = TRUE), occurs in a network.
   #'
   #' Larger networks tend to contain more motifs. Controlling for this effect by normalising motif counts is important if different sized networks are being compared.

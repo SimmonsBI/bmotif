@@ -1,6 +1,7 @@
 1.0.0.9000
 =====
 - Updated README with citation, license and references section. Added links to MATLAB and Python versions.
+- mcount 'normalise' argument has been renamed 'normalistion' for consistency with positions()
 
 1.0.0
 =====

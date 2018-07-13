@@ -4,7 +4,7 @@
 \alias{mcount}
 \title{Count bipartite motifs}
 \usage{
-mcount(M, six_node, normalise)
+mcount(M, six_node, normalisation)
 }
 \arguments{
 \item{M}{A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
@@ -15,7 +15,7 @@ matrix.}
 
 \item{six_node}{Logical; should six node motifs be counted?}
 
-\item{normalise}{Logical; should motif frequencies be normalised to control for network size?}
+\item{normalisation}{Logical; should motif frequencies be normalised to control for network size?}
 }
 \value{
 Returns a data frame with one row for each motif: either 17 rows (if \code{six_node} = FALSE) or 44 rows (if \code{six_node} = TRUE). The data frame has three columns.
@@ -47,7 +47,7 @@ set.seed(123)
 row <- 10
 col <- 10
 m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
-mcount(M = m, six_node = TRUE, normalise = TRUE)
+mcount(M = m, six_node = TRUE, normalisation = TRUE)
 }
 \references{
 Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ roles in food webs show fidelity across a highly variable oak forest. Ecography, 38(2):130–139.

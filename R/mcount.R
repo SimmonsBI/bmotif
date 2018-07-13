@@ -12,7 +12,7 @@ mcount <- function(M, six_node, normalisation){
   #' @details Counts the number of times each of the 17 motifs up to five nodes (if \code{six_node} = FALSE), or 44 motifs up to six nodes (if \code{six_node} = TRUE), occurs in a network.
   #'
   #' Larger networks tend to contain more motifs. Controlling for this effect by normalising motif counts is important if different sized networks are being compared.
-  #' If \code{normalise} = TRUE, motif frequencies are normalised in three ways. The first method ("normalise_sum") converts each frequency to a relative frequency by expressing counts as
+  #' If \code{normalisation} = TRUE, motif frequencies are normalised in three ways. The first method ("normalise_sum") converts each frequency to a relative frequency by expressing counts as
   #' a proportion of the total number of motifs in the network. The second method ("normalise_sizeclass") uses a similar approach, but expresses counts as a proportion of the total number of
   #' motifs within each motif size class (the number of nodes a motif contains). For example, the relative frequency of all two-node motifs will sum to one,
   #' as will the relative frequency of all three-, four-, five- and six-node motifs. The final method ("normalise_nodesets") expresses frequencies as the number
@@ -26,7 +26,7 @@ mcount <- function(M, six_node, normalisation){
   #' The first column ("motif") indicates the motif ID as described in Simmons et al. (2017) (and originally in Appendix 1 of Baker et al. (2015)). The second column
   #' ("nodes") indicates how many nodes the motif contains. The third column ("frequency") is the number of times each motif appears in the network.
   #'
-  #' If \code{normalise} = TRUE, three additional columns are added to the output data frame, each corresponding to a different method of normalising motif
+  #' If \code{normalisation} = TRUE, three additional columns are added to the output data frame, each corresponding to a different method of normalising motif
   #' frequencies as described above.
   #' @export
   #' @references
@@ -47,7 +47,7 @@ mcount <- function(M, six_node, normalisation){
   if(!all(apply(M, 1:2, is.numeric))){stop("Elements of 'M' must be numeric")} # make sure all elements of M are numbers
   if(!all(apply(M, 1:2, function(x) length(x) > 0))){stop("Elements of 'M' cannot have length zero")} # make sure no elements of M have 0 length e.g. numeric(0)
   if(!all(apply(M, 1:2, function(x) x >= 0))){stop("Elements of 'M' must be greater than or equal to zero")} # make sure all elements of M are >= zero
-  if(class(normalise) != "logical"){stop("'normalise' must be of class 'logical' i.e. TRUE or FALSE")} # make sure normalise is logical i.e. TRUE or FALSE
+  if(class(normalisation) != "logical"){stop("'normalisation' must be of class 'logical' i.e. TRUE or FALSE")} # make sure normalisation is logical i.e. TRUE or FALSE
   if(class(six_node) != "logical"){stop("'six_node' must be of class 'logical' i.e. TRUE or FALSE")} # make sure six_node is logical i.e. TRUE or FALSE
 
   # clean matrix
@@ -130,13 +130,13 @@ mcount <- function(M, six_node, normalisation){
 
   # create results container
   if(six_node == FALSE){
-    if(normalise == TRUE){
+    if(normalisation == TRUE){
       out <- data.frame(motif = 1:17, nodes = c(2,rep(3,2),rep(4,4),rep(5,10)), frequency = NA, normalise_sum = NA, normalise_sizeclass = NA, normalise_nodesets = NA)
     } else {
       out <- data.frame(motif = 1:17, nodes = c(2,rep(3,2),rep(4,4),rep(5,10)), frequency = NA)
     }
   } else {
-    if(normalise == TRUE){
+    if(normalisation == TRUE){
       out <- data.frame(motif = 1:44, nodes = c(2,rep(3,2),rep(4,4),rep(5,10),rep(6,27)), frequency = NA, normalise_sum = NA, normalise_sizeclass = NA, normalise_nodesets = NA)
     } else {
       out <- data.frame(motif = 1:44, nodes = c(2,rep(3,2),rep(4,4),rep(5,10),rep(6,27)), frequency = NA)
@@ -155,7 +155,7 @@ mcount <- function(M, six_node, normalisation){
   }
 
   # normalisations
-  if(normalise == TRUE){
+  if(normalisation == TRUE){
     # calculate normalised frequency across all motifs
     out$normalise_sum <- out$frequency/sum(out$frequency)
 

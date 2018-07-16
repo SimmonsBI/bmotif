@@ -1,4 +1,4 @@
-positions <- function(M, six_node, level = "all", normalisation = "none"){
+node_positions <- function(M, six_node, level = "all", normalisation = "none"){
   #' Calculate node position vectors
   #'
   #' Counts the frequency with which nodes occur in different positions within motifs.
@@ -36,15 +36,15 @@ positions <- function(M, six_node, level = "all", normalisation = "none"){
   #' @references
   #' Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ roles in food webs show fidelity across a highly variable oak forest. Ecography, 38(2):130–139.
   #'
-  #' Simmons, B I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks
+  #' Simmons, B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks. bioRxiv. doi: 10.1101/302356
   #' @examples
   #' set.seed(123)
   #' row <- 15
   #' col <- 15
   #' m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
-  #' rownames(m) <- paste0("R", 1:nrow(m)) # give the matrix row names
-  #' colnames(m) <- paste0("C", 1:ncol(m)) # give the matrix column names
-  #' positions(M = m, six_node = TRUE, level = "all", normalisation = "none")
+  #' rownames(m) <- paste0("r", 1:nrow(m)) # give the matrix row names
+  #' colnames(m) <- paste0("c", 1:ncol(m)) # give the matrix column names
+  #' node_positions(M = m, six_node = TRUE, level = "all", normalisation = "none")
 
   # check inputs
   if(class(M) != "matrix"){stop("'M' must be an object of class 'matrix'")} # make sure M is a matrix

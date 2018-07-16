@@ -9,6 +9,6 @@ citEntry(entry = "Article",
                              as.person("Riccardo Di Clemente")),
          journal = "bioRxiv",
          year = "2018",
-         doi = "10.1101/302356"
+         doi = "10.1101/302356",
          url = "https://www.biorxiv.org/content/early/2018/04/17/302356",
          textVersion = "Simmons, B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks. bioRxiv. doi: 10.1101/302356")

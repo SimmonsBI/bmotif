@@ -34,19 +34,19 @@ devtools::install_github("SimmonsBI/bmotif") # install bmotif
 ## Use
 
 `bmotif` considers all 44 unique bipartite motifs up to six nodes.
-Within these motifs there are 148 unique positions.
+Within these motifs there are 148 unique node positions.
 
-`bmotif` has two functions: `mcount` and `positions`. `mcount` counts
-occurrences of motifs in a bipartite network. `positions` counts the
-number of times each node in a network occurs in each of the positions
-within the motifs.
+`bmotif` has two functions: `mcount` and `node_positions`. `mcount`
+counts occurrences of motifs in a bipartite network. `node_positions`
+counts the number of times each node in a network occurs in each of the
+positions within the motifs.
 
-The motifs corresponding to each motif ID and the positions
-corresponding to each motif position ID can be found in **Simmons, B.
-I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente,
-R. bmotif: a package for counting motifs in bipartite networks. bioRxiv.
-doi: 10.1101/302356**. These were defined following Baker et al (2015)
-Appendix 1 Figure A27.
+The motifs corresponding to each motif ID and the node positions
+corresponding to each motif node position ID can be found in **Simmons,
+B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di
+Clemente, R. bmotif: a package for counting motifs in bipartite
+networks. bioRxiv. doi: 10.1101/302356**. These were defined following
+Baker et al (2015) Appendix 1 Figure A27.
 
 ## License
 

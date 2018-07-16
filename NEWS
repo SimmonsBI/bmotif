@@ -1,6 +1,6 @@
 1.0.0.9000
 =====
-- positions() function has been renamed node_positions()
+- positions() function has been renamed node_positions() to allow node_positions and the new link_positions() function to be distinguished
 - Updated README with citation, license and references section. Added links to MATLAB and Python versions
 - mcount 'normalise' argument has been renamed 'normalistion' for consistency with positions()
 - Changed default row and column names to lower-case; added information on default row and column names to documentation; removed warning if default row and column names are assigned

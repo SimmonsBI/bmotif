@@ -1,11 +1,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 [![Build
 Status](https://travis-ci.org/SimmonsBI/bmotif.svg?branch=master)](https://travis-ci.org/SimmonsBI/bmotif)
 [![codecov](https://codecov.io/gh/SimmonsBI/bmotif/branch/master/graph/badge.svg)](https://codecov.io/gh/SimmonsBI/bmotif)
 
-Overview
---------
+## Overview
 
 `bmotif` is software to count occurrences of motifs in bipartite
 networks, as well as the number of times each node appears in each
@@ -16,8 +16,7 @@ originally developed to analyse bipartite species interaction networks
 in ecology but its methods are general and can be applied to any
 bipartite graph.
 
-Installation
-------------
+## Installation
 
 To install the released version from CRAN:
 
@@ -32,8 +31,7 @@ install.packages("devtools") # install the devtools package
 devtools::install_github("SimmonsBI/bmotif") # install bmotif
 ```
 
-Use
----
+## Use
 
 `bmotif` considers all 44 unique bipartite motifs up to six nodes.
 Within these motifs there are 148 unique positions.
@@ -44,27 +42,24 @@ number of times each node in a network occurs in each of the positions
 within the motifs.
 
 The motifs corresponding to each motif ID and the positions
-corresponding to each motif position ID can be found in **Simmons, B.I,
-Sweering, M. J. M, Dicks, L. V., Sutherland, W. J., Di Clemente, R.
-bmotif: a package for counting motifs in bipartite networks. (full
-citation will be placed here)**. These were defined following Baker et
-al (2015) Appendix 1 Figure A27.
+corresponding to each motif position ID can be found in **Simmons, B.
+I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente,
+R. bmotif: a package for counting motifs in bipartite networks. bioRxiv.
+doi: 10.1101/302356**. These were defined following Baker et al (2015)
+Appendix 1 Figure A27.
 
-License
--------
+## License
 
 The code is released under the MIT license (see LICENSE file).
 
-Citation
---------
+## Citation
 
-If you use the package in your work, please cite: Simmons, B.I,
-Sweering, M. J. M, Dicks, L. V., Sutherland, W. J., Di Clemente, R.
-bmotif: a package for counting motifs in bipartite networks. (full
-citation will be placed here)
+If you use the package in your work, please cite: Simmons, B. I.,
+Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R.
+bmotif: a package for counting motifs in bipartite networks. bioRxiv.
+doi: 10.1101/302356
 
-References
-----------
+## References
 
 Baker, N.J., Kaartinen, R., Roslin, T. and Stouffer, D.B., 2015.
 Species’ roles in food webs show fidelity across a highly variable oak

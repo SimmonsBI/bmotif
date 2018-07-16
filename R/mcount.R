@@ -34,7 +34,7 @@ mcount <- function(M, six_node, normalisation){
   #'
   #' Poisot, T. & Stouffer, D. (2016). How ecological networks evolve. bioRxiv.
   #'
-  #' Simmons, B I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks
+  #' Simmons, B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks. bioRxiv. doi: 10.1101/302356
   #' @examples
   #' set.seed(123)
   #' row <- 10

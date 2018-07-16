@@ -54,5 +54,5 @@ Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ rol
 
 Poisot, T. & Stouffer, D. (2016). How ecological networks evolve. bioRxiv.
 
-Simmons, B I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks
+Simmons, B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks. bioRxiv. doi: 10.1101/302356
 }

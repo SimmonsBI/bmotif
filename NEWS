@@ -1,7 +1,9 @@
 1.0.0.9000
 =====
-- Updated README with citation, license and references section. Added links to MATLAB and Python versions.
+- Updated README with citation, license and references section. Added links to MATLAB and Python versions
 - mcount 'normalise' argument has been renamed 'normalistion' for consistency with positions()
+- Changed default row and column names to lower-case; added information on default row and column names to documentation; removed warning if default row and column names are assigned
+- Added bioRxiv preprint citation in CITATION file
 
 1.0.0
 =====

@@ -1,0 +1,14 @@
+citHeader("If you use bmotif in publications please cite:")
+
+citEntry(entry = "Article",
+         title ="bmotif: a package for counting motifs in bipartite networks",
+         author = personList(as.person("Benno I. Simmons"),
+                             as.person("Michelle J. M. Sweering"),
+                             as.person("Lynn V. Dicks"),
+                             as.person("William J. Sutherland"),
+                             as.person("Riccardo Di Clemente")),
+         journal = "bioRxiv",
+         year = "2018",
+         doi = "10.1101/302356",
+         url = "https://doi.org/10.1101/302356",
+         textVersion = "Simmons, B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks. bioRxiv. doi: 10.1101/302356")

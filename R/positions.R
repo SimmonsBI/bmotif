@@ -20,6 +20,8 @@ positions <- function(M, six_node, level = "all", normalisation = "none"){
   #' "sum" divides position counts for each node by the total number of times that node appears in any position.
   #' "size class" divides position counts for each node by the total number of times that node appears in any position within the same motif size class.
   #'
+  #' If a matrix is provided without row or column names, default names will be assigned: the first row will be called called 'r1', the second row will be called 'r2' and so on. Similarly, the first column will be called 'c1', the second column will be called 'c2' and so on.
+  #'
   #' Warning: including six node motifs is fine for most networks. However, for large networks, counting six node motifs can be slow and memory intensive. In some cases, R can crash if there is not enough memory.
   #' @return
   #' Returns a data frame with one column for each motif position: 46 columns if \code{six_node} is FALSE, and 148 columns if \code{six_node} is TRUE.
@@ -57,12 +59,10 @@ positions <- function(M, six_node, level = "all", normalisation = "none"){
   # clean matrix
   M[M > 0] <- 1 # ensure M is binary
   if(is.null(rownames(M))){ # if M has no row names, give it some
-    rownames(M) <- paste0("R", 1:nrow(M))
-    warning("M had no row names and so has been assigned default row names")
+    rownames(M) <- paste0("r", 1:nrow(M))
   }
   if(is.null(colnames(M))){ # if M has no column names, give it some
-    colnames(M) <- paste0("C", 1:ncol(M))
-    warning("M had no column names and so has been assigned default column names")
+    colnames(M) <- paste0("c", 1:ncol(M))
   }
   rn <- rownames(M) # record row names
   cn <- colnames(M) # record column names

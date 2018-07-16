@@ -43,6 +43,8 @@ Nodes with more interactions will tend to appear in more positions. Normalisatio
 "sum" divides position counts for each node by the total number of times that node appears in any position.
 "size class" divides position counts for each node by the total number of times that node appears in any position within the same motif size class.
 
+If a matrix is provided without row or column names, default names will be assigned: the first row will be called called 'r1', the second row will be called 'r2' and so on. Similarly, the first column will be called 'c1', the second column will be called 'c2' and so on.
+
 Warning: including six node motifs is fine for most networks. However, for large networks, counting six node motifs can be slow and memory intensive. In some cases, R can crash if there is not enough memory.
 }
 \examples{

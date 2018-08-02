@@ -15,7 +15,7 @@ matrix.}
 
 \item{six_node}{Logical; should six node motifs be counted?}
 
-\item{normalisation}{Which normalisation should be used: "none", "sum", "sizeclass" or "position"?  Defaults to "none".}
+\item{normalisation}{Which normalisation should be used: "none", "sum", "size class" or "position"?  Defaults to "none".}
 }
 \value{
 Returns a data frame with one column for each link position: 29 columns if \code{six_node} is FALSE, and 106 columns if \code{six_node} is TRUE.
@@ -23,7 +23,7 @@ Columns names are given as "px" where x is the ID of the position as described i
 Each row corresponds to one link in the network. Row names are gives as "x -- y", where x is the species in the first level and y the species in the second level.
 If a matrix is provided without row or column names, default names will be assigned: the first row will be called called 'r1', the second row will be called 'r2' and so on. Similarly, the first column will be called 'c1', the second column will be called 'c2' and so on.
 
-By default, the elements of this data frame will be the raw link position counts. If \code{normalisation} is set to "sum", "sizeclass" or "position", the elements will be
+By default, the elements of this data frame will be the raw link position counts. If \code{normalisation} is set to "sum", "size class" or "position", the elements will be
 normalised position counts as described above.
 }
 \description{
@@ -34,7 +34,7 @@ Counts the number of times each link in a network occurs in each of the 29 (if \
 Links between nodes with more interactions will tend to appear in more positions. Normalisation helps control for this effect.
 "none" performs no normalisation and will return the raw position counts.
 "sum" divides link position counts for each link by the total number of times that link appears in any position.
-"sizeclass" divides link position counts for each link by the total number of times that link appears in any position within the same motif size class.
+"size class" divides link position counts for each link by the total number of times that link appears in any position within the same motif size class.
 "position" divides link position counts for each link by the total number of times any link occurs in that link position,
 i.e. it gives a measure of how often that link occurs in this position compared to the other links in the network.
 }

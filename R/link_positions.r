@@ -48,6 +48,7 @@ link_positions <- function(M, six_node = FALSE, normalisation = "none") {
   if(class(six_node) != "logical"){stop("'six_node' must be of class 'logical' i.e. TRUE or FALSE")} # make sure six_node is logical i.e. TRUE or FALSE
   if(class(normalisation) != "character"){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
   if(!normalisation %in% c("none","sum","size class", "position", "total")){stop("'normalisation' must equal 'none', 'total', sum', 'size class' or 'position'")}
+  if(any(duplicated(rownames(M))) | any(duplicated(colnames(M)))){stop("Input matrix must not have duplicate row or column names")}
 
   # clean matrix
   M[M > 0] <- 1 # ensure M is binary
@@ -98,15 +99,6 @@ link_positions <- function(M, six_node = FALSE, normalisation = "none") {
   k = 29 + (six_node) * (106 - 29) # k depends on whether 6 species are wanted or not
 
   lp <- matrix(rep (-1, k* NZ * NP), ncol = k)
-
-  # label rows:
-
-  ### function name_edge ###
-
-  name_edge <- function(v1, v2) {
-    s <- paste(v1, " -- ", v2, sep = "")
-    s
-  }
 
   ######
 

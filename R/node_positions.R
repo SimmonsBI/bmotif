@@ -146,11 +146,11 @@ node_positions <- function(M, six_node, level = "all", normalisation = "none"){
 
   # create results containers
   if(six_node == FALSE){
-    pos_row <- matrix(0, ncol = 46, nrow = nrow(M), dimnames = list(rn,paste0("p",1:46)))
-    pos_col <- matrix(0, ncol = 46, nrow = ncol(M), dimnames = list(cn,paste0("p",1:46)))
+    pos_row <- matrix(0, ncol = 46, nrow = nrow(M), dimnames = list(rn,paste0("np",1:46)))
+    pos_col <- matrix(0, ncol = 46, nrow = ncol(M), dimnames = list(cn,paste0("np",1:46)))
   } else {
-    pos_row <- matrix(0, ncol = 148, nrow = nrow(M), dimnames = list(rn,paste0("p",1:148)))
-    pos_col <- matrix(0, ncol = 148, nrow = ncol(M), dimnames = list(cn,paste0("p",1:148)))
+    pos_row <- matrix(0, ncol = 148, nrow = nrow(M), dimnames = list(rn,paste0("np",1:148)))
+    pos_col <- matrix(0, ncol = 148, nrow = ncol(M), dimnames = list(cn,paste0("np",1:148)))
   }
 
   # count positions

@@ -8,12 +8,12 @@ link_positions <- function(M, six_node = FALSE, normalisation = "none") {
   #' If interactions are weighted (matrix elements other than zero and one), the function will automatically convert the matrix to a binary
   #' matrix.
   #' @param six_node Logical; should six node motifs be counted?
-  #' @param normalisation Which normalisation should be used: "none", "sum", "sizeclass" or "position"?  Defaults to "none".
+  #' @param normalisation Which normalisation should be used: "none", "sum", "size class" or "position"?  Defaults to "none".
   #' @details Counts the number of times each link in a network occurs in each of the 29 (if \code{six_node} = FALSE) or 106 (if \code{six_node} = TRUE) unique link positions within motifs (to quantify a link's structural role).
   #' Links between nodes with more interactions will tend to appear in more positions. Normalisation helps control for this effect.
   #' "none" performs no normalisation and will return the raw position counts.
   #' "sum" divides link position counts for each link by the total number of times that link appears in any position.
-  #' "sizeclass" divides link position counts for each link by the total number of times that link appears in any position within the same motif size class.
+  #' "size class" divides link position counts for each link by the total number of times that link appears in any position within the same motif size class.
   #' "position" divides link position counts for each link by the total number of times any link occurs in that link position,
   #' i.e. it gives a measure of how often that link occurs in this position compared to the other links in the network.
   #'
@@ -23,7 +23,7 @@ link_positions <- function(M, six_node = FALSE, normalisation = "none") {
   #' Each row corresponds to one link in the network. Row names are gives as "x -- y", where x is the species in the first level and y the species in the second level.
   #' If a matrix is provided without row or column names, default names will be assigned: the first row will be called called 'r1', the second row will be called 'r2' and so on. Similarly, the first column will be called 'c1', the second column will be called 'c2' and so on.
   #'
-  #' By default, the elements of this data frame will be the raw link position counts. If \code{normalisation} is set to "sum", "sizeclass" or "position", the elements will be
+  #' By default, the elements of this data frame will be the raw link position counts. If \code{normalisation} is set to "sum", "size class" or "position", the elements will be
   #' normalised position counts as described above.
   #'
   #' @export
@@ -47,7 +47,7 @@ link_positions <- function(M, six_node = FALSE, normalisation = "none") {
   if(!all(apply(M, 1:2, function(x) x >= 0))){stop("Elements of 'M' must be greater than or equal to zero")} # make sure all elements of M are >= zero
   if(class(six_node) != "logical"){stop("'six_node' must be of class 'logical' i.e. TRUE or FALSE")} # make sure six_node is logical i.e. TRUE or FALSE
   if(class(normalisation) != "character"){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
-  if(!normalisation %in% c("none","sum","sizeclass", "position", "total")){stop("'normalisation' must equal 'none', 'total', sum', 'sizeclass'or 'position'")}
+  if(!normalisation %in% c("none","sum","size class", "position", "total")){stop("'normalisation' must equal 'none', 'total', sum', 'size class' or 'position'")}
 
   # clean matrix
   M[M > 0] <- 1 # ensure M is binary
@@ -397,7 +397,7 @@ link_positions <- function(M, six_node = FALSE, normalisation = "none") {
     }
   }
 
-  if (!(normalisation %in% c("none", "total", "sum", "sizeclass", "position")) ) {
+  if (!(normalisation %in% c("none", "total", "sum", "size class", "position")) ) {
     print("Warning: Non-valid normalisation method. Didn't normalise at all.")
     return(as.data.frame(lp))
   }
@@ -414,7 +414,7 @@ link_positions <- function(M, six_node = FALSE, normalisation = "none") {
     return(as.data.frame(lp))
   }
 
-  if (normalisation == "sizeclass") {
+  if (normalisation == "size class") {
     # divide by total number of times that each edge occurs in a position within the same motif size class
     # edge 2 and 3: sum over columns 2 and 3
     # edge 4-9:

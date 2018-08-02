@@ -503,7 +503,7 @@ test_that("Test normalised counts for the motif 4", {
   expect_equal( as.vector(lr[,4]), rep(0.25,3))
   expect_equal( as.vector(lr[,5]), rep(0,3))
 
-  lr <- link_positions( motifs[[4]], normalisation = "sizeclass" )
+  lr <- link_positions( motifs[[4]], normalisation = "size class" )
   expect_equal( as.vector(lr[,1]), rep(1,3))
   expect_equal( as.vector(lr[,2]), rep(0,3))
   expect_equal( as.vector(lr[,3]), rep(1,3))
@@ -527,7 +527,7 @@ test_that("Test normalised counts for the motif 6", {
   expect_equal( as.vector(lr[,5]), rep(0,4))
   expect_equal( as.vector(lr[,8]), rep(0.25,4))
 
-  lr <- link_positions( motifs[[6]], normalisation = "sizeclass" )
+  lr <- link_positions( motifs[[6]], normalisation = "size class" )
   expect_equal( as.vector(lr[,1]), rep(1,4))
   expect_equal( as.vector(lr[,2]), rep(0.5,4))
   expect_equal( as.vector(lr[,3]), rep(0.5,4))
@@ -545,7 +545,7 @@ test_that("Test normalised counts for the motif 9", {
   expect_equal( as.vector(lr[,3]), c(2/6, 2/6, 2/8, 0))
   expect_equal( as.vector(lr[,30]), rep(0,4))
 
-  lr <- link_positions( motifs[[9]], normalisation = "sizeclass", six_node = TRUE )
+  lr <- link_positions( motifs[[9]], normalisation = "size class", six_node = TRUE )
   expect_equal( as.vector(lr[,1]), rep(1,4))
   expect_equal( as.vector(lr[,2]), c(0,0, 1/3, 1))
   expect_equal( as.vector(lr[,3]), c(1,1, 2/3, 0))

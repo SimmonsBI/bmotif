@@ -110,7 +110,7 @@ link_positions <- function(M, six_node = FALSE, normalisation = "none") {
     class1_names <- rownames(M)
   }
   if (is.null(colnames(M))) {
-    class2_names <- paste0("c", 1:NZ)
+    class2_names <- paste0("c", 1:NP)
   } else {
     class2_names <- colnames(M)
   }

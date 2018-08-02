@@ -10,7 +10,7 @@ node_positions(M, six_node, level = "all", normalisation = "none")
 \item{M}{A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
 and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes do interact, and 0
 otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
-If interactions are weighted (non-zero matrix elements take values greater than 1), the function will automatically convert the matrix to a binary
+If interactions are weighted (non-zero matrix elements take values other than 1), the function will automatically convert the matrix to a binary
 matrix.}
 
 \item{six_node}{Logical; should six node motifs be counted?}
@@ -20,7 +20,7 @@ matrix.}
 \item{normalisation}{Which normalisation should be used: "none", "sum" or "size class"?  Defaults to "none".}
 }
 \value{
-Returns a data frame with one column for each motif position: 46 columns if \code{six_node} is FALSE, and 148 columns if \code{six_node} is TRUE.
+Returns a data frame with one column for each node position: 46 columns if \code{six_node} is FALSE, and 148 columns if \code{six_node} is TRUE.
 Columns names are given as "px" where x is the ID of the position as described in Simmons et al. (2017) (and originally in Appendix 1 of Baker et al. (2015))
 
 For a network with A rows and P columns, by default (where \code{level} = "all") the data frame has A + P rows, one for each node. If \code{level} = "rows", the data frame will have A rows, one for each row node;

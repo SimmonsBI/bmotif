@@ -8,12 +8,12 @@ link_positions <- function(M, six_node = FALSE, normalisation = "none") {
   #' If interactions are weighted (matrix elements other than zero and one), the function will automatically convert the matrix to a binary
   #' matrix.
   #' @param six_node Logical; should six node motifs be counted?
-  #' @param normalisation Which normalisation should be used: "none", "sum", "size class" or "position"?  Defaults to "none".
-  #' @details Counts the number of times each node in a network occurs in each of the 29 (if \code{six_node} = FALSE) or 106 (if \code{six_node} = TRUE) unique link positions within motifs (to quantify a link's structural role).
+  #' @param normalisation Which normalisation should be used: "none", "sum", "sizeclass" or "position"?  Defaults to "none".
+  #' @details Counts the number of times each link in a network occurs in each of the 29 (if \code{six_node} = FALSE) or 106 (if \code{six_node} = TRUE) unique link positions within motifs (to quantify a link's structural role).
   #' Links between nodes with more interactions will tend to appear in more positions. Normalisation helps control for this effect.
   #' "none" performs no normalisation and will return the raw position counts.
   #' "sum" divides link position counts for each link by the total number of times that link appears in any position.
-  #' "size class" divides link position counts for each link by the total number of times that link appears in any position within the same motif size class.
+  #' "sizeclass" divides link position counts for each link by the total number of times that link appears in any position within the same motif size class.
   #' "position" divides link position counts for each link by the total number of times any link occurs in that link position,
   #' i.e. it gives a measure of how often that link occurs in this position compared to the other links in the network.
   #'
@@ -23,7 +23,7 @@ link_positions <- function(M, six_node = FALSE, normalisation = "none") {
   #' Each row corresponds to one link in the network. Row names are gives as "x -- y", where x is the species in the first level and y the species in the second level.
   #' If a matrix is provided without row or column names, default names will be assigned: the first row will be called called 'r1', the second row will be called 'r2' and so on. Similarly, the first column will be called 'c1', the second column will be called 'c2' and so on.
   #'
-  #' By default, the elements of this data frame will be the raw link position counts. If \code{normalisation} is set to "sum", "size class" or "position", the elements will be
+  #' By default, the elements of this data frame will be the raw link position counts. If \code{normalisation} is set to "sum", "sizeclass" or "position", the elements will be
   #' normalised position counts as described above.
   #'
   #' @export
@@ -114,14 +114,12 @@ link_positions <- function(M, six_node = FALSE, normalisation = "none") {
 
   if (is.null(rownames(M))) {
     class1_names <- paste0("r", 1:NZ)
-  }
-  else {
+  } else {
     class1_names <- rownames(M)
   }
   if (is.null(colnames(M))) {
     class2_names <- paste0("c", 1:NZ)
-  }
-  else {
+  } else {
     class2_names <- colnames(M)
   }
 
@@ -133,10 +131,10 @@ link_positions <- function(M, six_node = FALSE, normalisation = "none") {
   rownames(lp) <- names
 
   if (six_node) {
-    colnames(lp) <- paste('p', 1:106, sep = '')
+    colnames(lp) <- paste('lp', 1:106, sep = '')
   }
   if (!six_node) {
-    colnames(lp) <- paste('p', 1:29, sep = '')
+    colnames(lp) <- paste('lp', 1:29, sep = '')
   }
 
 
@@ -394,8 +392,7 @@ link_positions <- function(M, six_node = FALSE, normalisation = "none") {
     # basically does x/sum(x), not changing zero vectors
     if (sum(x) == 0) {
       return(x)
-    }
-    else {
+    } else {
       return (x/sum(x))
     }
   }

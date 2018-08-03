@@ -45,6 +45,7 @@ link_positions <- function(M, six_node = FALSE, normalisation = "none") {
   if(!all(apply(M, 1:2, is.numeric))){stop("Elements of 'M' must be numeric")} # make sure all elements of M are numbers
   if(!all(apply(M, 1:2, function(x) length(x) > 0))){stop("Elements of 'M' cannot have length zero")} # make sure no elements of M have 0 length e.g. numeric(0)
   if(!all(apply(M, 1:2, function(x) x >= 0))){stop("Elements of 'M' must be greater than or equal to zero")} # make sure all elements of M are >= zero
+  if(all(apply(M, 1:2, function(x) x == 0))){stop("The matrix has no links (all elements are zero)")} # make sure M has some links
   if(class(six_node) != "logical"){stop("'six_node' must be of class 'logical' i.e. TRUE or FALSE")} # make sure six_node is logical i.e. TRUE or FALSE
   if(class(normalisation) != "character"){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
   if(!normalisation %in% c("none","sum","size class", "position", "total")){stop("'normalisation' must equal 'none', 'total', sum', 'size class' or 'position'")}

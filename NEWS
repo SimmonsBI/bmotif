@@ -2,15 +2,16 @@
 =====
 ## Major changes
 - New function: link_positions(). Counts the number of times each link in a network occurs in each unique link position within motifs up to 6 nodes (to quantify a link's structural role).
-- positions() function has been renamed node_positions() to allow node_positions and the upcoming link_positions() function to be distinguished
-- Column names in node_position() function are changed from px to npx, where x is the ID of the position. This is to distinguish node positions (np) from link positions (lp) in the upcoming link_positions() functions
-- mcount 'normalise' argument has been renamed 'normalistion' for consistency with positions()
+- positions() function has been renamed node_positions() to allow node_positions and the link_positions() function to be distinguished
+- Column names in node_position() function are changed from px to npx, where x is the ID of the position. This is to distinguish node positions (np) from link positions (lp) in the link_positions() functions
+- mcount 'normalise' argument has been renamed 'normalistion' for consistency with node_positions()
 
 ## Minor changes
 - Changed default row and column names to lower-case; added information on default row and column names to documentation; removed warning if default row and column names are assigned
 - Updated README with citation, license and references section. Added links to MATLAB and Python versions
 - Added bioRxiv preprint citation in CITATION file
 - Some minor documentation updates to node_positions()
+- Added a new author of the package
 
 ## Bug fixes
 - Fixed bug where positions() (now called node_positions()) would break for 1 x 1 matrices when using 'sum' or 'size class' normalisation

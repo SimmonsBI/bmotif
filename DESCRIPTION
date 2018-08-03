@@ -5,6 +5,7 @@ Date: 2018-01-24
 Authors@R: c(
     person("Benno", "Simmons", email = "benno.simmons@gmail.com", role = c("aut", "cre")),
     person("Michelle", "Sweering", email = "michelle.sweering@gmail.com", role = c("aut")),
+    person("Maybritt", "Schillinger", email = "maybritt.schillinger@gmail.com", role = c("aut")),
     person("Riccardo", "Di Clemente", email = "rdicle@mit.edu", role = c("aut")))
 Description: Counts occurrences of motifs in bipartite networks, as well as the number of
     times each node appears in each unique position within motifs. Intended for

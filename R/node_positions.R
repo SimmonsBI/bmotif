@@ -55,6 +55,7 @@ node_positions <- function(M, six_node, level = "all", normalisation = "none"){
   if(!level %in% c("rows","columns","all")){stop("'level' must equal 'rows', 'columns' or 'all'")} # make sure level equals 'rows', 'columns' or 'all'
   if(class(normalisation) != "character"){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
   if(!normalisation %in% c("none","sum","size class")){stop("'normalisation' must equal 'none', 'sum' or 'size class'")} # make sure normalisation equals 'none', 'sum' or 'size class'
+  if(any(duplicated(rownames(M))) | any(duplicated(colnames(M)))){stop("Input matrix must not have duplicate row or column names")}
 
   # clean matrix
   M[M > 0] <- 1 # ensure M is binary

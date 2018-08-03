@@ -10,7 +10,7 @@ link_positions(M, six_node = FALSE, normalisation = "none")
 \item{M}{A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
 and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes do interact, and 0
 otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
-If interactions are weighted (matrix elements other than zero and one), the function will automatically convert the matrix to a binary
+If interactions are weighted (non-zero matrix elements take values other than 1), the function will automatically convert the matrix to a binary
 matrix.}
 
 \item{six_node}{Logical; should six node motifs be counted?}
@@ -19,8 +19,8 @@ matrix.}
 }
 \value{
 Returns a data frame with one column for each link position: 29 columns if \code{six_node} is FALSE, and 106 columns if \code{six_node} is TRUE.
-Columns names are given as "px" where x is the ID of the position as described in Simmons et al. (2017) (and originally in Appendix 1 of Baker et al. (2015))
-Each row corresponds to one link in the network. Row names are gives as "x -- y", where x is the species in the first level and y the species in the second level.
+Columns names are given as "lpx" where x is the ID of the position as described in Simmons et al. (2017) (and originally in Appendix 1 of Baker et al. (2015))
+Each row corresponds to one link in the network. Row names are gives as "x -- y", where x is the species in the first level (rows) and y is the species in the second level (columns).
 If a matrix is provided without row or column names, default names will be assigned: the first row will be called called 'r1', the second row will be called 'r2' and so on. Similarly, the first column will be called 'c1', the second column will be called 'c2' and so on.
 
 By default, the elements of this data frame will be the raw link position counts. If \code{normalisation} is set to "sum", "size class" or "position", the elements will be

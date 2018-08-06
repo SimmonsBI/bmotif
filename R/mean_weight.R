@@ -76,6 +76,9 @@ mean_weight <- function(W, mc = NA, six_node = FALSE) {
   rownames(lr_sum) <- rownames(lr)
   # multiply each frequency with the weight of the link
   lr_w <- apply(lr_sum, 2, function(x) {x * wl$value})
+  if(class(lr_w) == "numeric"){
+    lr_w <- t(as.matrix(lr_w))
+  }
 
   # now we are interested in the column sums
   # sum over column i gives the total weight of all submotifs of motif-type i

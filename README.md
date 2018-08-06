@@ -7,9 +7,13 @@ Status](https://travis-ci.org/SimmonsBI/bmotif.svg?branch=master)](https://travi
 
 ## Overview
 
-`bmotif` is software to count occurrences of motifs in bipartite
-networks, as well as the number of times each node appears in each
-unique position within motifs. As well as R, it is available in
+`bmotif` is software for motif analyses of bipartite networks. It can
+count occurrences of motifs in bipartite networks, as well as the number
+of times each node or link appears in each unique node or link position
+within motifs. `bmotif` supports weighted as well as unweighted
+networks: the mean weight of motifs can be calculated, as well as the
+standard deviation of motifs mean weights. As well as R, core
+functionality is also available in
 [MATLAB](https://github.com/SimmonsBI/bmotif-matlab) and
 [Python](https://github.com/SimmonsBI/bmotif-python). `bmotif` was
 originally developed to analyse bipartite species interaction networks
@@ -34,12 +38,17 @@ devtools::install_github("SimmonsBI/bmotif") # install bmotif
 ## Use
 
 `bmotif` considers all 44 unique bipartite motifs up to six nodes.
-Within these motifs there are 148 unique node positions.
+Within these motifs there are 148 unique node positions and 106 unique
+link positions.
 
-`bmotif` has two functions: `mcount` and `node_positions`. `mcount`
-counts occurrences of motifs in a bipartite network. `node_positions`
-counts the number of times each node in a network occurs in each of the
-positions within the motifs.
+`bmotif` has three functions:  
+1\. `mcount`: counts how many times each motif occurs in a bipartite
+network, and can also calculate the mean weight of motifs and the
+standard deviation of their weights.  
+2\. `node_positions`: counts the number of times each node in a network
+occurs in each of the positions within the motifs.  
+3\. `link_positions`: counts the number of times each link in a network
+occurs in each of the positions within the motifs.
 
 The motifs corresponding to each motif ID and the node positions
 corresponding to each motif node position ID can be found in **Simmons,

@@ -25,4 +25,3 @@ Imports: tensor (>= 1.5),
     stats (>= 3.5.0)
 Suggests: testthat
 LinkingTo: Rcpp
-SystemRequirements: C++11

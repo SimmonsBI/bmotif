@@ -50,6 +50,6 @@ motif_sd <- function(W, mc = NA, meanw = NA) {
   }
 
   # we now could have NaN values in the msd vector, in case some motifs don't occur
-  msd <- replace(msd, which(is.nan(msd)),0)
+  msd <- replace(msd, which(is.nan(msd)),NA)
   msd
 }

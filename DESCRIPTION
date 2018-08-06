@@ -13,7 +13,7 @@ Description: Counts occurrences of motifs in bipartite networks, as well as the 
     of their mean weights. Intended for use in ecology, but its methods are general and can be
     applied to any bipartite network.
 Depends:
-    R (>= 3.4.3)
+    R (>= 3.4.1)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

@@ -1,3 +1,4 @@
+context("node_positions")
 test_that("node_positions behaves as expected",{
   expect_error(object = node_positions("a"), "'M' must be an object of class 'matrix'")
   expect_error(object = node_positions(matrix("a",3,3)), "Elements of 'M' must be numeric")

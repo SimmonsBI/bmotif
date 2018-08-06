@@ -4,18 +4,21 @@
 \alias{mcount}
 \title{Count bipartite motifs}
 \usage{
-mcount(M, six_node, normalisation)
+mcount(M, six_node, normalisation, mean_weight = FALSE,
+  standard_dev = FALSE)
 }
 \arguments{
 \item{M}{A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
 and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes do interact, and 0
-otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
-If interactions are weighted (non-zero matrix elements take values other than 1), the function will automatically convert the matrix to a binary
-matrix.}
+otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.}
 
 \item{six_node}{Logical; should six node motifs be counted?}
 
 \item{normalisation}{Logical; should motif frequencies be normalised to control for network size?}
+
+\item{mean_weight}{Logical; used for weighted networks. Should the mean weight of each motif be computed?}
+
+\item{standard_dev}{Logical; should the standard deviation of the mean weight for each motif be computed?}
 }
 \value{
 Returns a data frame with one row for each motif: either 17 rows (if \code{six_node} = FALSE) or 44 rows (if \code{six_node} = TRUE). The data frame has three columns.
@@ -24,12 +27,15 @@ The first column ("motif") indicates the motif ID as described in Simmons et al.
 
 If \code{normalisation} = TRUE, three additional columns are added to the output data frame, each corresponding to a different method of normalising motif
 frequencies as described above.
+If \code{mean_weight} = TRUE, an additional column with the mean weight values is added.
+If \code{standard_dev} = TRUE, an additional column with the standard deviation values is added.
 }
 \description{
 Counts occurrences of motifs in a bipartite network
 }
 \details{
 Counts the number of times each of the 17 motifs up to five nodes (if \code{six_node} = FALSE), or 44 motifs up to six nodes (if \code{six_node} = TRUE), occurs in a network.
+Note: For this count, the matrix is converted into a binary matrix.
 
 Larger networks tend to contain more motifs. Controlling for this effect by normalising motif counts is important if different sized networks are being compared.
 If \code{normalisation} = TRUE, motif frequencies are normalised in three ways. The first method ("normalise_sum") converts each frequency to a relative frequency by expressing counts as
@@ -39,6 +45,10 @@ as will the relative frequency of all three-, four-, five- and six-node motifs. 
 of node sets that are involved in a motif as a proportion of the number of node sets that could be involved in that motif (Poisot and Stouffer, 2017). For example, in a motif
 with three nodes in one level (A) and two nodes in the other level (P), the maximum number of node sets which could be involved in the motif is
 given by the product of binomial coefficients, choosing three nodes from A and two from P.
+
+This function can also do analyses for weighted networks:
+If \code{mean_weight} = TRUE, the mean weight of each motif is computed. !!!! TO DO: WE NEED SOME DEFINITON HERE !!!
+If \code{standard_dev} = TRUE, the standard deviation of that mean is also computed.
 
 Warning: including six node motifs is fine for most networks. However, for large networks, counting six node motifs can be slow and memory intensive. In some cases, R can crash if there is not enough memory.
 }

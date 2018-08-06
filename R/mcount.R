@@ -1,15 +1,16 @@
-mcount <- function(M, six_node, normalisation){
+mcount <- function(M, six_node, normalisation, mean_weight = FALSE, standard_dev = FALSE){
   #' Count bipartite motifs
   #'
   #' Counts occurrences of motifs in a bipartite network
   #' @param M A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
   #' and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes do interact, and 0
   #' otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
-  #' If interactions are weighted (non-zero matrix elements take values other than 1), the function will automatically convert the matrix to a binary
-  #' matrix.
   #' @param six_node Logical; should six node motifs be counted?
   #' @param normalisation Logical; should motif frequencies be normalised to control for network size?
+  #' @param mean_weight Logical; used for weighted networks. Should the mean weight of each motif be computed?
+  #' @param standard_dev Logical; should the standard deviation of the mean weight for each motif be computed?
   #' @details Counts the number of times each of the 17 motifs up to five nodes (if \code{six_node} = FALSE), or 44 motifs up to six nodes (if \code{six_node} = TRUE), occurs in a network.
+  #' Note: For this count, the matrix is converted into a binary matrix.
   #'
   #' Larger networks tend to contain more motifs. Controlling for this effect by normalising motif counts is important if different sized networks are being compared.
   #' If \code{normalisation} = TRUE, motif frequencies are normalised in three ways. The first method ("normalise_sum") converts each frequency to a relative frequency by expressing counts as
@@ -20,6 +21,10 @@ mcount <- function(M, six_node, normalisation){
   #' with three nodes in one level (A) and two nodes in the other level (P), the maximum number of node sets which could be involved in the motif is
   #' given by the product of binomial coefficients, choosing three nodes from A and two from P.
   #'
+  #' This function can also do analyses for weighted networks:
+  #' If \code{mean_weight} = TRUE, the mean weight of each motif is computed. !!!! TO DO: WE NEED SOME DEFINITON HERE !!!
+  #' If \code{standard_dev} = TRUE, the standard deviation of that mean is also computed.
+  #'
   #' Warning: including six node motifs is fine for most networks. However, for large networks, counting six node motifs can be slow and memory intensive. In some cases, R can crash if there is not enough memory.
   #' @return
   #' Returns a data frame with one row for each motif: either 17 rows (if \code{six_node} = FALSE) or 44 rows (if \code{six_node} = TRUE). The data frame has three columns.
@@ -28,7 +33,12 @@ mcount <- function(M, six_node, normalisation){
   #'
   #' If \code{normalisation} = TRUE, three additional columns are added to the output data frame, each corresponding to a different method of normalising motif
   #' frequencies as described above.
+  #' If \code{mean_weight} = TRUE, an additional column with the mean weight values is added.
+  #' If \code{standard_dev} = TRUE, an additional column with the standard deviation values is added.
+  #'
   #' @export
+  #' @useDynLib bmotif
+  #' @importFrom Rcpp sourceCpp
   #' @references
   #' Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ roles in food webs show fidelity across a highly variable oak forest. Ecography, 38(2):130–139.
   #'
@@ -51,7 +61,8 @@ mcount <- function(M, six_node, normalisation){
   if(class(six_node) != "logical"){stop("'six_node' must be of class 'logical' i.e. TRUE or FALSE")} # make sure six_node is logical i.e. TRUE or FALSE
 
   # clean matrix
-  M[M > 0] <- 1 # ensure M is binary
+  W <- M # store weighted version of the incidence matrix
+  M[M > 0] <- 1 # M is now a binary version of W
   dimnames(M) <- NULL # strip row and column names
 
   # calculate inputs
@@ -167,6 +178,18 @@ mcount <- function(M, six_node, normalisation){
     # calculate normalised frequency as proportion of possible node sets
     sets <- node_sets(M, six_node = six_node)
     out$normalise_nodesets <- out$frequency/sets
+  }
+
+
+  # weighted measures
+  if (mean_weight) {
+    out$mean_weight <- mean_weight(W, mc = out$frequency, six_node = six_node)
+  }
+  if (standard_dev) {
+    out[1:17, 'standard_dev'] <- motif_sd(W, mc = out$frequency, meanw = out$mean_weight)
+    if (six_node) {
+      out[18:44, 'standard_dev'] <- NA
+    }
   }
 
   # output

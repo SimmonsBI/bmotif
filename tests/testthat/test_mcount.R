@@ -1,3 +1,5 @@
+context("mcount")
+
 test_that("mcount behaves as expected",{
   expect_error(object = mcount("a"), "'M' must be an object of class 'matrix'")
   expect_error(object = mcount(matrix("a",3,3)), "Elements of 'M' must be numeric")

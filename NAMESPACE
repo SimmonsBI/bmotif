@@ -3,3 +3,5 @@
 export(link_positions)
 export(mcount)
 export(node_positions)
+importFrom(Rcpp,sourceCpp)
+useDynLib(bmotif)

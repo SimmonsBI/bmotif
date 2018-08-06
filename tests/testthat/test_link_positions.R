@@ -1,3 +1,6 @@
+context("link_positions")
+
+# define a function
 block_matrix <- function(mlist) {
   # input: list of matrices
   # output: one big block matrix with those matrices on the diagonal

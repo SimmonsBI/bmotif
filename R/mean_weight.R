@@ -4,8 +4,6 @@ mean_weight <- function(W, mc = NA, six_node = FALSE) {
   # returns a vector
   # position i is the mean weight for motif i
 
-  # library(reshape2)
-
   # assume W is the weighted adj matrix
   # M is the binary adj
   M <- W
@@ -27,7 +25,6 @@ mean_weight <- function(W, mc = NA, six_node = FALSE) {
   rownames(W) <- paste0("r", 1:nrow(M))
   colnames(W) <- paste0("c", 1:ncol(M))
 
-  # source('C:/Users/maybr/Google Drive/Cambridge-drive/0_CMP Project/Code/link_positions/link_positions.R')
   lr <- link_positions(M, normalisation = "none", six_node)
   colnames(lr) <- 1:ncol(lr)
 
@@ -46,10 +43,6 @@ mean_weight <- function(W, mc = NA, six_node = FALSE) {
 
   # potentially reorder
   if (!identical(rownames(lr),wl$link)) {
-    if (!identical(rownames(lr), unique(rownames(lr)))) {
-      print('need to reorder')
-      print('If you have two links with the same labels and different weights, this might cause errors now')
-    }
     mtch <- match(rownames(lr), wl$link)
     wl <- wl[mtch, ]
   }
@@ -76,7 +69,7 @@ mean_weight <- function(W, mc = NA, six_node = FALSE) {
   rownames(lr_sum) <- rownames(lr)
   # multiply each frequency with the weight of the link
   lr_w <- apply(lr_sum, 2, function(x) {x * wl$value})
-  if(class(lr_w) == "numeric"){
+  if(class(lr_w) == "numeric") {
     lr_w <- t(as.matrix(lr_w))
   }
 
@@ -84,8 +77,9 @@ mean_weight <- function(W, mc = NA, six_node = FALSE) {
   # sum over column i gives the total weight of all submotifs of motif-type i
 
   tot_w <- colSums(lr_w)
-  # zerodiv ensures that 0/0 still is zero: if the motif does not occur, we want the mean weight to be zero also
-  mean_w <- zerodiv_vec(tot_w, mc)
+  mean_w <- tot_w / mc
+  # If the motif does not occur, we want the mean weight to be NA
+  mean_w <- replace(mean_w, which(is.nan(mean_w)), NA)
 
   # now divide by the number of links in each network
   num_link <- c(1, 2, 2, 3, 3, 4, 3, 4, 4, 4, 5, 6, 4, 4, 5, 6, 4)

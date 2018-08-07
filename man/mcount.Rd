@@ -18,7 +18,7 @@ otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij
 
 \item{mean_weight}{Logical; used for weighted networks. Should the mean weight of each motif be computed?}
 
-\item{standard_dev}{Logical; should the standard deviation of the mean weight for each motif be computed?}
+\item{standard_dev}{Logical; should the standard deviation of the mean weight for each motif be computed? Warning: can be slow for larger networks.}
 }
 \value{
 Returns a data frame with one row for each motif: either 17 rows (if \code{six_node} = FALSE) or 44 rows (if \code{six_node} = TRUE). The data frame has three columns.

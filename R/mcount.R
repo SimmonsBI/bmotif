@@ -8,7 +8,7 @@ mcount <- function(M, six_node, normalisation, mean_weight = FALSE, standard_dev
   #' @param six_node Logical; should six node motifs be counted?
   #' @param normalisation Logical; should motif frequencies be normalised to control for network size?
   #' @param mean_weight Logical; used for weighted networks. Should the mean weight of each motif be computed?
-  #' @param standard_dev Logical; should the standard deviation of the mean weight for each motif be computed?
+  #' @param standard_dev Logical; should the standard deviation of the mean weight for each motif be computed? Warning: can be slow for larger networks.
   #' @details Counts the number of times each of the 17 motifs up to five nodes (if \code{six_node} = FALSE), or 44 motifs up to six nodes (if \code{six_node} = TRUE), occurs in a network.
   #' Note: For this count, the matrix is converted into a binary matrix.
   #'

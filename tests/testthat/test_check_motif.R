@@ -1,5 +1,4 @@
 context("check_motif")
-
 ### Testing if the check_motif function works the way we want it to work #####
 
 # define functions
@@ -172,7 +171,6 @@ for(i in 1:17) {
   mot3 <- mot2[, pc[rc, ], drop = FALSE]
 
   numb <- check_motif(mot3, all_mot_perm)
-  if (numb != i) {
-    print("can't be")
-  }
+
+  expect(numb == i)
 }

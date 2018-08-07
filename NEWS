@@ -1,10 +1,14 @@
 1.0.0.9000
 =====
+## New features
+- New function: link_positions(). Counts the number of times each link in a network occurs in each unique link position within motifs up to 6 nodes (to quantify a link's structural role)
+- Support for weighted motifs: mcount() now has the ability to calculate the mean weight of motifs and the standard deviation of these weights
+
 ## Major changes
-- New function: link_positions(). Counts the number of times each link in a network occurs in each unique link position within motifs up to 6 nodes (to quantify a link's structural role).
 - positions() function has been renamed node_positions() to allow node_positions and the link_positions() function to be distinguished
 - Column names in node_position() function are changed from px to npx, where x is the ID of the position. This is to distinguish node positions (np) from link positions (lp) in the link_positions() functions
 - mcount 'normalise' argument has been renamed 'normalistion' for consistency with node_positions()
+- bmotif now requires R 3.5.0 or higher
 
 ## Minor changes
 - Changed default row and column names to lower-case; added information on default row and column names to documentation; removed warning if default row and column names are assigned
@@ -15,6 +19,7 @@
 
 ## Bug fixes
 - Fixed bug where positions() (now called node_positions()) would break for 1 x 1 matrices when using 'sum' or 'size class' normalisation
+- Added check to prevent the use of a matrix with duplicate row or column names in node_positions() or link_positions() as this would break these functions
 
 1.0.0
 =====

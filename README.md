@@ -46,9 +46,9 @@ link positions.
 network, and can also calculate the mean weight of motifs and the
 standard deviation of their weights.  
 2\. `node_positions`: counts the number of times each node in a network
-occurs in each of the positions within the motifs.  
+occurs in each of the unique node positions within the motifs.  
 3\. `link_positions`: counts the number of times each link in a network
-occurs in each of the positions within the motifs.
+occurs in each of the unique link positions within the motifs.
 
 The motifs corresponding to each motif ID and the node positions
 corresponding to each motif node position ID can be found in **Simmons,

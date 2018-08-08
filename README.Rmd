@@ -32,8 +32,8 @@ devtools::install_github("SimmonsBI/bmotif") # install bmotif
 
 `bmotif` has three functions:  
 1. `mcount`: counts how many times each motif occurs in a bipartite network, and can also calculate the mean weight of motifs and the standard deviation of their weights.  
-2. `node_positions`: counts the number of times each node in a network occurs in each of the positions within the motifs.  
-3. `link_positions`: counts the number of times each link in a network occurs in each of the positions within the motifs.
+2. `node_positions`: counts the number of times each node in a network occurs in each of the unique node positions within the motifs.  
+3. `link_positions`: counts the number of times each link in a network occurs in each of the unique link positions within the motifs.
 
 The motifs corresponding to each motif ID and the node positions corresponding to each motif node position ID can be found in **Simmons, B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks. bioRxiv. doi: 10.1101/302356**. These were defined following Baker et al (2015) Appendix 1 Figure A27.
 

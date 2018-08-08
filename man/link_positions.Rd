@@ -4,16 +4,17 @@
 \alias{link_positions}
 \title{Calculate link position vectors}
 \usage{
-link_positions(M, six_node = FALSE, normalisation = "none")
+link_positions(M, six_node = FALSE, weights = FALSE,
+  normalisation = "none")
 }
 \arguments{
 \item{M}{A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
 and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes do interact, and 0
-otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
-If interactions are weighted (non-zero matrix elements take values other than 1), the function will automatically convert the matrix to a binary
-matrix.}
+otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.}
 
 \item{six_node}{Logical; should six node motifs be counted?}
+
+\item{weights}{Logical; Should weights of the links be taken into account?}
 
 \item{normalisation}{Which normalisation should be used: "none", "sum", "size class" or "position"?  Defaults to "none".}
 }
@@ -23,7 +24,9 @@ Columns names are given as "lpx" where x is the ID of the position as described 
 Each row corresponds to one link in the network. Row names are gives as "x -- y", where x is the species in the first level (rows) and y is the species in the second level (columns).
 If a matrix is provided without row or column names, default names will be assigned: the first row will be called called 'r1', the second row will be called 'r2' and so on. Similarly, the first column will be called 'c1', the second column will be called 'c2' and so on.
 
-By default, the elements of this data frame will be the raw link position counts. If \code{normalisation} is set to "sum", "size class" or "position", the elements will be
+By default, the elements of this data frame will be the raw link position counts. 
+If \code{weight = TRUE}, link position counts will be multiplied by the link weight.
+If \code{normalisation} is set to "sum", "size class" or "position", the elements will be
 normalised position counts as described above.
 }
 \description{
@@ -31,6 +34,10 @@ Counts the frequency with which links occur in different positions within motifs
 }
 \details{
 Counts the number of times each link in a network occurs in each of the 29 (if \code{six_node} = FALSE) or 106 (if \code{six_node} = TRUE) unique link positions within motifs (to quantify a link's structural role).
+If interactions are weighted (non-zero matrix elements take values other than 1), these can be considered:
+If \code{weights = TRUE}, the function will return the number of times each link occurs in each position, 
+multiplied by the weight of the link.
+
 Links between nodes with more interactions will tend to appear in more positions. Normalisation helps control for this effect.
 "none" performs no normalisation and will return the raw position counts.
 "sum" divides link position counts for each link by the total number of times that link appears in any position.

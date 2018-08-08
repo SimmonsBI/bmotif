@@ -37,7 +37,7 @@ test_that("Check matrices with one weighted link", {
     W[1,1] <- 10
     lp <- link_positions(W, weights = FALSE)
     lw <- link_positions(W, weights = TRUE)
-    expect(lw[1,] == 10 * lp[1,])
+    expect(all(lw[1,] == 10 * lp[1,]))
     expect(all(lw[-1,] == lp[-1,]))
   }
   for (i in 1:5) {
@@ -46,7 +46,7 @@ test_that("Check matrices with one weighted link", {
     lp <- link_positions(W, weights = FALSE)
     lw <- link_positions(W, weights = TRUE)
     ind <- which(rownames(lp) == "r3 -- c3")
-    expect(lw[ind,] == 0.5 * lp[ind,])
+    expect(all(lw[ind,] == 0.5 * lp[ind,]))
     expect(all(lw[-ind,] == lp[-ind,]))
   }
 })
@@ -60,8 +60,8 @@ test_that("Check matrices with several weighted links", {
     lw <- link_positions(W, weights = TRUE)
     ind <- which(rownames(lp) == "r7 -- c8")
     ind2 <- which(rownames(lp) == "r4 -- c6")
-    expect(lw[ind,] == 1.5 * lp[ind,])
-    expect(lw[ind2,] == 0.7 * lp[ind2,])
+    expect(all(lw[ind,] == 1.5 * lp[ind,]))
+    expect(all(lw[ind2,] == 0.7 * lp[ind2,]))
     expect(all(lw[-c(ind, ind2),] == lp[-c(ind, ind2),]))
   }
 })

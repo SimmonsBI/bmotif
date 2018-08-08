@@ -10,10 +10,11 @@ Status](https://travis-ci.org/SimmonsBI/bmotif.svg?branch=master)](https://travi
 `bmotif` is software for motif analyses of bipartite networks. It can
 count occurrences of motifs in bipartite networks, as well as the number
 of times each node or link appears in each unique node or link position
-within motifs. `bmotif` supports weighted as well as unweighted
-networks: the mean weight of motifs can be calculated, as well as the
-standard deviation of motifs mean weights. As well as R, core
-functionality is also available in
+within motifs (a node or link’s structural role). `bmotif` supports
+weighted as well as unweighted networks: the mean weight of motifs can
+be calculated, as well as the standard deviation of motifs mean weights;
+weighted versions of link position counts are also supported. As well as
+R, core functionality is also available in
 [MATLAB](https://github.com/SimmonsBI/bmotif-matlab) and
 [Python](https://github.com/SimmonsBI/bmotif-python). `bmotif` was
 originally developed to analyse bipartite species interaction networks

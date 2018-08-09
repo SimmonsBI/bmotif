@@ -11,7 +11,7 @@ link_positions(M, six_node = FALSE, weights, normalisation = "none")
 and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes interact, and 0
 otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.}
 
-\item{six_node}{Logical; should positions in six node motifs be counted? Default to FALSE.}
+\item{six_node}{Logical; should positions in six node motifs be counted? Defaults to FALSE.}
 
 \item{weights}{Logical; Should weights of the links be taken into account?}
 

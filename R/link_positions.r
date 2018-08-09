@@ -6,7 +6,7 @@ link_positions <- function(M, six_node = FALSE, weights, normalisation = "none")
   #' and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes interact, and 0
   #' otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
   #'
-  #' @param six_node Logical; should positions in six node motifs be counted? Default to FALSE.
+  #' @param six_node Logical; should positions in six node motifs be counted? Defaults to FALSE.
   #' @param normalisation Which normalisation should be used: "none", "sum", "size class" or "position"?  Defaults to "none".
   #' @param weights Logical; Should weights of the links be taken into account?
   #' @details Counts the number of times each link in a network occurs in each of the 29 (if \code{six_node} = FALSE) or 106 (if \code{six_node} = TRUE) unique link positions within motifs (to quantify a link's structural role).

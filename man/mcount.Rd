@@ -56,7 +56,7 @@ set.seed(123)
 row <- 10
 col <- 10
 m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
-mcount(M = m, six_node = TRUE, normalisation = TRUE)
+mcount(M = m, six_node = TRUE, normalisation = TRUE, mean_weight = FALSE, standard_dev = FALSE)
 }
 \references{
 Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ roles in food webs show fidelity across a highly variable oak forest. Ecography, 38(2):130–139.

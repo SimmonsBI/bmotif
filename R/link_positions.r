@@ -65,7 +65,7 @@ link_positions <- function(M, six_node = FALSE, weights, normalisation = "none")
   if(class(normalisation) != "character"){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
   if(!normalisation %in% c("none","sum","size class", "position")){stop("'normalisation' must equal 'none', sum', 'size class' or 'position'")}
   if(any(duplicated(rownames(M))) | any(duplicated(colnames(M)))){stop("Input matrix must not have duplicate row or column names")}
-  if((normalisation == "sum" | normalisation == "size class") & weights == TRUE){warning("Please note that with 'sum' or 'size class' normalisation, the results won’t change if weights are taken into account. This is because when weights = TRUE, each row of the output is multiplied by a fixed factor (the link's weight) and therefore the relative proportions are the same as if weights were not considered. Consider setting normalisation to 'position' or 'none'.")}
+  if((normalisation == "sum" | normalisation == "size class") & weights == TRUE){warning("Please note that with 'sum' or 'size class' normalisation, the results won't change if weights are taken into account. This is because when weights = TRUE, each row of the output is multiplied by a fixed factor (the link's weight) and therefore the relative proportions are the same as if weights were not considered. Consider setting normalisation to 'position' or 'none'.")}
 
   W <- M # store copy of weighted matrix
   M[M > 0] <- 1 # ensure M is binary

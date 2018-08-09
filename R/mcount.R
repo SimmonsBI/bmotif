@@ -5,27 +5,49 @@ mcount <- function(M, six_node = FALSE, normalisation, mean_weight, standard_dev
   #' @param M A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
   #' and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes do interact, and 0
   #' otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
-  #' @param six_node Logical; should six node motifs be counted?
+  #' @param six_node Logical; should six node motifs be counted? Defaults to FALSE.
   #' @param normalisation Logical; should motif frequencies be normalised to control for network size?
   #' @param mean_weight Logical; used for weighted networks. Should the mean weight of each motif be computed?
   #' @param standard_dev Logical; should the standard deviation of the mean weight for each motif be computed? Warning: can be slow for larger networks.
-  #' @details Counts the number of times each of the 17 motifs up to five nodes (if \code{six_node} = FALSE), or 44 motifs up to six nodes (if \code{six_node} = TRUE), occurs in a network.
-  #' Note: For this count, the matrix is converted into a binary matrix.
+  #' @details Counts the number of times each of the 17 motifs up to five nodes (if \code{six_node} = FALSE), or 44 motifs up to six nodes (if \code{six_node} = TRUE), occurs in a network (note: if the network
+  #' has weights it will be converted to binary; see below for how to use the \code{weights} argument to account for network weights).
+  #'
+  #' \strong{Six-node motifs}
+  #'
+  #' If \code{six_node} = FALSE, all motifs containing between 2 and 5 nodes are counted. If \code{six_node} = TRUE, all motifs containing between 2 and 6 nodes are counted. Analyses where \code{six_node} = FALSE are substantially faster
+  #' than when \code{six_node} = TRUE, especially for large networks. For large networks, counting six node motifs is also memory intensive. In some cases, R can crash if there is not enough memory.
+  #'
+  #' \strong{Normalisation}
   #'
   #' Larger networks tend to contain more motifs. Controlling for this effect by normalising motif counts is important if different sized networks are being compared.
-  #' If \code{normalisation} = TRUE, motif frequencies are normalised in three ways. The first method ("normalise_sum") converts each frequency to a relative frequency by expressing counts as
-  #' a proportion of the total number of motifs in the network. The second method ("normalise_sizeclass") uses a similar approach, but expresses counts as a proportion of the total number of
-  #' motifs within each motif size class (the number of nodes a motif contains). For example, the relative frequency of all two-node motifs will sum to one,
-  #' as will the relative frequency of all three-, four-, five- and six-node motifs. The final method ("normalise_nodesets") expresses frequencies as the number
+  #' If \code{normalisation} = TRUE, motif frequencies are normalised in three ways:
+  #'
+  #' \itemize{
+  #'  \item{\strong{"normalise_sum"}:  converts each frequency to a relative frequency by expressing counts as a proportion of the total number of motifs in the network}
+  #'  \item{\strong{"normalise_sizeclass"}: expresses counts as a proportion of the total number of motifs within each motif size class (the number of nodes a motif contains).
+  #'  For example, the relative frequency of all two-node motifs will sum to one, as will the relative frequency of all three-, four-, five- and six-node motifs.}
+  #'  \item{\strong{"normalise_nodesets"}: expresses frequencies as the number
   #' of node sets that are involved in a motif as a proportion of the number of node sets that could be involved in that motif (Poisot and Stouffer, 2017). For example, in a motif
   #' with three nodes in one level (A) and two nodes in the other level (P), the maximum number of node sets which could be involved in the motif is
-  #' given by the product of binomial coefficients, choosing three nodes from A and two from P.
+  #' given by the product of binomial coefficients, choosing three nodes from A and two from P.}
+  #' }
   #'
-  #' This function can also do analyses for weighted networks:
-  #' If \code{mean_weight} = TRUE, the mean weight of each motif is computed. !!!! TO DO: WE NEED SOME DEFINITON HERE !!!
-  #' If \code{standard_dev} = TRUE, the standard deviation of that mean is also computed.
+  #' \strong{Weighted networks}
   #'
-  #' Warning: including six node motifs is fine for most networks. However, for large networks, counting six node motifs can be slow and memory intensive. In some cases, R can crash if there is not enough memory.
+  #' \code{mcount} also supports weighted networks.
+  #' We let the weight of a given subgraph be the arithmetic mean of the weights of its links (note: we only consider links which are actually present).
+  #'
+  #'
+  #' For each motif we do the following: \cr
+  #' We calculate the weights of all subgraphs of the same type as (formally: isomorphic to) the motif.\cr
+  #' If \code{mean_weight = TRUE}, we compute the arithmetic mean of the subgraph weights.\cr
+  #' If \code{standard_dev = TRUE}, we compute the standard deviation of the subgraph weights.
+  #'
+  #' For example, let there be two subgraphs, A and B, which are isomorphic to motif 5. Subgraph A has three links with weights 1, 2 and 3;
+  #' subgraph B has three links with weights 4, 5 and 6.
+  #' The weight of subgraph A is the mean of 1, 2 and 3, which is 2. The weight of subgraph B is the mean of 4, 5 and 6 which is 5.
+  #' The mean weight of motif 5 which would be returned by \code{mcount} is therefore the mean of 2 and 5 which is 3.5.
+  #'
   #' @return
   #' Returns a data frame with one row for each motif: either 17 rows (if \code{six_node} = FALSE) or 44 rows (if \code{six_node} = TRUE). The data frame has three columns.
   #' The first column ("motif") indicates the motif ID as described in Simmons et al. (2017) (and originally in Appendix 1 of Baker et al. (2015)). The second column
@@ -49,8 +71,14 @@ mcount <- function(M, six_node = FALSE, normalisation, mean_weight, standard_dev
   #' set.seed(123)
   #' row <- 10
   #' col <- 10
+  #'
+  #' # motif counts for a binary network
   #' m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
   #' mcount(M = m, six_node = TRUE, normalisation = TRUE, mean_weight = FALSE, standard_dev = FALSE)
+  #'
+  #' # motif counts in a weighted network
+  #' m[m>0] <- stats::runif(sum(m), 0, 100)
+  #' mcount(M = m, six_node = TRUE, normalisation = TRUE, mean_weight = TRUE, standard_dev = TRUE)
 
   # check inputs
   if(class(M) != "matrix"){stop("'M' must be an object of class 'matrix'")} # make sure M is a matrix

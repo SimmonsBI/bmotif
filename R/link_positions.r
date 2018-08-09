@@ -5,15 +5,15 @@ link_positions <- function(M, six_node = FALSE, weights = FALSE, normalisation =
   #' @param M A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
   #' and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes do interact, and 0
   #' otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
-  #' 
+  #'
   #' @param six_node Logical; should six node motifs be counted?
   #' @param normalisation Which normalisation should be used: "none", "sum", "size class" or "position"?  Defaults to "none".
   #' @param weights Logical; Should weights of the links be taken into account?
   #' @details Counts the number of times each link in a network occurs in each of the 29 (if \code{six_node} = FALSE) or 106 (if \code{six_node} = TRUE) unique link positions within motifs (to quantify a link's structural role).
   #' If interactions are weighted (non-zero matrix elements take values other than 1), these can be considered:
-  #' If \code{weights = TRUE}, the function will return the number of times each link occurs in each position, 
+  #' If \code{weights = TRUE}, the function will return the number of times each link occurs in each position,
   #' multiplied by the weight of the link.
-  #' 
+  #'
   #' Links between nodes with more interactions will tend to appear in more positions. Normalisation helps control for this effect.
   #' "none" performs no normalisation and will return the raw position counts.
   #' "sum" divides link position counts for each link by the total number of times that link appears in any position.
@@ -27,7 +27,7 @@ link_positions <- function(M, six_node = FALSE, weights = FALSE, normalisation =
   #' Each row corresponds to one link in the network. Row names are gives as "x -- y", where x is the species in the first level (rows) and y is the species in the second level (columns).
   #' If a matrix is provided without row or column names, default names will be assigned: the first row will be called called 'r1', the second row will be called 'r2' and so on. Similarly, the first column will be called 'c1', the second column will be called 'c2' and so on.
   #'
-  #' By default, the elements of this data frame will be the raw link position counts. 
+  #' By default, the elements of this data frame will be the raw link position counts.
   #' If \code{weight = TRUE}, link position counts will be multiplied by the link weight.
   #' If \code{normalisation} is set to "sum", "size class" or "position", the elements will be
   #' normalised position counts as described above.
@@ -56,8 +56,9 @@ link_positions <- function(M, six_node = FALSE, weights = FALSE, normalisation =
   if(class(normalisation) != "character"){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
   if(!normalisation %in% c("none","sum","size class", "position", "total")){stop("'normalisation' must equal 'none', 'total', sum', 'size class' or 'position'")}
   if(any(duplicated(rownames(M))) | any(duplicated(colnames(M)))){stop("Input matrix must not have duplicate row or column names")}
+  if((normalisation == "sum" | normalisation == "size class") & weights == TRUE){warning("Please note that with 'sum' or 'size class' normalisation, the results won’t change if weights are taken into account. This is because when weights = TRUE, each row of the output is multiplied by a fixed factor (the link's weight) and therefore the relative proportions are the same as if weights were not considered. Consider setting normalisation to 'position' or 'none'.")}
 
-  W <- M # store copy of weighted matrix 
+  W <- M # store copy of weighted matrix
   M[M > 0] <- 1 # ensure M is binary
 
   # compute auxiliary stuff
@@ -135,15 +136,15 @@ link_positions <- function(M, six_node = FALSE, weights = FALSE, normalisation =
   if (!six_node) {
     colnames(lp) <- paste('lp', 1:29, sep = '')
   }
-  
+
   # want to compute only for present edges
   # so make a list of all the edges present in the network
   # column one is just a numbering
   # column 2 is the index of the row vertex, column 3 the index of the column vertex
-  # for later use, if weights = TRUE, also store the weight of the link in column 4 
+  # for later use, if weights = TRUE, also store the weight of the link in column 4
   ct <- 0
   E <- sum(M) # number of edges
-  
+
   if (six_node & !weights) {
     edges <- matrix(rep(0,3*E), nrow = E)
     for (i in 1:NZ) {
@@ -156,7 +157,7 @@ link_positions <- function(M, six_node = FALSE, weights = FALSE, normalisation =
       }
     }
   }
-  
+
   if (weights) {
     edges <- matrix(rep(0,4*E), nrow = E)
     for (i in 1:NZ) {
@@ -245,9 +246,9 @@ link_positions <- function(M, six_node = FALSE, weights = FALSE, normalisation =
     lp[,104] <- 0.5 * as.vector(MT %*% (X * (Z - JZ) * (Z - 2*JZ)))
     lp[,105] <- 1/6 * as.vector(MT %*% ((Z - JZ) * (Z - 2*JZ) * (Z - 3*JZ)) - ((V - JT) * (V - 2*JT) * (V - 3*JT)))
     lp[,106] <- 1/24 * as.vector((V - JT) * (V - 2*JT) * (V - 3*JT) * (V - 4*JT))
-    
+
     # ---------- TENSOR CASES
-    
+
     # now clean rows where the edge is not present
     lp <- subset(lp, lp[,1] == 1)
 
@@ -410,7 +411,7 @@ link_positions <- function(M, six_node = FALSE, weights = FALSE, normalisation =
       lp[k,] <- lp[k,] * edges[k,4]
     }
   }
-  
+
   # --------------- NORMALISE
   norm_sum <- function(x) {
     # basically does x/sum(x), not changing zero vectors

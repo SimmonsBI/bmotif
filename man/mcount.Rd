@@ -4,8 +4,7 @@
 \alias{mcount}
 \title{Count bipartite motifs}
 \usage{
-mcount(M, six_node, normalisation, mean_weight = FALSE,
-  standard_dev = FALSE)
+mcount(M, six_node = FALSE, normalisation, mean_weight, standard_dev)
 }
 \arguments{
 \item{M}{A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level

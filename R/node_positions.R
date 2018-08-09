@@ -7,22 +7,26 @@ node_positions <- function(M, six_node = FALSE, level = "all", normalisation = "
   #' otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
   #' If interactions are weighted (non-zero matrix elements take values other than 1), the function will automatically convert the matrix to a binary
   #' matrix.
-  #' @param six_node Logical; should six node motifs be counted?
+  #' @param six_node Logical; should six node motifs be counted? Defaults to FALSE.
   #' @param  level Which node level should positions be calculated for: "rows", "columns" or "all"?  Defaults to "all".
   #' @param normalisation Which normalisation should be used: "none", "sum" or "size class"?  Defaults to "none".
   #' @details Counts the number of times each node in a network occurs in each of the 46 (if \code{six_node} = FALSE) or 148 (if \code{six_node} = TRUE) unique positions within motifs (to quantify a node's structural role).
+  #' If FALSE, node positions in all motifs containing between 2 and 5 nodes are counted. If TRUE, node positions in all motifs containing between 2 and 6 nodes are counted. Analyses where \code{six_node} = FALSE are substantially faster
+  #' than when \code{six_node} = TRUE, especially for large networks. For large networks, counting six node motifs is also memory intensive. In some cases, R can crash if there is not enough memory.
   #'
-  #' The \code{level} argument controls which node group positions are calculated for: "rows" returns position counts for all nodes in rows, "columns"
-  #' returns counts for all nodes in columns, and "all" return counts for all nodes in the network.
+  #' The \code{level} argument controls which level of nodes positions are calculated for: "rows" returns position counts for all nodes in rows, "columns"
+  #' returns position counts for all nodes in columns, and "all" return counts for all nodes in the network.
   #'
-  #' Nodes with more interactions will tend to appear in more positions. Normalisation helps control for this effect.
-  #' "none" performs no normalisation and will return the raw position counts.
-  #' "sum" divides position counts for each node by the total number of times that node appears in any position.
-  #' "size class" divides position counts for each node by the total number of times that node appears in any position within the same motif size class.
+  #' Nodes with more interactions will tend to appear in more positions. Normalisation helps control for this effect. bmotif include four types of normalisation:
+  #' \itemize{
+  #'  \item{\strong{"none"}: performs no normalisation and will return the raw position counts.}
+  #'  \item{\strong{"sum"}: divides position counts for each node by the total number of times that node appears in any position (divides each element in a row by the row sum).}
+  #'  \item{\strong{"size class"}: divides position counts for each node by the total number of times that node appears in any position within the same motif size class.}
+  #'  \item{\strong{"position"}: divides position counts for each node by the total number of times any node occurs in that node position (divides each element in a column by the column sum). This gives a measure of how often a node occurs in a position relative to the other nodes in the network.}
+  #' }
   #'
   #' If a matrix is provided without row or column names, default names will be assigned: the first row will be called called 'r1', the second row will be called 'r2' and so on. Similarly, the first column will be called 'c1', the second column will be called 'c2' and so on.
   #'
-  #' Warning: including six node motifs is fine for most networks. However, for large networks, counting six node motifs can be slow and memory intensive. In some cases, R can crash if there is not enough memory.
   #' @return
   #' Returns a data frame with one column for each node position: 46 columns if \code{six_node} is FALSE, and 148 columns if \code{six_node} is TRUE.
   #' Columns names are given as "npx" where x is the ID of the position as described in Simmons et al. (2017) (and originally in Appendix 1 of Baker et al. (2015))
@@ -39,11 +43,9 @@ node_positions <- function(M, six_node = FALSE, level = "all", normalisation = "
   #' Simmons, B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks. bioRxiv. doi: 10.1101/302356
   #' @examples
   #' set.seed(123)
-  #' row <- 15
-  #' col <- 15
+  #' row <- 10
+  #' col <- 10
   #' m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
-  #' rownames(m) <- paste0("r", 1:nrow(m)) # give the matrix row names
-  #' colnames(m) <- paste0("c", 1:ncol(m)) # give the matrix column names
   #' node_positions(M = m, six_node = TRUE, level = "all", normalisation = "none")
 
   # check inputs

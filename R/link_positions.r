@@ -1,33 +1,38 @@
 link_positions <- function(M, six_node = FALSE, weights, normalisation = "none") {
   #' Calculate link position vectors
   #'
-  #' Counts the frequency with which links occur in different positions within motifs.
+  #' Counts the number of times each link in a network occurs in each unique link position within the motifs
   #' @param M A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
-  #' and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes do interact, and 0
+  #' and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes interact, and 0
   #' otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
   #'
-  #' @param six_node Logical; should six node motifs be counted?
+  #' @param six_node Logical; should positions in six node motifs be counted? Default to FALSE.
   #' @param normalisation Which normalisation should be used: "none", "sum", "size class" or "position"?  Defaults to "none".
   #' @param weights Logical; Should weights of the links be taken into account?
   #' @details Counts the number of times each link in a network occurs in each of the 29 (if \code{six_node} = FALSE) or 106 (if \code{six_node} = TRUE) unique link positions within motifs (to quantify a link's structural role).
-  #' If interactions are weighted (non-zero matrix elements take values other than 1), these can be considered:
+  #' If FALSE, link positions in all motifs containing between 2 and 5 nodes are counted. If TRUE, link positions in all motifs containing between 2 and 6 nodes are counted. Analyses where \code{six_node} = FALSE are substantially faster
+  #' than when \code{six_node} = TRUE, especially for large networks.
+  #'
+  #' If interactions are weighted (non-zero matrix elements take values other than 1), these can be incorporated by setting \code{weights = TRUE}.
   #' If \code{weights = TRUE}, the function will return the number of times each link occurs in each position,
   #' multiplied by the weight of the link.
   #'
-  #' Links between nodes with more interactions will tend to appear in more positions. Normalisation helps control for this effect.
-  #' "none" performs no normalisation and will return the raw position counts.
-  #' "sum" divides link position counts for each link by the total number of times that link appears in any position.
-  #' "size class" divides link position counts for each link by the total number of times that link appears in any position within the same motif size class.
-  #' "position" divides link position counts for each link by the total number of times any link occurs in that link position,
-  #' i.e. it gives a measure of how often that link occurs in this position compared to the other links in the network.
+  #' Links between nodes with more interactions will tend to appear in more positions. Normalisation helps control for this effect. bmotif include four types of normalisation:
+  #' \itemize{
+  #'  \item{\strong{"none"}: performs no normalisation and will return the raw position counts.}
+  #'  \item{\strong{"sum"}: divides position counts for each link by the total number of times that link appears in any position (divides each element in a row by the row sum).}
+  #'  \item{\strong{"size class"}: divides position counts for each link by the total number of times that link appears in any position within the same motif size class.}
+  #'  \item{\strong{"position"}: divides position counts for each link by the total number of times any link occurs in that link position (divides each element in a column by the column sum). This gives a measure of how often a link occurs in a position relative to the other links in the network.}
+  #' }
   #'
-  #'
-  #' @return  Returns a data frame with one column for each link position: 29 columns if \code{six_node} is FALSE, and 106 columns if \code{six_node} is TRUE.
-  #' Columns names are given as "lpx" where x is the ID of the position as described in Simmons et al. (2017) (and originally in Appendix 1 of Baker et al. (2015))
-  #' Each row corresponds to one link in the network. Row names are gives as "x -- y", where x is the species in the first level (rows) and y is the species in the second level (columns).
   #' If a matrix is provided without row or column names, default names will be assigned: the first row will be called called 'r1', the second row will be called 'r2' and so on. Similarly, the first column will be called 'c1', the second column will be called 'c2' and so on.
   #'
-  #' By default, the elements of this data frame will be the raw link position counts.
+  #' @return  Returns a data frame with one column for each link position: 29 columns if \code{six_node} is FALSE, and 106 columns if \code{six_node} is TRUE.
+  #' Columns names are given as "lpx" where x is the ID of the position as described in Simmons et al. (2017).
+  #'
+  #' Each row corresponds to one link in the network. Row names are gives as "x -- y", where x is the species in the first level (rows) and y is the species in the second level (columns).
+  #'
+  #' By default, the elements of the data frame will be the raw link position counts.
   #' If \code{weight = TRUE}, link position counts will be multiplied by the link weight.
   #' If \code{normalisation} is set to "sum", "size class" or "position", the elements will be
   #' normalised position counts as described above.
@@ -37,12 +42,16 @@ link_positions <- function(M, six_node = FALSE, weights, normalisation = "none")
   #' Simmons, B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks. bioRxiv. doi: 10.1101/302356
   #' @examples
   #' set.seed(123)
-  #' row <- 15
-  #' col <- 15
+  #' row <- 10
+  #' col <- 10
+  #'
+  #' # link positions in a binary network
   #' m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
-  #' rownames(m) <- paste0("r", 1:nrow(m)) # give the matrix row names
-  #' colnames(m) <- paste0("c", 1:ncol(m)) # give the matrix column names
-  #' link_positions(M = m, six_node = TRUE, normalisation = "none")
+  #' link_positions(M = m, six_node = TRUE, weights = FALSE, normalisation = "none")
+  #'
+  #' # link positions in a weighted network
+  #' m[m>0] <- stats::runif(sum(m), 0, 100)
+  #' link_positions(M = m, six_node = TRUE, weights = TRUE, normalisation = "none")
 
   # M is the adjacence matrix
 

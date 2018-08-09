@@ -11,7 +11,7 @@ mean_weight <- function(W, mc = NA, six_node = FALSE) {
 
   if (any(is.na(mc))) {
     # user did not give any input for this, so we compute it again
-    mc <- mcount (M, six_node = six_node, normalisation = FALSE)$frequency
+    mc <- mcount (M, six_node = six_node, mean_weight = FALSE, standard_dev = FALSE, normalisation = FALSE)$frequency
   }
   # make sure mc has the right length
   if (!six_node) {
@@ -25,7 +25,7 @@ mean_weight <- function(W, mc = NA, six_node = FALSE) {
   rownames(W) <- paste0("r", 1:nrow(M))
   colnames(W) <- paste0("c", 1:ncol(M))
 
-  lr <- link_positions(M, normalisation = "none", six_node)
+  lr <- link_positions(M, normalisation = "none", weights = FALSE, six_node = six_node)
   colnames(lr) <- 1:ncol(lr)
 
   # now create a list of edges with weights

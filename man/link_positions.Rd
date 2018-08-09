@@ -33,8 +33,8 @@ Counts the number of times each link in a network occurs in each unique link pos
 }
 \details{
 Counts the number of times each link in a network occurs in each of the 29 (if \code{six_node} = FALSE) or 106 (if \code{six_node} = TRUE) unique link positions within motifs (to quantify a link's structural role).
-If FALSE, link positions in all motifs containing between 2 and 5 nodes are counted. If TRUE, link positions in all motifs containing between 2 and 6 nodes are counted. Analyses where \code{six_node} = FALSE are substantially faster
-than when \code{six_node} = TRUE, especially for large networks.
+If \code{six_node} = FALSE, link positions in all motifs containing between 2 and 5 nodes are counted. If \code{six_node} = TRUE, link positions in all motifs containing between 2 and 6 nodes are counted. Analyses where \code{six_node} = FALSE are substantially faster
+than when \code{six_node} = TRUE, especially for large networks. For large networks, counting six node motifs is also memory intensive. In some cases, R can crash if there is not enough memory.
 
 If interactions are weighted (non-zero matrix elements take values other than 1), these can be incorporated by setting \code{weights = TRUE}.
 If \code{weights = TRUE}, the function will return the number of times each link occurs in each position,

@@ -35,7 +35,7 @@ Counts the frequency with which nodes occur in different positions within motifs
 }
 \details{
 Counts the number of times each node in a network occurs in each of the 46 (if \code{six_node} = FALSE) or 148 (if \code{six_node} = TRUE) unique positions within motifs (to quantify a node's structural role).
-If FALSE, node positions in all motifs containing between 2 and 5 nodes are counted. If TRUE, node positions in all motifs containing between 2 and 6 nodes are counted. Analyses where \code{six_node} = FALSE are substantially faster
+If \code{six_node} = FALSE, node positions in all motifs containing between 2 and 5 nodes are counted. If \code{six_node} = TRUE, node positions in all motifs containing between 2 and 6 nodes are counted. Analyses where \code{six_node} = FALSE are substantially faster
 than when \code{six_node} = TRUE, especially for large networks. For large networks, counting six node motifs is also memory intensive. In some cases, R can crash if there is not enough memory.
 
 The \code{level} argument controls which level of nodes positions are calculated for: "rows" returns position counts for all nodes in rows, "columns"

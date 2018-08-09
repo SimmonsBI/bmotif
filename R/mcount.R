@@ -59,6 +59,7 @@ mcount <- function(M, six_node, normalisation, mean_weight = FALSE, standard_dev
   if(!all(apply(M, 1:2, function(x) x >= 0))){stop("Elements of 'M' must be greater than or equal to zero")} # make sure all elements of M are >= zero
   if(class(normalisation) != "logical"){stop("'normalisation' must be of class 'logical' i.e. TRUE or FALSE")} # make sure normalisation is logical i.e. TRUE or FALSE
   if(class(six_node) != "logical"){stop("'six_node' must be of class 'logical' i.e. TRUE or FALSE")} # make sure six_node is logical i.e. TRUE or FALSE
+  if(mean_weight == FALSE & standard_dev == TRUE){stop("Cannot have standard_dev = TRUE and mean_weight = FALSE. If you want the standard deviations, set standard_dev = TRUE and mean_weight = TRUE")}
 
   # clean matrix
   W <- M # store weighted version of the incidence matrix

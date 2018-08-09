@@ -12,7 +12,7 @@ motif_sd <- function(W, mc = NA, meanw = NA) {
 
   if (any(is.na(mc))) {
     # user did not give any input for this, so we compute it again
-    mc <- mcount (M, six_node = FALSE, normalisation = FALSE)$frequency
+    mc <- mcount (M, six_node = FALSE, mean_weight = FALSE, standard_dev = FALSE, normalisation = FALSE)$frequency
   }
 
   if (any(is.na(meanw))) {

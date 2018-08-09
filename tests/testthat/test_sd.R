@@ -18,11 +18,12 @@ rwm <- function(n, m, edge_prob = 0.5, min = 0, max = 1) {
 
 motif_sd_minors <- function(W) {
   # meanw is a vector of mean weights
-  meanw <- mean_weight(W)
   # mc is a vector of motif counts
   M <- W
   M[M > 0] <- 1
-  mc <- mcount(M, FALSE, FALSE)$frequency
+  mcdf <- mcount(W, six_node = FALSE, mean_weight = TRUE, standard_dev = FALSE, normalisation = FALSE)
+  meanw <- mcdf$mean_weight
+  mc <- mcdf$frequency
 
   # compute all_mot_perm
   all_mot_perm <- gen_all_mot_perm()
@@ -224,13 +225,13 @@ motif_dimensions <- function(m, n) {
 # -------- Tests
 test_that("Testing for binary matrices", {
   W <- rbm(20,20)
-  mc <- mcount(W, FALSE, FALSE)$frequency
+  mc <- mcount(W, six_node = FALSE, mean_weight = FALSE, standard_dev = FALSE, normalisation = FALSE)$frequency
   msd <- motif_sd(W)
   expect(all(msd[which(mc > 0)] == 0))
   expect(all(is.na(msd[which(mc == 0)])))
 
   W <- rbm(5,5)
-  mc <- mcount(W, FALSE, FALSE)$frequency
+  mc <- mcount(W, six_node = FALSE, mean_weight = FALSE, standard_dev = FALSE, normalisation = FALSE)$frequency
   msd <- motif_sd_minors(W)
   expect(all(msd[which(mc > 0)] == 0))
   expect(all(is.na(msd[which(mc == 0)])))
@@ -238,7 +239,7 @@ test_that("Testing for binary matrices", {
   for (i in 1:5) {
     W <- rbm(3,3, 0.2) # make it sparse
     if (any(W != 0)) {
-      mc <- mcount(W, FALSE, FALSE)$frequency
+      mc <- mcount(W, six_node = FALSE, mean_weight = FALSE, standard_dev = FALSE, normalisation = FALSE)$frequency
       msd <- motif_sd_minors(W)
       expect(all(msd[which(mc > 0)] == 0))
       expect(all(is.na(msd[which(mc == 0)])))
@@ -249,19 +250,19 @@ test_that("Testing for binary matrices", {
 test_that("Testing for matrices with equal weights", {
   W <- 2 * rbm(20,20)
   msd <- motif_sd(W)
-  mc <- mcount(W, FALSE, FALSE)$frequency
+  mc <- mcount(W, six_node = FALSE, mean_weight = FALSE, standard_dev = FALSE, normalisation = FALSE)$frequency
   expect(all(msd[which(mc > 0)] == 0))
   expect(all(is.na(msd[which(mc == 0)])))
 
   W <- 2 * rbm(5,5)
   msd <- motif_sd_minors(W)
-  mc <- mcount(W, FALSE, FALSE)$frequency
+  mc <- mcount(W, six_node = FALSE, mean_weight = FALSE, standard_dev = FALSE, normalisation = FALSE)$frequency
   expect(all(msd[which(mc > 0)] == 0))
   expect(all(is.na(msd[which(mc == 0)])))
 
   W <- 3.75 * rbm(20,20)
   msd <- motif_sd(W)
-  mc <- mcount(W, FALSE, FALSE)$frequency
+  mc <- mcount(W, six_node = FALSE, mean_weight = FALSE, standard_dev = FALSE, normalisation = FALSE)$frequency
   expect(all(msd[which(mc > 0)] == 0))
   expect(all(is.na(msd[which(mc == 0)])))
 })
@@ -383,7 +384,7 @@ test_that("Test: If mcount is zero, sd should be NA", {
   for (i in 1:10) {
     W <- rwm(10,10, 0.1)
     if(sum(W) != 0) {
-      mc <- mcount (W, six_node = FALSE, normalisation = FALSE)$frequency
+      mc <- mcount(W, six_node = FALSE, mean_weight = FALSE, standard_dev = FALSE, normalisation = FALSE)$frequency
       msd <- motif_sd(W)
       expect(all(is.na(msd[which(mc == 0)])))
     }

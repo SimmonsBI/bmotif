@@ -5,7 +5,7 @@ mean_weight_minors <- function(W, six_node = FALSE) {
   # mc is a vector of motif counts
   M <- W
   M[M > 0] <- 1
-  mc <- mcount(M, six_node = six_node, FALSE)$frequency
+  mc <- mcount(M, six_node = six_node, mean_weight = FALSE, standard_dev = FALSE, normalisation = FALSE)$frequency
 
   ###### compute all_mot_perm
   all_mot_perm <- gen_all_mot_perm()
@@ -228,7 +228,7 @@ motif_dimensions <- function(m, n) {
 test_that("Testing for binary matrices", {
   for (i in 1:10) {
     W <- rbm(20,20)
-    mc <- mcount (W, six_node = TRUE, normalisation = FALSE)$frequency
+    mc <- mcount (W, six_node = TRUE, mean_weight = FALSE, standard_dev = FALSE, normalisation = FALSE)$frequency
     mw <- mean_weight(W, six_node = TRUE, mc = mc)
     expect(all(mw[which(mc > 0)] == 1))
     expect(all(is.na(mw[which(mc == 0)])))
@@ -237,13 +237,13 @@ test_that("Testing for binary matrices", {
 
 test_that("Testing for matrices with equal weights", {
   W <- 3 * rbm(20,20)
-  mc <- mcount (W, six_node = TRUE, normalisation = FALSE)$frequency
+  mc <- mcount (W, six_node = TRUE, mean_weight = FALSE, standard_dev = FALSE, normalisation = FALSE)$frequency
   mw <- mean_weight(W, mc, TRUE)
   expect(all(mw[which(mc > 0)] == 3))
   expect(all(is.na(mw[which(mc == 0)])))
 
   W <- 0.75 * rbm(20,20)
-  mc <- mcount (W, six_node = TRUE, normalisation = FALSE)$frequency
+  mc <- mcount (W, six_node = TRUE, mean_weight = FALSE, standard_dev = FALSE, normalisation = FALSE)$frequency
   mw <- mean_weight(W, mc, TRUE)
   expect(all(mw[which(mc > 0)] == 0.75))
   expect(all(is.na(mw[which(mc == 0)])))
@@ -260,7 +260,7 @@ test_that("Testing matrix with single link", {
 test_that("Comparing with motif extraction algorithm", {
   for (i in 1:10) {
     W <- rwm(6,6)
-    mc <- mcount (W, six_node = TRUE, normalisation = FALSE)$frequency
+    mc <- mcount (W, six_node = TRUE, mean_weight = FALSE, standard_dev = FALSE, normalisation = FALSE)$frequency
     mw <- mean_weight(W, mc, TRUE)
     mw_minors <- mean_weight_minors(W, TRUE)
     expect_equal(mw, mw_minors)
@@ -269,7 +269,7 @@ test_that("Comparing with motif extraction algorithm", {
 
 test_that("Testing simple version of M4", {
   W <- matrix(c(1,2,3), nrow = 3)
-  mc <- mcount (W, six_node = TRUE, normalisation = FALSE)$frequency
+  mc <- mcount (W, six_node = TRUE, mean_weight = FALSE, standard_dev = FALSE, normalisation = FALSE)$frequency
   mw <- mean_weight(W, mc, TRUE)
   expect_equal(mw[1], 2)
   expect(is.na(mw[2]))
@@ -282,7 +282,7 @@ test_that("Test: If mcount is zero, mean should be NA", {
   for (i in 1:10) {
     W <- rwm(10,10, 0.1)
     if(sum(W) != 0) {
-      mc <- mcount (W, six_node = TRUE, normalisation = FALSE)$frequency
+      mc <- mcount (W, six_node = TRUE, mean_weight = FALSE, standard_dev = FALSE, normalisation = FALSE)$frequency
       mw <- mean_weight(W, mc, TRUE)
       expect_identical(which(is.na(mw)), which(mc == 0))
     }

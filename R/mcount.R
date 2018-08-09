@@ -1,4 +1,4 @@
-mcount <- function(M, six_node, normalisation, mean_weight = FALSE, standard_dev = FALSE){
+mcount <- function(M, six_node = FALSE, normalisation, mean_weight, standard_dev){
   #' Count bipartite motifs
   #'
   #' Counts occurrences of motifs in a bipartite network

@@ -1,4 +1,4 @@
-link_positions <- function(M, six_node = FALSE, weights = FALSE, normalisation = "none") {
+link_positions <- function(M, six_node = FALSE, weights, normalisation = "none") {
   #' Calculate link position vectors
   #'
   #' Counts the frequency with which links occur in different positions within motifs.

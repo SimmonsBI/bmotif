@@ -1,4 +1,4 @@
-node_positions <- function(M, six_node, level = "all", normalisation = "none"){
+node_positions <- function(M, six_node = FALSE, level = "all", normalisation = "none"){
   #' Calculate node position vectors
   #'
   #' Counts the frequency with which nodes occur in different positions within motifs.

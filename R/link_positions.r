@@ -54,7 +54,7 @@ link_positions <- function(M, six_node = FALSE, weights = FALSE, normalisation =
   if(all(apply(M, 1:2, function(x) x == 0))){stop("The matrix has no links (all elements are zero)")} # make sure M has some links
   if(class(six_node) != "logical"){stop("'six_node' must be of class 'logical' i.e. TRUE or FALSE")} # make sure six_node is logical i.e. TRUE or FALSE
   if(class(normalisation) != "character"){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
-  if(!normalisation %in% c("none","sum","size class", "position", "total")){stop("'normalisation' must equal 'none', 'total', sum', 'size class' or 'position'")}
+  if(!normalisation %in% c("none","sum","size class", "position")){stop("'normalisation' must equal 'none', sum', 'size class' or 'position'")}
   if(any(duplicated(rownames(M))) | any(duplicated(colnames(M)))){stop("Input matrix must not have duplicate row or column names")}
   if((normalisation == "sum" | normalisation == "size class") & weights == TRUE){warning("Please note that with 'sum' or 'size class' normalisation, the results won’t change if weights are taken into account. This is because when weights = TRUE, each row of the output is multiplied by a fixed factor (the link's weight) and therefore the relative proportions are the same as if weights were not considered. Consider setting normalisation to 'position' or 'none'.")}
 
@@ -422,7 +422,7 @@ link_positions <- function(M, six_node = FALSE, weights = FALSE, normalisation =
     }
   }
 
-  if (!(normalisation %in% c("none", "total", "sum", "size class", "position")) ) {
+  if (!(normalisation %in% c("none", "sum", "size class", "position")) ) {
     print("Warning: Non-valid normalisation method. Didn't normalise at all.")
     return(as.data.frame(lp))
   }

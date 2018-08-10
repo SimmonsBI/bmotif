@@ -31,7 +31,7 @@ motif_info <- function(m, node = TRUE, link = TRUE) {
     l <- list(17:18, 10)
   }
   if (m == 9) {
-    l <- list(19:21, 11:13)
+    l <- list(19:22, 11:13)
   }
   if (m == 10) {
     l <- list(23:25, 14:15)

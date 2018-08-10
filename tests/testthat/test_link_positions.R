@@ -1,33 +1,5 @@
 context("link_positions")
 
-# define a function
-block_matrix <- function(mlist) {
-  # input: list of matrices
-  # output: one big block matrix with those matrices on the diagonal
-
-  N <- sum(sapply(mlist, nrow)) # total number of rows
-  M <- sum(sapply(mlist, ncol)) # total number of columns
-
-  len <- length(mlist)
-  bm <- matrix(rep(0,N*M), nrow = N)
-
-  r <- 1
-  c <- 1
-
-  for (i in 1:len) {
-    A <- mlist[[i]]
-    n <- nrow(A)
-    m <- ncol(A)
-    bm[r: (r+n-1), c: (c+m-1)] <- A
-    r <- r+n
-    c <- c+m
-  }
-  bm
-}
-
-
-
-# -------- ACTUAL TESTING ------------
 test_that("Test counts for the motif 1", {
     lr01 <- link_positions(motifs[[1]], six_node = FALSE, weights = FALSE, normalisation = "none")
     expect_equal( as.vector(lr01[,1]), c(1))

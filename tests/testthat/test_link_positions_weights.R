@@ -1,11 +1,5 @@
 context("Weighted link positions")
 
-# Define some functions
-rbm <- function (m, n, one_prob = 0.5) {
-  matrix(sample(0:1, m * n, replace = TRUE, prob = c(1- one_prob,one_prob)), m, n)
-}
-
-# Tests
 test_that("Check binary matrices", {
   for (i in 1:10) {
     W <- rbm(20,20)

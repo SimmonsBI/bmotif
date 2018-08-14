@@ -50,21 +50,17 @@ weighted networks:
         bipartite network
       - **Weighted**: calculates the mean weight of motifs and the
         standard deviation of their weights
-2.  `node_positions`: counts the number of times each node in a network
-    occurs in each of the unique node positions within the motifs.
-      - **Unweighted**: counts the number of times each node in a
-        network occurs in each of the unique node positions within the
-        motifs.  
+2.  `node_positions`:
+      - **Unweighted**: counts the number of times each node occurs in
+        each of the unique node positions within the motifs.  
       - **Weighted**: calculates a range of weighted metrics, such as
         the mean link strength of a each node in each position or the
         contribution of each node to each motif’s total weight
 3.  `link_positions`:
-      - **Unweighted**: counts the number of times each link in a
-        network occurs in each of the unique link positions within the
-        motifs.
-      - **Weighted**: calculates the number of times each link in a
-        network occurs in each of the unique link positions within the
-        motifs, multiplied by each link’s strength
+      - **Unweighted**: counts the number of times each link occurs in
+        each of the unique link positions within the motifs.
+      - **Weighted**: calculates the number of times each link occurs in
+        each unique link position, multiplied by each link’s strength
 
 The motifs corresponding to each motif ID and the node positions
 corresponding to each motif node position ID can be found in **Simmons,

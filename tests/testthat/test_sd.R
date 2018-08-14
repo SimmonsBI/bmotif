@@ -102,7 +102,7 @@ test_that("Testing simple version of M4", {
 #   expect(all(msd[c(2,3,5)] == 0))
 #   expect(all(is.na(msd[c(4,6:17)])))
 # })
-test_that("M5_2",{
+test_that("Testing simple version of M5_2",{
   W <- matrix(c(5,7, 0, 2), nrow = 2)
   msd <- motif_sd_minors(W)
   expect_equal(msd[1], pop_sd(c(5,2,7)))

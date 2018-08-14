@@ -48,7 +48,7 @@ weighted networks:
 1.  `mcount`
       - **Unweighted**: counts how many times each motif occurs in a
         bipartite network
-      - **Weighted**: , calculates the mean weight of motifs and the
+      - **Weighted**: calculates the mean weight of motifs and the
         standard deviation of their weights
 2.  `node_positions`: counts the number of times each node in a network
     occurs in each of the unique node positions within the motifs.

@@ -266,7 +266,6 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   # ------------------ WEIGHTS = ALL --------------------------
 
   if (weights_method== "all") {
-    # sourceCpp('weights/cppcode/node_pos_all.cpp')
 
     out <- list()
     # mmw gives back the sum of the mean motif weights whenever species x is in position p
@@ -439,7 +438,6 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
 
   if (weights_method== "mean_motifweights" | weights_method== "total_motifweights") {
     # motifweights gives back the sum of the mean motif weights whenever species x is in position p
-    # sourceCpp('weights/cppcode/node_pos_motifweights.cpp')
 
     mmw <- matrix(NA, nrow = NZ + NP, ncol = 46)
     colnames(mmw) <- paste('np', 1:46, sep = '')
@@ -559,7 +557,6 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
 
   if (weights_method== "mean_nodeweights" | weights_method== "total_nodeweights") {
     # nodeweights gives back the sum of the mean of the nodeweights (i.e. the weights of the links that species x is in whenever in pos p)
-    ## sourceCpp('weights/cppcode/node_pos_nodeweights.cpp')
 
     mnw <- matrix(NA, nrow = NZ + NP, ncol = 46)
     colnames(mnw) <- paste('np', 1:46, sep = '')
@@ -670,7 +667,6 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   # ------------- weights_method= CONTRIBUTION -------------------
 
   if (weights_method== "contribution") {
-    # sourceCpp('weights/cppcode/node_pos_contribution.cpp')
 
     con <- matrix(NA, nrow = NZ + NP, ncol = 46)
     colnames(con) <- paste('np', 1:46, sep = '')
@@ -735,7 +731,6 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   # -------------- weights_method = STOUFFER --------------------------------------
 
   if (weights_method == "mora") {
-    # sourceCpp('weights/cppcode/node_pos_stouffer.cpp')
 
     py <- matrix(NA, nrow = NZ + NP, ncol = 46)
     colnames(py) <- paste('np', 1:46, sep = '')

@@ -36,6 +36,44 @@ install.packages("devtools") # install the devtools package
 devtools::install_github("SimmonsBI/bmotif") # install bmotif
 ```
 
+#### Possible bug when installing on Windows
+
+If installing on Windows, you might get an error saying something like
+‘Rtools is required to build R packages, but no compatible version was
+found’. Even after you install the latest version of Rtools you may get
+‘ERROR: compilation failed for package ’bmotif’. If you get these
+errors, try these steps:
+
+1.  Install the latest version of the ‘devtools’ package:
+
+<!-- end list -->
+
+``` r
+install.packages("devtools")
+```
+
+2.  Download the latest version of Rtools and follow the guidelines
+    [here](https://thecoatlessprofessor.com/programming/installing-rtools-for-compiled-code-via-rcpp/)
+    (archived version
+    [here](https://web.archive.org/web/20180814151143/https://thecoatlessprofessor.com/programming/installing-rtools-for-compiled-code-via-rcpp/))
+    to install. It describes how to set some PATH variables.
+    Essentially, when given the option to modify the Window PATH
+    variable during the Rtools install, choose to do this, then add the
+    following to the top of the PATH variables text field:
+
+<!-- end list -->
+
+  - `c:\Rtools\bin;`
+  - `c:\Rtools\mingw_32\bin;`
+
+<!-- end list -->
+
+3.  Now you can use `Sys.getenv('PATH')` in R to make sure the correct
+    PATH variables appear.
+4.  If the PATH variables are there, run `devtools::find_rtools()` which
+    should now return `TRUE`
+5.  Try installing bmotif again and it should work\!
+
 ## Use
 
 `bmotif` considers all 44 unique bipartite motifs up to six nodes.

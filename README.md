@@ -13,8 +13,8 @@ of times each node or link appears in each unique node or link position
 within motifs (a node or link’s structural role). `bmotif` supports
 weighted as well as unweighted networks: the mean weight of motifs can
 be calculated, as well as the standard deviation of motifs mean weights;
-weighted versions of link position counts are also supported. As well as
-R, core functionality is also available in
+weighted versions of node and link position counts are also supported
+(see below). As well as R, core functionality is also available in
 [MATLAB](https://github.com/SimmonsBI/bmotif-matlab) and
 [Python](https://github.com/SimmonsBI/bmotif-python). `bmotif` was
 originally developed to analyse bipartite species interaction networks
@@ -42,14 +42,29 @@ devtools::install_github("SimmonsBI/bmotif") # install bmotif
 Within these motifs there are 148 unique node positions and 106 unique
 link positions.
 
-`bmotif` has three functions:  
-1\. `mcount`: counts how many times each motif occurs in a bipartite
-network, and can also calculate the mean weight of motifs and the
-standard deviation of their weights.  
-2\. `node_positions`: counts the number of times each node in a network
-occurs in each of the unique node positions within the motifs.  
-3\. `link_positions`: counts the number of times each link in a network
-occurs in each of the unique link positions within the motifs.
+`bmotif` has three functions, with can all be used with binary or
+weighted networks:
+
+1.  `mcount`
+      - **Unweighted**: counts how many times each motif occurs in a
+        bipartite network
+      - **Weighted**: , calculates the mean weight of motifs and the
+        standard deviation of their weights
+2.  `node_positions`: counts the number of times each node in a network
+    occurs in each of the unique node positions within the motifs.
+      - **Unweighted**: counts the number of times each node in a
+        network occurs in each of the unique node positions within the
+        motifs.  
+      - **Weighted**: calculates a range of weighted metrics, such as
+        the mean link strength of a each node in each position or the
+        contribution of each node to each motif’s total weight
+3.  `link_positions`:
+      - **Unweighted**: counts the number of times each link in a
+        network occurs in each of the unique link positions within the
+        motifs.
+      - **Weighted**: calculates the number of times each link in a
+        network occurs in each of the unique link positions within the
+        motifs, multiplied by each link’s strength
 
 The motifs corresponding to each motif ID and the node positions
 corresponding to each motif node position ID can be found in **Simmons,

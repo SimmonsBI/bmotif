@@ -60,7 +60,6 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   if(class(normalisation) != "character"){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
   if(!normalisation %in% c("none","sum","size class")){stop("'normalisation' must equal 'none', 'sum' or 'size class'")} # make sure normalisation equals 'none', 'sum' or 'size class'
   if(any(duplicated(rownames(M))) | any(duplicated(colnames(M)))){stop("Input matrix must not have duplicate row or column names")}
-
   if(!weights_method %in% c('none', 'mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all')) {
     stop("weights_method must be one of 'none', 'mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all'.")
   }
@@ -69,18 +68,20 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   }
 
   # Give warnings or errors if two arguments can't be used together
+  if(weights_method != "none" & six_node == TRUE){
+    stop("Sorry, weighted methods are not available for six node motifs. Set six_node = FALSE if you want to use weighted position counts.")
+  }
 
-  if(weights_combine == "mean" & normalisation != "none") {
-    warning("Taking the mean is already a form of normalisation. Your normalisation method will be ignored.")
+  if(weights_method == "none" & weights_combine != "none"){
+    stop("Cannot set a weights_combine method when weights_method = 'none'.\nIf you wish to return binary position counts, set weights_combine to 'none'.\nIf you want weighted position counts, set weights_method to one of 'mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all'.")
   }
-  if (weights_method == "none" & weights_combine != "none") {
-    warning("When weights_method= 'none', can't consinder a combining method. It will be ignored.")
+
+  if(weights_method != "none" & weights_combine == "none"){
+    stop("Need to set a weights_combine method. Cannot have weights_method != 'none' and weights_combine = 'none'. Set weights_combine to 'sum' or 'mean' if you want to use weighted position counts.")
   }
-  if (weights_method != "none" & weights_combine == "none") {
-    stop("If weights_method != 'none', please put in a weights_combine argument, which is not 'none', also.")
-  }
-  if (weights_method != "none" & six_node == TRUE) {
-    stop("Sorry, weighted methods are only available for five node motifs.")
+
+  if(weights_combine == "mean" & normalisation != "none"){
+    stop("Taking the mean is already a form of normalisation. Set normalisation = 'none' if you want to use weights_combine = 'mean'")
   }
 
   # clean matrix

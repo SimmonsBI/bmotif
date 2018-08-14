@@ -36,7 +36,7 @@ install.packages("devtools") # install the devtools package
 devtools::install_github("SimmonsBI/bmotif") # install bmotif
 ```
 
-#### Possible bug when installing on Windows
+### Common issue when installing on Windows
 
 If installing on Windows, you might get an error saying something like
 ‘Rtools is required to build R packages, but no compatible version was
@@ -58,8 +58,8 @@ install.packages("devtools")
     [here](https://web.archive.org/web/20180814151143/https://thecoatlessprofessor.com/programming/installing-rtools-for-compiled-code-via-rcpp/))
     to install. It describes how to set some PATH variables.
     Essentially, when given the option to modify the Window PATH
-    variable during the Rtools install, choose to do this, then add the
-    following to the top of the PATH variables text field:
+    variables during the Rtools installation, choose to do this, then
+    add the following to the top of the PATH variables text field:
 
 <!-- end list -->
 

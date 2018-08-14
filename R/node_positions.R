@@ -558,7 +558,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
 
   if (weights_method== "mean_nodeweights" | weights_method== "total_nodeweights") {
     # nodeweights gives back the sum of the mean of the nodeweights (i.e. the weights of the links that species x is in whenever in pos p)
-    # sourceCpp('weights/cppcode/node_pos_nodeweights.cpp')
+    ## sourceCpp('weights/cppcode/node_pos_nodeweights.cpp')
 
     mnw <- matrix(NA, nrow = NZ + NP, ncol = 46)
     colnames(mnw) <- paste('np', 1:46, sep = '')

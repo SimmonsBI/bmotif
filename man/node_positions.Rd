@@ -4,8 +4,8 @@
 \alias{node_positions}
 \title{Calculate node position vectors}
 \usage{
-node_positions(M, six_node = FALSE, level = "all",
-  normalisation = "none")
+node_positions(M, six_node = FALSE, level = "all", weights_method,
+  weights_combine = "none", normalisation = "none")
 }
 \arguments{
 \item{M}{A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
@@ -17,6 +17,10 @@ matrix.}
 \item{six_node}{Logical; should six node motifs be counted? Defaults to FALSE.}
 
 \item{level}{Which node level should positions be calculated for: "rows", "columns" or "all"?  Defaults to "all".}
+
+\item{weights_method}{does a thing}
+
+\item{weights_combine}{does another thing}
 
 \item{normalisation}{Which normalisation should be used: "none", "sum" or "size class"?  Defaults to "none".}
 }
@@ -56,7 +60,7 @@ set.seed(123)
 row <- 10
 col <- 10
 m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
-node_positions(M = m, six_node = TRUE, level = "all", normalisation = "none")
+node_positions(M = m, six_node = TRUE, weights_method = "none", weights_combine = "none")
 }
 \references{
 Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ roles in food webs show fidelity across a highly variable oak forest. Ecography, 38(2):130–139.

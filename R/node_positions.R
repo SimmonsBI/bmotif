@@ -1,4 +1,4 @@
-node_positions <- function(M, six_node = FALSE, level = "all", normalisation = "none"){
+node_positions <- function(M, six_node = FALSE, level = "all", weights_method, weights_combine = "none", normalisation = "none"){
   #' Calculate node position vectors
   #'
   #' Counts the frequency with which nodes occur in different positions within motifs.
@@ -9,6 +9,8 @@ node_positions <- function(M, six_node = FALSE, level = "all", normalisation = "
   #' matrix.
   #' @param six_node Logical; should six node motifs be counted? Defaults to FALSE.
   #' @param  level Which node level should positions be calculated for: "rows", "columns" or "all"?  Defaults to "all".
+  #' @param weights_method does a thing
+  #' @param weights_combine does another thing
   #' @param normalisation Which normalisation should be used: "none", "sum" or "size class"?  Defaults to "none".
   #' @details Counts the number of times each node in a network occurs in each of the 46 (if \code{six_node} = FALSE) or 148 (if \code{six_node} = TRUE) unique positions within motifs (to quantify a node's structural role).
   #' If \code{six_node} = FALSE, node positions in all motifs containing between 2 and 5 nodes are counted. If \code{six_node} = TRUE, node positions in all motifs containing between 2 and 6 nodes are counted. Analyses where \code{six_node} = FALSE are substantially faster
@@ -46,7 +48,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", normalisation = "
   #' row <- 10
   #' col <- 10
   #' m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
-  #' node_positions(M = m, six_node = TRUE, level = "all", normalisation = "none")
+  #' node_positions(M = m, six_node = TRUE, weights_method = "none", weights_combine = "none")
 
   # check inputs
   if(class(M) != "matrix"){stop("'M' must be an object of class 'matrix'")} # make sure M is a matrix
@@ -59,8 +61,31 @@ node_positions <- function(M, six_node = FALSE, level = "all", normalisation = "
   if(!normalisation %in% c("none","sum","size class")){stop("'normalisation' must equal 'none', 'sum' or 'size class'")} # make sure normalisation equals 'none', 'sum' or 'size class'
   if(any(duplicated(rownames(M))) | any(duplicated(colnames(M)))){stop("Input matrix must not have duplicate row or column names")}
 
+  if(!weights_method %in% c('none', 'mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all')) {
+    stop("weights_method must be one of 'none', 'mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all'.")
+  }
+  if(!weights_combine %in% c('none', 'mean', 'sum')) {
+    stop("weights_combine must be one of 'none', 'mean', 'sum'.")
+  }
+
+  # Give warnings or errors if two arguments can't be used together
+
+  if(weights_combine == "mean" & normalisation != "none") {
+    warning("Taking the mean is already a form of normalisation. Your normalisation method will be ignored.")
+  }
+  if (weights_method == "none" & weights_combine != "none") {
+    warning("When weights_method= 'none', can't consinder a combining method. It will be ignored.")
+  }
+  if (weights_method != "none" & weights_combine == "none") {
+    stop("If weights_method != 'none', please put in a weights_combine argument, which is not 'none', also.")
+  }
+  if (weights_method != "none" & six_node == TRUE) {
+    stop("Sorry, weighted methods are only available for five node motifs.")
+  }
+
   # clean matrix
-  M[M > 0] <- 1 # ensure M is binary
+  W <- M # save copy of weighted matrix
+  M[M > 0] <- 1 # now M is the binarised version
   if(is.null(rownames(M))){ # if M has no row names, give it some
     rownames(M) <- paste0("r", 1:nrow(M))
   }
@@ -71,130 +96,713 @@ node_positions <- function(M, six_node = FALSE, level = "all", normalisation = "
   cn <- colnames(M) # record column names
   dimnames(M) <- NULL # strip row and column names
 
-  # calculate inputs
-  Z <- nrow(M) # number of row species
-  P <- ncol(M) # number of column species
 
-  jZ <- matrix(rep(1, Z)) # Z x 1 vector of ones
-  jP <- matrix(rep(1, P)) # P x 1 vector of ones
-  J <- matrix(rep(1, Z * P), nrow = Z, ncol = P) # Z x P matrix of ones
-  JP <- matrix(rep(1, P * P), nrow = P, ncol = P) # P x P matrix of ones
-  JZ <- matrix(rep(1, Z * Z), nrow = Z, ncol = Z) # Z x Z matrix of ones
+  # ------------ BINARY COUNT ---------------------------------------
 
-  if(six_node == TRUE){
-    JP3 <- array(rep(1, P * P * P), c(P, P, P)) # P x P x P array of ones
-    JZ3 <- array(rep(1, Z * Z * Z), c(Z, Z, Z)) # Z x Z x Z array of ones
-    KP3 <- JP3 # P x P x P matrix, 0 if two indices are equal, 1 otherwise
-    for (i in 1 : P){
-      for (j in 1 : P){
-        KP3[i,j,j] <- 0
-        KP3[j,i,j] <- 0
-        KP3[j,j,i] <- 0
+  # ACTUAL COUNT, NEEDED FOR weights_combine = MEAN OR weights_method= NONE
+
+  if (weights_method== "none" | weights_method== "all" | weights_method== "contribution" | weights_combine == "mean") {
+    # calculate inputs
+    Z <- nrow(M) # number of row species
+    P <- ncol(M) # number of column species
+
+    jZ <- matrix(rep(1, Z)) # Z x 1 vector of ones
+    jP <- matrix(rep(1, P)) # P x 1 vector of ones
+    J <- matrix(rep(1, Z * P), nrow = Z, ncol = P) # Z x P matrix of ones
+    JP <- matrix(rep(1, P * P), nrow = P, ncol = P) # P x P matrix of ones
+    JZ <- matrix(rep(1, Z * Z), nrow = Z, ncol = Z) # Z x Z matrix of ones
+
+    if(six_node == TRUE){
+      JP3 <- array(rep(1, P * P * P), c(P, P, P)) # P x P x P array of ones
+      JZ3 <- array(rep(1, Z * Z * Z), c(Z, Z, Z)) # Z x Z x Z array of ones
+      KP3 <- JP3 # P x P x P matrix, 0 if two indices are equal, 1 otherwise
+      for (i in 1 : P){
+        for (j in 1 : P){
+          KP3[i,j,j] <- 0
+          KP3[j,i,j] <- 0
+          KP3[j,j,i] <- 0
+        }
+      }
+      KZ3 <- JZ3 # Z x Z x Z matrix, 0 if two indices are equal, 1 otherwise
+      for (i in 1 : Z){
+        for (j in 1 : Z){
+          KZ3[i,j,j] <- 0
+          KZ3[j,i,j] <- 0
+          KZ3[j,j,i] <- 0
+        }
       }
     }
-    KZ3 <- JZ3 # Z x Z x Z matrix, 0 if two indices are equal, 1 otherwise
-    for (i in 1 : Z){
-      for (j in 1 : Z){
-        KZ3[i,j,j] <- 0
-        KZ3[j,i,j] <- 0
-        KZ3[j,j,i] <- 0
+
+    MT <- t(M) # transpose of M
+    N <- J - M # complement of M
+    NT <- t(N) # transpose of the complement of M
+
+    dZ <- M %*% jP # degrees of the row species
+    dP <- MT %*% jZ # degrees of the column species
+
+    Z <- M %*% MT
+    Y <- M %*% NT
+    X <- N %*% MT
+
+    P <- MT %*% M
+    Q <- MT %*% N
+    R <- NT %*% M
+
+    if(six_node == TRUE){
+      AZ <- maketensor(M, M)
+      BZ <- maketensor(M, N)
+      CZ <- maketensor(N, M)
+      DZ <- maketensor(N, N)
+
+      AP <- maketensor(MT, MT)
+      BP <- maketensor(MT, NT)
+      CP <- maketensor(NT, MT)
+      DP <- maketensor(NT, NT)
+
+      MTA <- multtensor(MT, AZ)
+      MTB <- multtensor(MT, BZ)
+      MTC <- multtensor(MT, CZ)
+      MTD <- multtensor(MT, DZ)
+
+      MA <- multtensor(M, AP)
+      MB <- multtensor(M, BP)
+      MC <- multtensor(M, CP)
+      MD <- multtensor(M, DP)
+
+      NTA <- multtensor(NT, AZ)
+      NTB <- multtensor(NT, BZ)
+      NTC <- multtensor(NT, CZ)
+
+      Na <- multtensor(N, AP) # because NA already means something
+      NB <- multtensor(N, BP)
+      NC <- multtensor(N, CP)
+    }
+
+    # create results containers
+    if(six_node == FALSE){
+      pos_row <- matrix(0, ncol = 46, nrow = nrow(M), dimnames = list(rn,paste0("np",1:46)))
+      pos_col <- matrix(0, ncol = 46, nrow = ncol(M), dimnames = list(cn,paste0("np",1:46)))
+    } else {
+      pos_row <- matrix(0, ncol = 148, nrow = nrow(M), dimnames = list(rn,paste0("np",1:148)))
+      pos_col <- matrix(0, ncol = 148, nrow = ncol(M), dimnames = list(cn,paste0("np",1:148)))
+    }
+
+    # count positions
+    if(six_node == FALSE){
+      for(i in 1:46){
+        rc <- rowcolumn(i)
+        f <- countposition(M = M, p = i, jZ = jZ, jP = jP, JP = JP, JZ = JZ, MT = MT, N = N, NT = NT, dZ = dZ, dP = dP, Z = Z, Y = Y, X = X, P = P, Q = Q, R = R)
+        if(rc == "row"){
+          pos_row[,i] <- f
+        } else {
+          pos_col[,i] <- f
+        }
       }
+    } else {
+      for(i in 1:148){
+        rc <- rowcolumn(i)
+        f <- countposition(M = M, p = i, jZ = jZ, jP = jP, JP = JP, JZ = JZ, JP3 = JP3, JZ3 = JZ3, KP3 = KP3, KZ3 = KZ3, MT = MT, N = N, NT = NT, dZ = dZ, dP = dP, Z = Z, Y = Y, X = X, P = P, Q = Q, R = R, MTA = MTA, MTB = MTB, MTC = MTC, MTD = MTD, MA = MA, MB = MB, MC = MC, MD = MD, NTA = NTA, NTB = NTB, NTC = NTC, Na = Na, NB = NB, NC = NC)
+        if(rc == "row"){
+          pos_row[,i] <- f
+        } else {
+          pos_col[,i] <- f
+        }
+      }
+    }
+
+  } # end of calculation of binary count
+
+
+
+  # -------------------------- weights_method------------------------------
+
+  # ------------------------- SOME AUXILIARY STUFF
+
+  NZ <- nrow(W)
+  NP <- ncol(W)
+
+  # save number of edges and vertices for each motif
+  motif_n_edges <- c(1,2,2,3,3,4,3,4,4,4,5,6,4,4,5,6,4)
+  motif_n_vertices <- c(2,3,3,4,4,4,4,rep(5, 10))
+  # save degree of each position
+  pos_degrees <- c(c(1,1), c(1,2,2,1), c(3,1,1,2,1,2,2,2,1,3), c(4,1,1,3,1,2,2,1,2,2,3,1,2), c(3,2,1,2,1,3,1,2,2,1,2,2,3,2,3,1,4))
+
+  # create a matrix with number of edges for each motif
+  nedges <- matrix(NA, NZ + NP, 46)
+  for (i in 1:17) {
+    positions <- motif_info(i, node = TRUE, link = FALSE)
+    nedges[,positions] <- motif_n_edges[i]
+  }
+
+  degrees <- matrix(NA, nrow(W) + ncol(W), 46)
+  for (i in 1:46) {
+    degrees[,i] <- pos_degrees[i]
+  }
+
+  # ------------------- WEIGHTS = "NONE" ------------------------------------
+
+  if (weights_method== "none") {
+    # normalisation
+    if(normalisation != "none"){
+      pos_row <- normalise_positions(pc = pos_row, type = normalisation)
+      pos_col <- normalise_positions(pc = pos_col, type = normalisation)
+    }
+
+    # output
+    if(level == "all"){
+      out <- rbind(pos_row, pos_col)
+      out <- as.data.frame(out)
+      return(out)
+    } else if(level == "rows"){
+      pos_row <- as.data.frame(pos_row)
+      return(pos_row)
+    } else if(level == "columns"){
+      pos_col <- as.data.frame(pos_col)
+      return(pos_col)
     }
   }
 
-  MT <- t(M) # transpose of M
-  N <- J - M # complement of M
-  NT <- t(N) # transpose of the complement of M
+  # ------------------ WEIGHTS = ALL --------------------------
 
-  dZ <- M %*% jP # degrees of the row species
-  dP <- MT %*% jZ # degrees of the column species
+  if (weights_method== "all") {
+    # sourceCpp('weights/cppcode/node_pos_all.cpp')
 
-  Z <- M %*% MT
-  Y <- M %*% NT
-  X <- N %*% MT
+    out <- list()
+    # mmw gives back the sum of the mean motif weights whenever species x is in position p
+    mmw <- matrix(NA, nrow = NZ + NP, ncol = 46) # mean motif weights
+    colnames(mmw) <- paste('np', 1:46, sep = '')
+    rownames(mmw) <- c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
+    # mnw gives back the sum of the mean weights that species x is in when in pos p (mean node weights)
+    mnw <- matrix(NA, nrow = NZ + NP, ncol = 46) # mean node weights
+    colnames(mnw) <- paste('np', 1:46, sep = '')
+    rownames(mnw) <- c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
+    # con gives back the sum of contributions of species x to the motif weights
+    con <- matrix(NA, nrow = NZ + NP, ncol = 46) # mean contribution
+    colnames(con) <- paste('np', 1:46, sep = '')
+    rownames(con) <- c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
+    # py gives back the summed pymfinder measure
+    py <- matrix(NA, nrow = NZ + NP, ncol = 46) # pymfinder contribution
+    colnames(py) <- paste('np', 1:46, sep = '')
+    rownames(py) <- c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
 
-  P <- MT %*% M
-  Q <- MT %*% N
-  R <- NT %*% M
+    # I also need the node_position count
+    np_count <- rbind(pos_row, pos_col)
 
-  if(six_node == TRUE){
-    AZ <- maketensor(M, M)
-    BZ <- maketensor(M, N)
-    CZ <- maketensor(N, M)
-    DZ <- maketensor(N, N)
+    # position 1 and 2
+    # motif weights
+    mmw[1:NZ,1] <- 0
+    mmw[(NZ + 1):(NZ + NP),1] <- apply(W, 2, sum)
+    mmw[1:NZ,2] <- apply(W, 1, sum)
+    mmw[(NZ + 1):(NZ + NP), 2] <- 0
 
-    AP <- maketensor(MT, MT)
-    BP <- maketensor(MT, NT)
-    CP <- maketensor(NT, MT)
-    DP <- maketensor(NT, NT)
+    # node weights (the same)
+    mnw[1:NZ,1] <- 0
+    mnw[(NZ + 1):(NZ + NP),1] <- apply(W, 2, sum)
+    mnw[1:NZ,2] <- apply(W, 1, sum)
+    mnw[(NZ + 1):(NZ + NP), 2] <- 0
 
-    MTA <- multtensor(MT, AZ)
-    MTB <- multtensor(MT, BZ)
-    MTC <- multtensor(MT, CZ)
-    MTD <- multtensor(MT, DZ)
+    # contribution (always 1, so it is just the count)
+    con[,1:2] <- np_count[,1:2]
 
-    MA <- multtensor(M, AP)
-    MB <- multtensor(M, BP)
-    MC <- multtensor(M, CP)
-    MD <- multtensor(M, DP)
+    # pymfinder measure
+    py[1:NZ, 1] <- 0
+    py[(NZ + 1):(NZ + NP),1] <- 0.5 * apply(W, 2, sum)
+    py[1:NZ, 2] <- 0.5 * apply(W, 1, sum)
+    py[(NZ + 1):(NZ + NP),2] <- 0
 
-    NTA <- multtensor(NT, AZ)
-    NTB <- multtensor(NT, BZ)
-    NTC <- multtensor(NT, CZ)
+    # for pos 3-46, calculation is done in C++
+    pos <- 3
+    for (i in 2:17) {
+      funname <- paste('np_m', i, '_c', sep ='')
+      lst <- get(funname)(NZ, NP, W)
+      len <- length(lst)
+      for (j in 1:len) {
+        rc <- rowcolumn(pos)
+        # print(paste('top of loop j', j, 'pos ', pos))
+        # The 1st, 5th, 9th etc entry of the list is for mean weights
+        # The 2nd, 6th, 8th etc. entry of the list is for node weights
+        # the 3rd, 7th etc entry of the list is for contribution
+        # the 4th, 8th entry of the list is for pymfinder measure
+        # after this, we move on to a new position
 
-    Na <- multtensor(N, AP) # because NA already means something
-    NB <- multtensor(N, BP)
-    NC <- multtensor(N, CP)
-  }
+        if ((j %% 4 == 1) & (rc == "row")) {
+          # print(paste('j ', j, 'pos', pos, 'rc', rc, 'list '))
+          # print(lst[[j]])
+          mmw[1:NZ,pos] <- lst[[j]]
+          mmw[(NZ + 1):(NZ + NP),pos] <- 0
+        } else if ((j %% 4 == 1) & (rc == "column")) {
+          # print(paste('j ', j, 'pos', pos, 'rc', rc, 'list '))
+          # print(lst[[j]])
+          mmw[1:NZ,pos] <- 0
+          mmw[(NZ + 1):(NZ + NP),pos] <- lst[[j]]
+        } else if ((j %% 4 == 2) & (rc == "row")) {
+          mnw[1:NZ,pos] <- lst[[j]]
+          mnw[(NZ + 1):(NZ + NP),pos] <- 0
+        } else if ((j %% 4 == 2) & (rc == "column")) {
+          mnw[1:NZ,pos] <- 0
+          mnw[(NZ + 1):(NZ + NP),pos] <- lst[[j]]
+        } else if ((j %% 4 == 3) & (rc == "row")) {
+          con[1:NZ,pos] <- lst[[j]]
+          con[(NZ + 1):(NZ + NP),pos] <- 0
+        } else if ((j %% 4 == 3) & (rc == "column")) {
+          con[1:NZ,pos] <- 0
+          con[(NZ + 1):(NZ + NP),pos] <- lst[[j]]
+        }  else if ((j %% 4 == 0) & (rc == "row")) {
+          py[1:NZ,pos] <- lst[[j]]
+          py[(NZ + 1):(NZ + NP),pos] <- 0
+          pos <- pos + 1
+        } else if ((j %% 4 == 0) & (rc == "column")) {
+          py[1:NZ,pos] <- 0
+          py[(NZ + 1):(NZ + NP),pos] <- lst[[j]]
+          pos <- pos + 1
+        }
 
-  # create results containers
-  if(six_node == FALSE){
-    pos_row <- matrix(0, ncol = 46, nrow = nrow(M), dimnames = list(rn,paste0("np",1:46)))
-    pos_col <- matrix(0, ncol = 46, nrow = ncol(M), dimnames = list(cn,paste0("np",1:46)))
-  } else {
-    pos_row <- matrix(0, ncol = 148, nrow = nrow(M), dimnames = list(rn,paste0("np",1:148)))
-    pos_col <- matrix(0, ncol = 148, nrow = ncol(M), dimnames = list(cn,paste0("np",1:148)))
-  }
+      } # close for j in 1:len
+    } # close for i in 2:17
 
-  # count positions
-  if(six_node == FALSE){
-    for(i in 1:46){
-      rc <- rowcolumn(i)
-      f <- countposition(M = M, p = i, jZ = jZ, jP = jP, JP = JP, JZ = JZ, MT = MT, N = N, NT = NT, dZ = dZ, dP = dP, Z = Z, Y = Y, X = X, P = P, Q = Q, R = R)
-      if(rc == "row"){
-        pos_row[,i] <- f
-      } else {
-        pos_col[,i] <- f
+    # now compute total motif weight and total node weight
+    # total motif weight: need to multiply each position-column by the number of edges in the motif
+    tmw <- mmw * nedges
+    # total node weight: need to multiply each position-column by the degree
+    tnw <- mnw * degrees
+
+    # so far, we have the sums, now we act according to the weights_combine argument
+    if (weights_combine == "mean") {
+      # divide by position count
+      mmw <- mmw / np_count
+      mnw <- mnw / np_count
+      tmw <- tmw / np_count
+      tnw <- tnw / np_count
+      con <- con / np_count
+      py <- py / np_count
+
+      # replace NaNs by NAs
+      mmw <- replace(mmw, which(is.nan(mmw)), NA)
+      mnw <- replace(mnw, which(is.nan(mnw)), NA)
+      tmw <- replace(tmw, which(is.nan(tmw)), NA)
+      tnw <- replace(tnw, which(is.nan(tnw)), NA)
+      con <- replace(con, which(is.nan(con)), NA)
+      py <- replace(py, which(is.na(py)), NA)
+
+      # no need to normalise here
+      # now set output list
+      out[[1]] <- mmw
+      out[[2]] <- tmw
+      out[[3]] <- mnw
+      out[[4]] <- tnw
+      out[[5]] <- con
+      out[[6]] <- py
+      names(out) <- c("mean_motifweights", "total_motifweights", "mean_nodeweights", "total_nodeweights", "contribution", "mora")
+
+      # depending on level, delete unused rows
+      if(level == "rows"){
+        out <- lapply(out, function(x) {x[1:NZ, ]})
+      } else if(level == "columns"){
+        out <- lapply(out, function(x) {x[(NZ + 1):(NZ + NP), ]})
+      }
+      return(out)
+    } # end weights_combine = "mean"
+
+    if (weights_combine == "sum") {
+      # mw, nw and con already contain the correct results
+      # normalisation is possible now
+      if(normalisation != "none"){
+        mmw <- normalise_positions(pc = mmw, type = normalisation)
+        tmw <- normalise_positions(pc = tmw, type = normalisation)
+        mnw <- normalise_positions(pc = mnw, type = normalisation)
+        tnw <- normalise_positions(pc = tnw, type = normalisation)
+        con <- normalise_positions(pc = con, type = normalisation)
+        py <- normalise_positions(pc = py, type = normalisation)
+      }
+
+      # now set output list
+      out[[1]] <- mmw
+      out[[2]] <- tmw
+      out[[3]] <- mnw
+      out[[4]] <- tnw
+      out[[5]] <- con
+      out[[6]] <- py
+      names(out) <- c("mean_motifweights", "total_motifweights", "mean_nodeweights", "total_nodeweights", "contribution", "mora")
+
+      # depending on level, delete unused rows
+      if(level == "rows"){
+        out <- lapply(out, function(x) {x[1:NZ, ]})
+      } else if(level == "columns"){
+        out <- lapply(out, function(x) {x[(NZ + 1):(NZ + NP), ]})
+      }
+      return(out)
+    } # end weights_combine = "sum"
+  } # end weights_method= "all"
+
+  # --------------- weights_method = MOTIFWEIGHTS -----------------------------
+
+  if (weights_method== "mean_motifweights" | weights_method== "total_motifweights") {
+    # motifweights gives back the sum of the mean motif weights whenever species x is in position p
+    # sourceCpp('weights/cppcode/node_pos_motifweights.cpp')
+
+    mmw <- matrix(NA, nrow = NZ + NP, ncol = 46)
+    colnames(mmw) <- paste('np', 1:46, sep = '')
+    rownames(mmw) <- c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
+
+    # position 1
+
+    mmw[1:NZ,1] <- 0
+    mmw[(NZ + 1):(NZ + NP),1] <- apply(W, 2, sum)
+    mmw[1:NZ,2] <- apply(W, 1, sum)
+    mmw[(NZ + 1):(NZ + NP), 2] <- 0
+
+    # for pos 3-46, calculation is done in C++
+    pos <- 3
+    for (i in 2:17) {
+      funname <- paste('np_m', i, '_mw', sep ='')
+      lst <- get(funname)(NZ, NP, W)
+      len <- length(lst)
+      for (j in 1:len) {
+        if (rowcolumn(pos) == "row") {
+          mmw[1:NZ,pos] <- lst[[j]]
+          mmw[(NZ + 1):(NZ + NP),pos] <- 0
+        } else {
+          mmw[1:NZ,pos] <- 0
+          mmw[(NZ + 1):(NZ + NP),pos] <- lst[[j]]
+        }
+        pos <- pos + 1
       }
     }
-  } else {
-    for(i in 1:148){
-      rc <- rowcolumn(i)
-      f <- countposition(M = M, p = i, jZ = jZ, jP = jP, JP = JP, JZ = JZ, JP3 = JP3, JZ3 = JZ3, KP3 = KP3, KZ3 = KZ3, MT = MT, N = N, NT = NT, dZ = dZ, dP = dP, Z = Z, Y = Y, X = X, P = P, Q = Q, R = R, MTA = MTA, MTB = MTB, MTC = MTC, MTD = MTD, MA = MA, MB = MB, MC = MC, MD = MD, NTA = NTA, NTB = NTB, NTC = NTC, Na = Na, NB = NB, NC = NC)
-      if(rc == "row"){
-        pos_row[,i] <- f
-      } else {
-        pos_col[,i] <- f
+
+    # at this point we have all information from the C++ file we need, now adjust
+
+    if (weights_method== "mean_motifweights") {
+      if (weights_combine == "mean") {
+        # I also need the node_position count
+        np_count <- rbind(pos_row, pos_col)
+
+        mmw <- mmw / np_count
+        mmw <- replace(mmw, which(is.nan(mmw)), NA)
+
+        # no normalisation necessary
+
+        # depending on level, delete unused rows
+        if (level == "all") {
+          return(mmw)
+        } else if(level == "rows"){
+          return(mmw[1:NZ,])
+        } else if(level == "columns"){
+          return(mmw[(NZ + 1):(NZ + NP),])
+        }
+      } # end weights_combine == "mean"
+
+      if (weights_combine == "sum") {
+
+        # can have normalisation
+        if(normalisation != "none"){
+          mmw <- normalise_positions(pc = mmw, type = normalisation)
+        }
+
+        # depending on level, delete unused rows
+        if (level == "all") {
+          return(mmw)
+        } else if(level == "rows"){
+          return(mmw[1:NZ,])
+        } else if(level == "columns"){
+          return(mmw[(NZ + 1):(NZ + NP),])
+        }
+      } # end weights_combine == "sum"
+    } # end weights_method= "mean_motifweights"
+
+
+    if (weights_method== "total_motifweights") {
+
+      tmw <- mmw * nedges # multiply mean motif weights by number of edges
+
+      if (weights_combine == "mean") {
+        # I also need the node_position count
+        np_count <- rbind(pos_row, pos_col)
+
+        tmw <- tmw / np_count
+        tmw <- replace(tmw, which(is.nan(tmw)), NA)
+
+        # no normalisation necessary
+
+        # depending on level, delete unused rows
+        if (level == "all") {
+          return(tmw)
+        } else if(level == "rows"){
+          return(tmw[1:NZ,])
+        } else if(level == "columns"){
+          return(tmw[(NZ + 1):(NZ + NP),])
+        }
+      } # end weights_combine == "mean"
+
+      if (weights_combine == "sum") {
+
+        # can have normalisation
+        if(normalisation != "none"){
+          tmw <- normalise_positions(pc = tmw, type = normalisation)
+        }
+
+        # depending on level, delete unused rows
+        if (level == "all") {
+          return(tmw)
+        } else if(level == "rows"){
+          return(tmw[1:NZ,])
+        } else if(level == "columns"){
+          return(tmw[(NZ + 1):(NZ + NP),])
+        }
+      } # end weights_combine == "sum"
+    } # end weights_method= "total_motifweights"
+
+
+  } # end weights_method= "mean_motifweights" or "total_motifweights"
+
+  # -------- weights_method= NODEWEIGHTS ------------------------
+
+  if (weights_method== "mean_nodeweights" | weights_method== "total_nodeweights") {
+    # nodeweights gives back the sum of the mean of the nodeweights (i.e. the weights of the links that species x is in whenever in pos p)
+    # sourceCpp('weights/cppcode/node_pos_nodeweights.cpp')
+
+    mnw <- matrix(NA, nrow = NZ + NP, ncol = 46)
+    colnames(mnw) <- paste('np', 1:46, sep = '')
+    rownames(mnw) <- c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
+
+    # position 1
+    mnw[1:NZ,1] <- 0
+    mnw[(NZ + 1):(NZ + NP),1] <- apply(W, 2, sum)
+    mnw[1:NZ,2] <- apply(W, 1, sum)
+    mnw[(NZ + 1):(NZ + NP), 2] <- 0
+
+    # for pos 3-46, calculation is done in C++
+    pos <- 3
+    for (i in 2:17) {
+      funname <- paste('np_m', i, '_nw', sep ='')
+      lst <- get(funname)(NZ, NP, W)
+      len <- length(lst)
+      for (j in 1:len) {
+        if (rowcolumn(pos) == "row") {
+          mnw[1:NZ,pos] <- lst[[j]]
+          mnw[(NZ + 1):(NZ + NP),pos] <- 0
+        } else {
+          mnw[1:NZ,pos] <- 0
+          mnw[(NZ + 1):(NZ + NP),pos] <- lst[[j]]
+        }
+        pos <- pos + 1
       }
     }
+
+    if (weights_method== "mean_nodeweights") {
+      if (weights_combine == "mean") {
+        # I also need the node_position count
+        np_count <- rbind(pos_row, pos_col)
+
+        mnw <- mnw / np_count
+        mnw <- replace(mnw, which(is.nan(mnw)), NA)
+
+        # again, normalisation does not make sense
+        # depending on level, delete unused rows
+        if (level == "all") {
+          return(mnw)
+        } else if(level == "rows"){
+          return(mnw[1:NZ,])
+        } else if(level == "columns"){
+          return(mnw[(NZ + 1):(NZ + NP),])
+        }
+      } # end weights_combine == "mean"
+
+      if (weights_combine == "sum") {
+        # can have normalisation
+        if(normalisation != "none"){
+          mnw <- normalise_positions(pc = mnw, type = normalisation)
+        }
+
+        # depending on level, delete unused rows
+        if (level == "all") {
+          return(mnw)
+        } else if(level == "rows"){
+          return(mnw[1:NZ,])
+        } else if(level == "columns"){
+          return(mnw[(NZ + 1):(NZ + NP),])
+        }
+      } # end weights_combine == "sum"
+    } # end weights_method== "mean_nodeweights"
+
+    if (weights_method== "total_nodeweights") {
+
+      tnw <- mnw * degrees
+
+      if (weights_combine == "mean") {
+        # I also need the node_position count
+        np_count <- rbind(pos_row, pos_col)
+
+        tnw <- tnw / np_count
+        tnw <- replace(tnw, which(is.nan(tnw)), NA)
+
+        # again, normalisation does not make sense
+        # depending on level, delete unused rows
+        if (level == "all") {
+          return(tnw)
+        } else if(level == "rows"){
+          return(tnw[1:NZ,])
+        } else if(level == "columns"){
+          return(tnw[(NZ + 1):(NZ + NP),])
+        }
+      } # end weights_combine == "mean"
+
+      if (weights_combine == "sum") {
+        # can have normalisation
+        if(normalisation != "none"){
+          tnw <- normalise_positions(pc = tnw, type = normalisation)
+        }
+
+        # depending on level, delete unused rows
+        if (level == "all") {
+          return(tnw)
+        } else if(level == "rows"){
+          return(tnw[1:NZ,])
+        } else if(level == "columns"){
+          return(tnw[(NZ + 1):(NZ + NP),])
+        }
+      } # end weights_combine == "sum"
+    } # end weights_method== "mean_nodeweights"
+
+
   }
 
-  # normalisation
-  if(normalisation != "none"){
-    pos_row <- normalise_positions(pc = pos_row, type = normalisation)
-    pos_col <- normalise_positions(pc = pos_col, type = normalisation)
+  # ------------- weights_method= CONTRIBUTION -------------------
+
+  if (weights_method== "contribution") {
+    # sourceCpp('weights/cppcode/node_pos_contribution.cpp')
+
+    con <- matrix(NA, nrow = NZ + NP, ncol = 46)
+    colnames(con) <- paste('np', 1:46, sep = '')
+    rownames(con) <- c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
+
+    # position 1
+    np_count <- rbind(pos_row, pos_col)
+    con[,1:2] <- np_count[,1:2]
+
+    # for pos 3-46, calculation is done in C++
+    pos <- 3
+    for (i in 2:17) {
+      funname <- paste('np_m', i, '_con', sep ='')
+      lst <- get(funname)(NZ, NP, W)
+      len <- length(lst)
+      for (j in 1:len) {
+        if (rowcolumn(pos) == "row") {
+          con[1:NZ,pos] <- lst[[j]]
+          con[(NZ + 1):(NZ + NP),pos] <- 0
+        } else {
+          con[1:NZ,pos] <- 0
+          con[(NZ + 1):(NZ + NP),pos] <- lst[[j]]
+        }
+        pos <- pos + 1
+      }
+    }
+
+    if (weights_combine == "mean") {
+      con <- con / np_count
+      con <- replace(con, which(is.nan(con)), NA)
+
+      # again, normalisation does not make sense
+      # depending on level, delete unused rows
+      if (level == "all") {
+        return(con)
+      } else if(level == "rows"){
+        return(con[1:NZ,])
+      } else if(level == "columns"){
+        return(con[(NZ + 1):(NZ + NP),])
+      }
+
+    } # end weights_combine == "mean"
+
+    if (weights_combine == "sum") {
+
+      # can have normalisation
+      if(normalisation != "none"){
+        con <- normalise_positions(pc = con, type = normalisation)
+      }
+
+      if (level == "all") {
+        return(con)
+      } else if(level == "rows"){
+        return(con[1:NZ,])
+      } else if(level == "columns"){
+        return(con[(NZ + 1):(NZ + NP),])
+      }
+
+    } # end weights_combine == "sum"
+  } # end weights_method == "contribution"
+
+  # -------------- weights_method = STOUFFER --------------------------------------
+
+  if (weights_method == "mora") {
+    # sourceCpp('weights/cppcode/node_pos_stouffer.cpp')
+
+    py <- matrix(NA, nrow = NZ + NP, ncol = 46)
+    colnames(py) <- paste('np', 1:46, sep = '')
+    rownames(py) <- c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
+
+    # position 1
+
+    py[1:NZ, 1] <- 0
+    py[(NZ + 1):(NZ + NP),1] <- 0.5 * apply(W, 2, sum)
+    py[1:NZ, 2] <- 0.5 * apply(W, 1, sum)
+    py[(NZ + 1):(NZ + NP),2] <- 0
+
+    # for pos 3-46, calculation is done in C++
+    pos <- 3
+    for (i in 2:17) {
+      funname <- paste('np_m', i, '_py', sep ='')
+      lst <- get(funname)(NZ, NP, W)
+      len <- length(lst)
+      for (j in 1:len) {
+        if (rowcolumn(pos) == "row") {
+          py[1:NZ,pos] <- lst[[j]]
+          py[(NZ + 1):(NZ + NP),pos] <- 0
+        } else {
+          py[1:NZ,pos] <- 0
+          py[(NZ + 1):(NZ + NP),pos] <- lst[[j]]
+        }
+        pos <- pos + 1
+      }
+    }
+
+    if (weights_combine == "mean") {
+
+      np_count <- rbind(pos_row, pos_col)
+      py <- py / np_count
+      py <- replace(py, which(is.nan(py)), NA)
+
+      # again, normalisation does not make sense
+      # depending on level, delete unused rows
+      if (level == "all") {
+        return(py)
+      } else if(level == "rows"){
+        return(py[1:NZ,])
+      } else if(level == "columns"){
+        return(py[(NZ + 1):(NZ + NP),])
+      }
+
+    } # end weights_combine == "mean"
+
+    if (weights_combine == "sum") {
+
+      # can have normalisation
+      if(normalisation != "none"){
+        py <- normalise_positions(pc = py, type = normalisation)
+      }
+
+      if (level == "all") {
+        return(py)
+      } else if(level == "rows"){
+        return(py[1:NZ,])
+      } else if(level == "columns"){
+        return(py[(NZ + 1):(NZ + NP),])
+      }
+
+    } # end weights_combine == "sum"
   }
 
-  # output
-  if(level == "all"){
-    out <- rbind(pos_row, pos_col)
-    out <- as.data.frame(out)
-    return(out)
-  } else if(level == "rows"){
-    pos_row <- as.data.frame(pos_row)
-    return(pos_row)
-  } else if(level == "columns"){
-    pos_col <- as.data.frame(pos_col)
-    return(pos_col)
-  }
+
+  # -------------------------- END WEIGHTS ----------------------------
+
+
 }

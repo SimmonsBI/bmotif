@@ -3,6 +3,7 @@
 ## New features
 - New function: link_positions(). Counts the number of times each link in a network occurs in each unique link position within motifs up to 6 nodes (to quantify a link's structural role). Also has support for weighted networks by multiplying link position counts by the link weight.
 - Support for weighted motif counts: mcount() now has the ability to calculate the mean weight of motifs and the standard deviation of these weights
+- Support for weighted node position counts: node_positions() now has the ability to calculate a wide range of weighted node position metrics
 
 ## Major changes
 - positions() function has been renamed node_positions() to allow node_positions and the link_positions() function to be distinguished

@@ -69,15 +69,15 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
 
   # Give warnings or errors if two arguments can't be used together
   if(weights_method != "none" & six_node == TRUE){
-    stop("Sorry, weighted methods are not available for six node motifs. Set six_node = FALSE if you want to use weighted position counts.")
+    stop("Sorry, weighted methods are not available for six node motifs. Set six_node = FALSE if you want to use weighted position measures")
   }
 
   if(weights_method == "none" & weights_combine != "none"){
-    stop("Cannot set a weights_combine method when weights_method = 'none'.\nIf you wish to return binary position counts, set weights_combine to 'none'.\nIf you want weighted position counts, set weights_method to one of 'mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all'.")
+    stop("Cannot set a weights_combine method when weights_method = 'none'.\nIf you wish to return binary position counts, set weights_combine to 'none'.\nIf you want weighted position measures, set weights_method to one of 'mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all'.")
   }
 
   if(weights_method != "none" & weights_combine == "none"){
-    stop("Need to set a weights_combine method. Cannot have weights_method != 'none' and weights_combine = 'none'. Set weights_combine to 'sum' or 'mean' if you want to use weighted position counts.")
+    stop("Need to set a weights_combine method. Cannot have weights_method != 'none' and weights_combine = 'none'. Set weights_combine to 'sum' or 'mean' if you want to use weighted position measures")
   }
 
   if(weights_combine == "mean" & normalisation != "none"){

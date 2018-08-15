@@ -49,9 +49,10 @@ Nodes with more interactions will tend to appear in more positions. Normalisatio
 \itemize{
  \item{\strong{"none"}: performs no normalisation and will return the raw position counts.}
  \item{\strong{"sum"}: divides position counts for each node by the total number of times that node appears in any position (divides each element in a row by the row sum).}
+ \item{\strong{"position"}: divides position counts for each node by the total number of times any node occurs in that node position (divides each element in a column by the column sum). This gives a measure of how often a node occurs in a position relative to the other nodes in the network.}
  \item{\strong{Size class normalisation}
  \itemize{
- \item{\strong{"size class"}: divides position counts for each node by the total number of times that node appears in any position within the same motif size class.}
+ \item{\strong{"size class"}: divides position counts for each node by the total number of times that node appears in any position within the same motif size class (the number of nodes a motif contains).}
  \item{\strong{"size class_plus1"}: same as 'size class' but adds one to all position counts. If a species does not occur in any motifs in a given size class, 'size class' normalisation
  will return NAs. 'size class_plus1' avoids this by adding one to all counts.}
  \item{\strong{"size class_NAzero"}: same as 'size class' but replaces all NA values with 0. If a species does not occur in any motifs in a given size class, 'size class' normalisation
@@ -60,7 +61,7 @@ Nodes with more interactions will tend to appear in more positions. Normalisatio
  }
  \item{\strong{Levelsize normalisation}
  \itemize{
- \item{\strong{"levelsize"}: expresses counts as a proportion of the total number of counts that occur in motifs with a given number of nodes in the top level and the bottom level.
+ \item{\strong{"levelsize"}: divides position counts for each node by the total number of times that node appears in any position within a motif with a given number of nodes in the top level and the bottom level.
  For example, the relative frequencies of all position counts in motifs with three nodes in the top level and two nodes in the bottom level will sum to one, as will the relative frequency of all position counts in motifs with 2 nodes in the top level and
  two nodes in the bottom level, and so on.}
  \item{\strong{"levelsize_plus1"}: same as 'levelsize' but adds one to all position counts. If a species does not occur in any motifs with a given number of nodes in the top level and the bottom level, 'levelsize' normalisation
@@ -69,8 +70,18 @@ Nodes with more interactions will tend to appear in more positions. Normalisatio
  will return NAs. 'levelsize_NAzero' avoids this by replacing NAs with zero.}
  }
  }
- \item{\strong{"position"}: divides position counts for each node by the total number of times any node occurs in that node position (divides each element in a column by the column sum). This gives a measure of how often a node occurs in a position relative to the other nodes in the network.}
-}
+
+ \item{\strong{Motif normalisation}
+ \itemize{
+ \item{\strong{"motif"}: divides position counts for each node by the total number of times that node appears in any position within the same motif.
+ For example, the relative frequencies of all position counts in motif 5 will sum to one, as will the relative frequency of all position counts in motif 10, and so on.}
+ \item{\strong{"motif_plus1"}: same as 'motif' but adds one to all position counts. If a species does not occur in a particular motif, 'motif' normalisation
+ will return NAs. 'motif_plus1' avoids this by adding one to all counts.}
+ \item{\strong{"motif_NAzero"}: same as 'motif' but replaces all NA values with 0. If a species does not occur in a particular motif, 'levelsize' normalisation
+ will return NAs. 'motif_NAzero' avoids this by replacing NAs with zero.}
+ }
+ }
+ }
 
 If a matrix is provided without row or column names, default names will be assigned: the first row will be called called 'r1', the second row will be called 'r2' and so on. Similarly, the first column will be called 'c1', the second column will be called 'c2' and so on.
 }

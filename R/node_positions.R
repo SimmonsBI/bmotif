@@ -44,7 +44,6 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   #'  will return NAs. 'levelsize_NAzero' avoids this by replacing NAs with zero.}
   #'  }
   #'  }
-  #'
   #'  \item{\strong{Motif normalisation}
   #'  \itemize{
   #'  \item{\strong{"motif"}: divides position counts for each node by the total number of times that node appears in any position within the same motif.
@@ -56,7 +55,6 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   #'  }
   #'  }
   #'  }
-  #'
   #' If a matrix is provided without row or column names, default names will be assigned: the first row will be called called 'r1', the second row will be called 'r2' and so on. Similarly, the first column will be called 'c1', the second column will be called 'c2' and so on.
   #'
   #' @return

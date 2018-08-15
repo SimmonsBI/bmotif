@@ -236,6 +236,9 @@ mcount <- function(M, six_node = FALSE, normalisation, mean_weight, standard_dev
     # calculate normalised frequency as proportion of possible node sets
     sets <- node_sets(M, six_node = six_node)
     out$normalise_nodesets <- out$frequency/sets
+
+    # replace NaNs with NAs
+    out[do.call(cbind, lapply(out, is.nan))] <- NA
   }
 
 

@@ -6,7 +6,7 @@ test_that("node_positions behaves as expected",{
   expect_error(object = node_positions(matrix(1,3,3), six_node = TRUE, level = 7, weights_method = "none", weights_combine = "none", normalisation = "none"), "'level' must be of class 'character'")
   expect_error(object = node_positions(matrix(1,3,3), six_node = TRUE, level = "wrong", weights_method = "none", weights_combine = "none", normalisation = "none"), "'level' must equal 'rows', 'columns' or 'all'")
   expect_error(object = node_positions(matrix(1,3,3), six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none", normalisation = 7), "'normalisation' must be of class 'character'")
-  expect_error(object = node_positions(matrix(1,3,3), six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none", normalisation = "wrong"), "'normalisation' must equal 'none', 'sum' or 'size class'")
+  expect_error(object = node_positions(matrix(1,3,3), six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none", normalisation = "wrong"), "'normalisation' must equal 'none', 'sum', 'size class', 'positions' or 'levelsize'")
 
   expect_equal(node_positions(M = mat, six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none", normalisation = "none"),positions_T_all_none)
   expect_equal(node_positions(M = mat, six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none", normalisation = "sum"), positions_T_all_sum)

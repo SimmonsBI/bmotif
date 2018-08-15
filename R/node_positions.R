@@ -58,7 +58,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   if(class(level) != "character"){stop("'level' must be of class 'character'")} # make sure level is a character
   if(!level %in% c("rows","columns","all")){stop("'level' must equal 'rows', 'columns' or 'all'")} # make sure level equals 'rows', 'columns' or 'all'
   if(class(normalisation) != "character"){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
-  if(!normalisation %in% c("none","sum","size class")){stop("'normalisation' must equal 'none', 'sum' or 'size class'")} # make sure normalisation equals 'none', 'sum' or 'size class'
+  if(!normalisation %in% c("none","sum","size class","positions","levelsize")){stop("'normalisation' must equal 'none', 'sum', 'size class', 'positions' or 'levelsize'")} # make sure normalisation equals 'none', 'sum' or 'size class'
   if(any(duplicated(rownames(M))) | any(duplicated(colnames(M)))){stop("Input matrix must not have duplicate row or column names")}
   if(!weights_method %in% c('none', 'mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all')) {
     stop("weights_method must be one of 'none', 'mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all'.")

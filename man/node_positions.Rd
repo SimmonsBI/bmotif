@@ -49,7 +49,6 @@ Nodes with more interactions will tend to appear in more positions. Normalisatio
 \itemize{
  \item{\strong{"none"}: performs no normalisation and will return the raw position counts.}
  \item{\strong{"sum"}: divides position counts for each node by the total number of times that node appears in any position (divides each element in a row by the row sum).}
-
  \item{\strong{Size class normalisation}
  \itemize{
  \item{\strong{"size class"}: divides position counts for each node by the total number of times that node appears in any position within the same motif size class.}
@@ -58,9 +57,7 @@ Nodes with more interactions will tend to appear in more positions. Normalisatio
  \item{\strong{"size class_NAzero"}: same as 'size class' but replaces all NA values with 0. If a species does not occur in any motifs in a given size class, 'size class' normalisation
  will return NAs. 'size class_NAzero' avoids this by replacing NAs with zero.}
  }
-
  }
-
  \item{\strong{Levelsize normalisation}
  \itemize{
  \item{\strong{"levelsize"}: expresses counts as a proportion of the total number of counts that occur in motifs with a given number of nodes in the top level and the bottom level.
@@ -71,14 +68,8 @@ Nodes with more interactions will tend to appear in more positions. Normalisatio
  \item{\strong{"levelsize_NAzero"}: same as 'levelsize' but replaces all NA values with 0. If a species does not occur in any motifs with a given number of nodes in the top level and the bottom level, 'levelsize' normalisation
  will return NAs. 'levelsize_NAzero' avoids this by replacing NAs with zero.}
  }
-
  }
-
-
-
-
  \item{\strong{"position"}: divides position counts for each node by the total number of times any node occurs in that node position (divides each element in a column by the column sum). This gives a measure of how often a node occurs in a position relative to the other nodes in the network.}
-
 }
 
 If a matrix is provided without row or column names, default names will be assigned: the first row will be called called 'r1', the second row will be called 'r2' and so on. Similarly, the first column will be called 'c1', the second column will be called 'c2' and so on.

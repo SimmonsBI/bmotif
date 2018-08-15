@@ -431,11 +431,6 @@ link_positions <- function(M, six_node = FALSE, weights, normalisation = "none")
     }
   }
 
-  if (!(normalisation %in% c("none", "sum", "size class", "position")) ) {
-    print("Warning: Non-valid normalisation method. Didn't normalise at all.")
-    return(as.data.frame(lp))
-  }
-
   if (normalisation == "none") {
     return(as.data.frame(lp))
   }

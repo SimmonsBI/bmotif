@@ -30,6 +30,13 @@ mcount <- function(M, six_node = FALSE, normalisation, mean_weight, standard_dev
   #' of node sets that are involved in a motif as a proportion of the number of node sets that could be involved in that motif (Poisot and Stouffer, 2017). For example, in a motif
   #' with three nodes in one level (A) and two nodes in the other level (P), the maximum number of node sets which could be involved in the motif is
   #' given by the product of binomial coefficients, choosing three nodes from A and two from P.}
+  #'  \item{\strong{"normalise_levelsize"}: expresses counts as a proportion of the total number of motifs with the same number of nodes in the top level and the bottom level.
+  #'  For example, the relative frequencies of all motifs with three nodes in the top level and two nodes in the bottom level will sum to one, as will the relative frequency of all motifs with 2 nodes in the top level and
+  #'  two nodes in the bottom level, and so on. This normalisation is helpful because each set of species with a given number of nodes in the top and bottom level is assigned to one motif that describes the interactions among
+  #'  those species (Cirtwill and Eklöf, 2018). For example, all sets of interacting species with two species in the top level and two in the bottom level will be assigned to either motif 5 or motif 6. 'normalise_levelsize' allows you to see the relative
+  #'  proportion of species which were assigned to each of these motifs. Note that some motifs will always return a value of 1 as they are the only motif with that particular combination of nodes in the top and bottom level. For example, motif 2 will
+  #'  always sum to 1 because it is the only motif with one node in the top level and two nodes in the bottom level.
+  #'  }
   #' }
   #'
   #' \strong{Weighted networks}
@@ -64,6 +71,8 @@ mcount <- function(M, six_node = FALSE, normalisation, mean_weight, standard_dev
   #' @references
   #' Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ roles in food webs show fidelity across a highly variable oak forest. Ecography, 38(2):130–139.
   #'
+  #' Cirtwill, A. R. and Eklöf, A (2018), Feeding environment and other traits shape species’ roles in marine food webs. Ecol Lett, 21: 875-884. doi:10.1111/ele.12955
+  #'
   #' Poisot, T. & Stouffer, D. (2016). How ecological networks evolve. bioRxiv.
   #'
   #' Simmons, B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks. bioRxiv. doi: 10.1101/302356
@@ -88,6 +97,7 @@ mcount <- function(M, six_node = FALSE, normalisation, mean_weight, standard_dev
   if(class(normalisation) != "logical"){stop("'normalisation' must be of class 'logical' i.e. TRUE or FALSE")} # make sure normalisation is logical i.e. TRUE or FALSE
   if(class(six_node) != "logical"){stop("'six_node' must be of class 'logical' i.e. TRUE or FALSE")} # make sure six_node is logical i.e. TRUE or FALSE
   if(mean_weight == FALSE & standard_dev == TRUE){stop("Cannot have standard_dev = TRUE and mean_weight = FALSE. If you want the standard deviations, set standard_dev = TRUE and mean_weight = TRUE")}
+  if(six_node == TRUE & standard_dev == TRUE){warning("Standard deviation values are not available for six node motifs. Standard deviation will only be returned for 2-5 node motifs")}
 
   # clean matrix
   W <- M # store weighted version of the incidence matrix
@@ -207,6 +217,26 @@ mcount <- function(M, six_node = FALSE, normalisation, mean_weight, standard_dev
     # calculate normalised frequency as proportion of possible node sets
     sets <- node_sets(M, six_node = six_node)
     out$normalise_nodesets <- out$frequency/sets
+
+    # calculated normalised frequency within motifs with the same number of nodes in each level
+    out$normalise_levelsize <- NA
+    out$normalise_levelsize[1] <- out$frequency[1]/sum(out$frequency[1])
+    out$normalise_levelsize[2] <- out$frequency[2]/sum(out$frequency[2])
+    out$normalise_levelsize[3] <- out$frequency[3]/sum(out$frequency[3])
+    out$normalise_levelsize[4] <- out$frequency[4]/sum(out$frequency[4])
+    out$normalise_levelsize[5:6] <- out$frequency[5:6]/sum(out$frequency[5:6])
+    out$normalise_levelsize[7] <- out$frequency[7]/sum(out$frequency[7])
+    out$normalise_levelsize[8] <- out$frequency[8]/sum(out$frequency[8])
+    out$normalise_levelsize[9:12] <- out$frequency[9:12]/sum(out$frequency[9:12])
+    out$normalise_levelsize[13:16] <- out$frequency[13:16]/sum(out$frequency[13:16])
+    out$normalise_levelsize[17] <- out$frequency[17]/sum(out$frequency[17])
+    if(six_node == TRUE){
+      out$normalise_levelsize[18] <- out$frequency[18]/sum(out$frequency[18])
+      out$normalise_levelsize[19:24] <- out$frequency[19:24]/sum(out$frequency[19:24])
+      out$normalise_levelsize[25:37] <- out$frequency[25:37]/sum(out$frequency[25:37])
+      out$normalise_levelsize[38:43] <- out$frequency[38:43]/sum(out$frequency[38:43])
+      out$normalise_levelsize[44] <- out$frequency[44]/sum(out$frequency[44])
+    }
   }
 
 

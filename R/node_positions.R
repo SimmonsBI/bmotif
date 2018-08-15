@@ -23,7 +23,26 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   #' \itemize{
   #'  \item{\strong{"none"}: performs no normalisation and will return the raw position counts.}
   #'  \item{\strong{"sum"}: divides position counts for each node by the total number of times that node appears in any position (divides each element in a row by the row sum).}
+  #'  \item{\strong{Size class normalisation}
+  #'  \itemize{
   #'  \item{\strong{"size class"}: divides position counts for each node by the total number of times that node appears in any position within the same motif size class.}
+  #'  \item{\strong{"size class_plus1"}: same as 'size class' but adds one to all position counts. If a species does not occur in any motifs in a given size class, 'size class' normalisation
+  #'  will return NAs. 'size class_plus1' avoids this by adding one to all counts.}
+  #'  \item{\strong{"size class_NAzero"}: same as 'size class' but replaces all NA values with 0. If a species does not occur in any motifs in a given size class, 'size class' normalisation
+  #'  will return NAs. 'size class_NAzero' avoids this by replacing NAs with zero.}
+  #'  }
+  #'  }
+  #'  \item{\strong{Levelsize normalisation}
+  #'  \itemize{
+  #'  \item{\strong{"levelsize"}: expresses counts as a proportion of the total number of counts that occur in motifs with a given number of nodes in the top level and the bottom level.
+  #'  For example, the relative frequencies of all position counts in motifs with three nodes in the top level and two nodes in the bottom level will sum to one, as will the relative frequency of all position counts in motifs with 2 nodes in the top level and
+  #'  two nodes in the bottom level, and so on.}
+  #'  \item{\strong{"levelsize_plus1"}: same as 'levelsize' but adds one to all position counts. If a species does not occur in any motifs with a given number of nodes in the top level and the bottom level, 'levelsize' normalisation
+  #'  will return NAs. 'levelsize_plus1' avoids this by adding one to all counts.}
+  #'  \item{\strong{"levelsize_NAzero"}: same as 'levelsize' but replaces all NA values with 0. If a species does not occur in any motifs with a given number of nodes in the top level and the bottom level, 'levelsize' normalisation
+  #'  will return NAs. 'levelsize_NAzero' avoids this by replacing NAs with zero.}
+  #'  }
+  #'  }
   #'  \item{\strong{"position"}: divides position counts for each node by the total number of times any node occurs in that node position (divides each element in a column by the column sum). This gives a measure of how often a node occurs in a position relative to the other nodes in the network.}
   #' }
   #'
@@ -58,7 +77,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   if(class(level) != "character"){stop("'level' must be of class 'character'")} # make sure level is a character
   if(!level %in% c("rows","columns","all")){stop("'level' must equal 'rows', 'columns' or 'all'")} # make sure level equals 'rows', 'columns' or 'all'
   if(class(normalisation) != "character"){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
-  if(!normalisation %in% c("none","sum","size class","positions","levelsize")){stop("'normalisation' must equal 'none', 'sum', 'size class', 'positions' or 'levelsize'")} # make sure normalisation equals 'none', 'sum' or 'size class'
+  if(!normalisation %in% c("none","sum","size class", "size class_plus1", "size class_NAzero", "position","levelsize","levelsize_plus1","levelsize_NAzero")){stop("'normalisation' must equal 'none','sum','size class', 'size class_plus1', 'size class_NAzero', 'position','levelsize','levelsize_plus1' or 'levelsize_NAzero'")} # make sure normalisation equals 'none', 'sum' or 'size class'
   if(any(duplicated(rownames(M))) | any(duplicated(colnames(M)))){stop("Input matrix must not have duplicate row or column names")}
   if(!weights_method %in% c('none', 'mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all')) {
     stop("weights_method must be one of 'none', 'mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all'.")
@@ -243,21 +262,18 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   # ------------------- WEIGHTS = "NONE" ------------------------------------
 
   if (weights_method== "none") {
-    # normalisation
-    if(normalisation != "none"){
-      pos_row <- normalise_positions(pc = pos_row, type = normalisation)
-      pos_col <- normalise_positions(pc = pos_col, type = normalisation)
-    }
-
     # output
     if(level == "all"){
       out <- rbind(pos_row, pos_col)
+      out <- normalise_positions(pc = out, type = normalisation)
       out <- as.data.frame(out)
       return(out)
     } else if(level == "rows"){
+      pos_row <- normalise_positions(pc = pos_row, type = normalisation)
       pos_row <- as.data.frame(pos_row)
       return(pos_row)
     } else if(level == "columns"){
+      pos_col <- normalise_positions(pc = pos_col, type = normalisation)
       pos_col <- as.data.frame(pos_col)
       return(pos_col)
     }

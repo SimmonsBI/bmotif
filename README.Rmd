@@ -34,8 +34,8 @@ If installing on Windows, you might get an error saying something like 'Rtools i
 install.packages("devtools")
 ```
 2. Download the latest version of Rtools and follow the guidelines [here](https://thecoatlessprofessor.com/programming/installing-rtools-for-compiled-code-via-rcpp/) (archived version [here](https://web.archive.org/web/20180814151143/https://thecoatlessprofessor.com/programming/installing-rtools-for-compiled-code-via-rcpp/)) to install. It describes how to set some PATH variables. Essentially, when given the option to modify the Window PATH variables during the Rtools installation, choose to do this, then add the following to the top of the PATH variables text field:
-* `c:\Rtools\bin;`
-* `c:\Rtools\mingw_32\bin;`
+    * `c:\Rtools\bin;`
+    * `c:\Rtools\mingw_32\bin;`
 3. Now you can use `Sys.getenv('PATH')` in R to make sure the correct PATH variables appear.
 4. If the PATH variables are there, run `devtools::find_rtools()` which should now return `TRUE`
 5. Try installing bmotif again and it should work!

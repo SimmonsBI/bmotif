@@ -60,14 +60,8 @@ install.packages("devtools")
     Essentially, when given the option to modify the Window PATH
     variables during the Rtools installation, choose to do this, then
     add the following to the top of the PATH variables text field:
-
-<!-- end list -->
-
-  - `c:\Rtools\bin;`
-  - `c:\Rtools\mingw_32\bin;`
-
-<!-- end list -->
-
+      - `c:\Rtools\bin;`
+      - `c:\Rtools\mingw_32\bin;`
 3.  Now you can use `Sys.getenv('PATH')` in R to make sure the correct
     PATH variables appear.
 4.  If the PATH variables are there, run `devtools::find_rtools()` which

@@ -64,7 +64,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   #' For a network with A rows and P columns, by default (where \code{level} = "all") the data frame has A + P rows, one for each node. If \code{level} = "rows", the data frame will have A rows, one for each row node;
   #' if \code{level} = "columns", it will have P rows, one for each column node.
   #'
-  #' By default, the elements of this data frame will be the raw position counts. If \code{normalisation} is set to "sum" or "size class", the elements will be
+  #' By default, the elements of this data frame will be the raw position counts. If \code{normalisation} is set to something other than "none", the elements will be
   #' normalised position counts as described above.
   #' @export
   #' @references

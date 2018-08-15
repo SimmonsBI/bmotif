@@ -89,6 +89,26 @@ normalise_positions <- function(pc,type){
         pc[,paste0("np",147:148)] <- pc[,paste0("np",147:148)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",147:148)]))
       }
       pc[is.na(pc)] <- 0
+    } else if(type == "motif"){
+      nm <- ifelse(ncol(pc) == 148, yes = 44, no = 17) # number of motifs
+      mp <- sapply(1:nm, function(x) motif_info(x, link = FALSE)) # motif positions
+      for(i in mp){
+        pc[,paste0("np",i)] <- pc[,paste0("np",i)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",i)]))
+      }
+    } else if(type == "motif_plus1"){
+      pc <- pc + 1
+      nm <- ifelse(ncol(pc) == 148, yes = 44, no = 17) # number of motifs
+      mp <- sapply(1:nm, function(x) motif_info(x, link = FALSE)) # motif positions
+      for(i in mp){
+        pc[,paste0("np",i)] <- pc[,paste0("np",i)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",i)]))
+      }
+    } else if(type == "motif_NAzero"){
+      nm <- ifelse(ncol(pc) == 148, yes = 44, no = 17) # number of motifs
+      mp <- sapply(1:nm, function(x) motif_info(x, link = FALSE)) # motif positions
+      for(i in mp){
+        pc[,paste0("np",i)] <- pc[,paste0("np",i)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",i)]))
+      }
+      pc[is.na(pc)] <- 0
     } else {
     stop("'type' must be a character string equal to 'sum', 'size class', 'position' or 'levelsize'") # if 'type' does not equal 'sum' or 'size class' return an error
   }

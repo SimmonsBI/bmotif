@@ -20,23 +20,22 @@ mcount <- function(M, six_node = FALSE, normalisation, mean_weight, standard_dev
   #' \strong{Normalisation}
   #'
   #' Larger networks tend to contain more motifs. Controlling for this effect by normalising motif counts is important if different sized networks are being compared.
-  #' If \code{normalisation} = TRUE, motif frequencies are normalised in three ways:
+  #' If \code{normalisation} = TRUE, motif frequencies are normalised in four ways:
   #'
   #' \itemize{
   #'  \item{\strong{"normalise_sum"}:  converts each frequency to a relative frequency by expressing counts as a proportion of the total number of motifs in the network}
   #'  \item{\strong{"normalise_sizeclass"}: expresses counts as a proportion of the total number of motifs within each motif size class (the number of nodes a motif contains).
   #'  For example, the relative frequency of all two-node motifs will sum to one, as will the relative frequency of all three-, four-, five- and six-node motifs.}
-  #'  \item{\strong{"normalise_nodesets"}: expresses frequencies as the number
-  #' of node sets that are involved in a motif as a proportion of the number of node sets that could be involved in that motif (Poisot and Stouffer, 2017). For example, in a motif
-  #' with three nodes in one level (A) and two nodes in the other level (P), the maximum number of node sets which could be involved in the motif is
-  #' given by the product of binomial coefficients, choosing three nodes from A and two from P.}
-  #'  \item{\strong{"normalise_levelsize"}: expresses counts as a proportion of the total number of motifs with the same number of nodes in the top level and the bottom level.
+  #'  \item{\strong{"normalise_levelsize"}: expresses counts as a proportion of the total number of motifs with a given number of nodes in the top level and the bottom level.
   #'  For example, the relative frequencies of all motifs with three nodes in the top level and two nodes in the bottom level will sum to one, as will the relative frequency of all motifs with 2 nodes in the top level and
   #'  two nodes in the bottom level, and so on. This normalisation is helpful because each set of species with a given number of nodes in the top and bottom level is assigned to one motif that describes the interactions among
   #'  those species (Cirtwill and Eklöf, 2018). For example, all sets of interacting species with two species in the top level and two in the bottom level will be assigned to either motif 5 or motif 6. 'normalise_levelsize' allows you to see the relative
   #'  proportion of species which were assigned to each of these motifs. Note that some motifs will always return a value of 1 as they are the only motif with that particular combination of nodes in the top and bottom level. For example, motif 2 will
-  #'  always sum to 1 because it is the only motif with one node in the top level and two nodes in the bottom level.
-  #'  }
+  #'  always sum to 1 because it is the only motif with one node in the top level and two nodes in the bottom level.}
+  #'  \item{\strong{"normalise_nodesets"}: expresses frequencies as the number
+  #' of node sets that are involved in a motif as a proportion of the number of node sets that could be involved in that motif (Poisot and Stouffer, 2017). For example, in a motif
+  #' with three nodes in one level (A) and two nodes in the other level (P), the maximum number of node sets which could be involved in the motif is
+  #' given by the product of binomial coefficients, choosing three nodes from A and two from P.}
   #' }
   #'
   #' \strong{Weighted networks}
@@ -181,13 +180,13 @@ mcount <- function(M, six_node = FALSE, normalisation, mean_weight, standard_dev
   # create results container
   if(six_node == FALSE){
     if(normalisation == TRUE){
-      out <- data.frame(motif = 1:17, nodes = c(2,rep(3,2),rep(4,4),rep(5,10)), frequency = NA, normalise_sum = NA, normalise_sizeclass = NA, normalise_nodesets = NA)
+      out <- data.frame(motif = 1:17, nodes = c(2,rep(3,2),rep(4,4),rep(5,10)), frequency = NA, normalise_sum = NA, normalise_sizeclass = NA, normalise_levelsize = NA, normalise_nodesets = NA)
     } else {
       out <- data.frame(motif = 1:17, nodes = c(2,rep(3,2),rep(4,4),rep(5,10)), frequency = NA)
     }
   } else {
     if(normalisation == TRUE){
-      out <- data.frame(motif = 1:44, nodes = c(2,rep(3,2),rep(4,4),rep(5,10),rep(6,27)), frequency = NA, normalise_sum = NA, normalise_sizeclass = NA, normalise_nodesets = NA)
+      out <- data.frame(motif = 1:44, nodes = c(2,rep(3,2),rep(4,4),rep(5,10),rep(6,27)), frequency = NA, normalise_sum = NA, normalise_sizeclass = NA, normalise_levelsize = NA, normalise_nodesets = NA)
     } else {
       out <- data.frame(motif = 1:44, nodes = c(2,rep(3,2),rep(4,4),rep(5,10),rep(6,27)), frequency = NA)
     }
@@ -214,10 +213,6 @@ mcount <- function(M, six_node = FALSE, normalisation, mean_weight, standard_dev
                                                    function(df) df$frequency/sum(df$frequency))
     )
 
-    # calculate normalised frequency as proportion of possible node sets
-    sets <- node_sets(M, six_node = six_node)
-    out$normalise_nodesets <- out$frequency/sets
-
     # calculated normalised frequency within motifs with the same number of nodes in each level
     out$normalise_levelsize <- NA
     out$normalise_levelsize[1] <- out$frequency[1]/sum(out$frequency[1])
@@ -237,6 +232,10 @@ mcount <- function(M, six_node = FALSE, normalisation, mean_weight, standard_dev
       out$normalise_levelsize[38:43] <- out$frequency[38:43]/sum(out$frequency[38:43])
       out$normalise_levelsize[44] <- out$frequency[44]/sum(out$frequency[44])
     }
+
+    # calculate normalised frequency as proportion of possible node sets
+    sets <- node_sets(M, six_node = six_node)
+    out$normalise_nodesets <- out$frequency/sets
   }
 
 

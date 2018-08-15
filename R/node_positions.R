@@ -8,7 +8,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   #' If interactions are weighted (non-zero matrix elements take values other than 1), the function will automatically convert the matrix to a binary
   #' matrix.
   #' @param six_node Logical; should six node motifs be counted? Defaults to FALSE.
-  #' @param  level Which node level should positions be calculated for: "rows", "columns" or "all"?  Defaults to "all".
+  #' @param level Which node level should positions be calculated for: "rows", "columns" or "all"?  Defaults to "all".
   #' @param weights_method does a thing
   #' @param weights_combine does another thing
   #' @param normalisation Which normalisation should be used: "none", "sum" or "size class"?  Defaults to "none".

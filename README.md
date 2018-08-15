@@ -21,6 +21,12 @@ originally developed to analyse bipartite species interaction networks
 in ecology but its methods are general and can be applied to any
 bipartite graph.
 
+Note that the released version on CRAN currently only has support for
+counting motif occurrences and node positions. It does not have support
+for link positions or weighted networks, which are currently only
+available in the development version (these will be added to the CRAN
+version when development is finalised).
+
 ## Installation
 
 To install the released version from CRAN:

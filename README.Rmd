@@ -11,6 +11,8 @@ output: github_document
 
 `bmotif` is software for motif analyses of bipartite networks. It can count occurrences of motifs in bipartite networks, as well as the number of times each node or link appears in each unique node or link position within motifs (a node or link's structural role). `bmotif` supports weighted as well as unweighted networks: the mean weight of motifs can be calculated, as well as the standard deviation of motifs mean weights; weighted versions of node and link position counts are also supported (see below). As well as R, core functionality is also available in [MATLAB](https://github.com/SimmonsBI/bmotif-matlab) and [Python](https://github.com/SimmonsBI/bmotif-python). `bmotif` was originally developed to analyse bipartite species interaction networks in ecology but its methods are general and can be applied to any bipartite graph.
 
+Note that the released version on CRAN currently only has support for counting motif occurrences and node positions. It does not have support for link positions or weighted networks, which are currently only available in the development version (these will be added to the CRAN version when development is finalised).
+
 ## Installation
 
 To install the released version from CRAN:

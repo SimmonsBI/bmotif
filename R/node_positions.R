@@ -274,15 +274,15 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
     # output
     if(level == "all"){
       out <- rbind(pos_row, pos_col)
-      out <- normalise_positions(pc = out, type = normalisation)
+      out <- normalise_node_positions(pc = out, type = normalisation)
       out <- as.data.frame(out)
       return(out)
     } else if(level == "rows"){
-      pos_row <- normalise_positions(pc = pos_row, type = normalisation)
+      pos_row <- normalise_node_positions(pc = pos_row, type = normalisation)
       pos_row <- as.data.frame(pos_row)
       return(pos_row)
     } else if(level == "columns"){
-      pos_col <- normalise_positions(pc = pos_col, type = normalisation)
+      pos_col <- normalise_node_positions(pc = pos_col, type = normalisation)
       pos_col <- as.data.frame(pos_col)
       return(pos_col)
     }
@@ -432,12 +432,12 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
       # mw, nw and con already contain the correct results
       # normalisation is possible now
       if(normalisation != "none"){
-        mmw <- normalise_positions(pc = mmw, type = normalisation)
-        tmw <- normalise_positions(pc = tmw, type = normalisation)
-        mnw <- normalise_positions(pc = mnw, type = normalisation)
-        tnw <- normalise_positions(pc = tnw, type = normalisation)
-        con <- normalise_positions(pc = con, type = normalisation)
-        py <- normalise_positions(pc = py, type = normalisation)
+        mmw <- normalise_node_positions(pc = mmw, type = normalisation)
+        tmw <- normalise_node_positions(pc = tmw, type = normalisation)
+        mnw <- normalise_node_positions(pc = mnw, type = normalisation)
+        tnw <- normalise_node_positions(pc = tnw, type = normalisation)
+        con <- normalise_node_positions(pc = con, type = normalisation)
+        py <- normalise_node_positions(pc = py, type = normalisation)
       }
 
       # now set output list
@@ -519,7 +519,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
 
         # can have normalisation
         if(normalisation != "none"){
-          mmw <- normalise_positions(pc = mmw, type = normalisation)
+          mmw <- normalise_node_positions(pc = mmw, type = normalisation)
         }
 
         # depending on level, delete unused rows
@@ -561,7 +561,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
 
         # can have normalisation
         if(normalisation != "none"){
-          tmw <- normalise_positions(pc = tmw, type = normalisation)
+          tmw <- normalise_node_positions(pc = tmw, type = normalisation)
         }
 
         # depending on level, delete unused rows
@@ -633,7 +633,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
       if (weights_combine == "sum") {
         # can have normalisation
         if(normalisation != "none"){
-          mnw <- normalise_positions(pc = mnw, type = normalisation)
+          mnw <- normalise_node_positions(pc = mnw, type = normalisation)
         }
 
         # depending on level, delete unused rows
@@ -672,7 +672,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
       if (weights_combine == "sum") {
         # can have normalisation
         if(normalisation != "none"){
-          tnw <- normalise_positions(pc = tnw, type = normalisation)
+          tnw <- normalise_node_positions(pc = tnw, type = normalisation)
         }
 
         # depending on level, delete unused rows
@@ -739,7 +739,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
 
       # can have normalisation
       if(normalisation != "none"){
-        con <- normalise_positions(pc = con, type = normalisation)
+        con <- normalise_node_positions(pc = con, type = normalisation)
       }
 
       if (level == "all") {
@@ -808,7 +808,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
 
       # can have normalisation
       if(normalisation != "none"){
-        py <- normalise_positions(pc = py, type = normalisation)
+        py <- normalise_node_positions(pc = py, type = normalisation)
       }
 
       if (level == "all") {

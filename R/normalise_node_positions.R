@@ -1,4 +1,4 @@
-normalise_positions <- function(pc,type){
+normalise_node_positions <- function(pc,type){
   if(!ncol(pc) %in% c(46, 148)){stop("Something has gone very wrong: pc does not have 46 or 148 columns")}
   if(type == "none"){
     return(pc)

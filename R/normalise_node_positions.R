@@ -1,5 +1,7 @@
-normalise_node_positions <- function(pc,type){
+normalise_node_positions <- function(pc,type,six_node){
   if(!ncol(pc) %in% c(46, 148)){stop("Something has gone very wrong: pc does not have 46 or 148 columns")}
+  stopifnot(six_node == TRUE & ncol(pc) != 148)
+  stopifnot(six_node == FALSE & ncol(pc) != 46)
   if(type == "none"){
     return(pc)
   } else if(type == "sizeclass"){
@@ -7,7 +9,7 @@ normalise_node_positions <- function(pc,type){
     pc[,paste0("np",3:6)] <- pc[,paste0("np",3:6)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",3:6)]))
     pc[,paste0("np",7:16)] <- pc[,paste0("np",7:16)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",7:16)]))
     pc[,paste0("np",17:46)] <- pc[,paste0("np",17:46)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",17:46)]))
-    if(ncol(pc) == 148){
+    if(six_node){
       pc[,paste0("np",47:148)] <- pc[,paste0("np",47:148)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",47:148)]))
     }
   } else if(type == "sizeclass_plus1"){
@@ -16,7 +18,7 @@ normalise_node_positions <- function(pc,type){
     pc[,paste0("np",3:6)] <- pc[,paste0("np",3:6)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",3:6)]))
     pc[,paste0("np",7:16)] <- pc[,paste0("np",7:16)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",7:16)]))
     pc[,paste0("np",17:46)] <- pc[,paste0("np",17:46)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",17:46)]))
-    if(ncol(pc) == 148){
+    if(six_node){
       pc[,paste0("np",47:148)] <- pc[,paste0("np",47:148)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",47:148)]))
     }
   } else if (type == "sizeclass_NAzero"){
@@ -24,7 +26,7 @@ normalise_node_positions <- function(pc,type){
     pc[,paste0("np",3:6)] <- pc[,paste0("np",3:6)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",3:6)]))
     pc[,paste0("np",7:16)] <- pc[,paste0("np",7:16)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",7:16)]))
     pc[,paste0("np",17:46)] <- pc[,paste0("np",17:46)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",17:46)]))
-    if(ncol(pc) == 148){
+    if(six_node){
       pc[,paste0("np",47:148)] <- pc[,paste0("np",47:148)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",47:148)]))
     }
     pc[is.na(pc)] <- 0
@@ -44,7 +46,7 @@ normalise_node_positions <- function(pc,type){
     pc[,paste0("np",19:31)] <- pc[,paste0("np",19:31)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",19:31)]))
     pc[,paste0("np",32:44)] <- pc[,paste0("np",32:44)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",32:44)]))
     pc[,paste0("np",45:46)] <- pc[,paste0("np",45:46)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",45:46)]))
-    if(ncol(pc) == 148){
+    if(six_node){
       pc[,paste0("np",47:48)] <- pc[,paste0("np",47:48)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",47:48)]))
       pc[,paste0("np",49:70)] <- pc[,paste0("np",49:70)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",49:70)]))
       pc[,paste0("np",71:124)] <- pc[,paste0("np",71:124)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",71:124)]))
@@ -63,7 +65,7 @@ normalise_node_positions <- function(pc,type){
     pc[,paste0("np",19:31)] <- pc[,paste0("np",19:31)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",19:31)]))
     pc[,paste0("np",32:44)] <- pc[,paste0("np",32:44)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",32:44)]))
     pc[,paste0("np",45:46)] <- pc[,paste0("np",45:46)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",45:46)]))
-    if(ncol(pc) == 148){
+    if(six_node){
       pc[,paste0("np",47:48)] <- pc[,paste0("np",47:48)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",47:48)]))
       pc[,paste0("np",49:70)] <- pc[,paste0("np",49:70)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",49:70)]))
       pc[,paste0("np",71:124)] <- pc[,paste0("np",71:124)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",71:124)]))
@@ -81,7 +83,7 @@ normalise_node_positions <- function(pc,type){
       pc[,paste0("np",19:31)] <- pc[,paste0("np",19:31)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",19:31)]))
       pc[,paste0("np",32:44)] <- pc[,paste0("np",32:44)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",32:44)]))
       pc[,paste0("np",45:46)] <- pc[,paste0("np",45:46)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",45:46)]))
-      if(ncol(pc) == 148){
+      if(six_node){
         pc[,paste0("np",47:48)] <- pc[,paste0("np",47:48)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",47:48)]))
         pc[,paste0("np",49:70)] <- pc[,paste0("np",49:70)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",49:70)]))
         pc[,paste0("np",71:124)] <- pc[,paste0("np",71:124)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",71:124)]))
@@ -90,20 +92,20 @@ normalise_node_positions <- function(pc,type){
       }
       pc[is.na(pc)] <- 0
     } else if(type == "motif"){
-      nm <- ifelse(ncol(pc) == 148, yes = 44, no = 17) # number of motifs
+      nm <- ifelse(six_node, yes = 44, no = 17) # number of motifs
       mp <- sapply(1:nm, function(x) motif_info(x, link = FALSE)) # motif positions
       for(i in mp){
         pc[,paste0("np",i)] <- pc[,paste0("np",i)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",i)]))
       }
     } else if(type == "motif_plus1"){
       pc <- pc + 1
-      nm <- ifelse(ncol(pc) == 148, yes = 44, no = 17) # number of motifs
+      nm <- ifelse(six_node, yes = 44, no = 17) # number of motifs
       mp <- sapply(1:nm, function(x) motif_info(x, link = FALSE)) # motif positions
       for(i in mp){
         pc[,paste0("np",i)] <- pc[,paste0("np",i)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",i)]))
       }
     } else if(type == "motif_NAzero"){
-      nm <- ifelse(ncol(pc) == 148, yes = 44, no = 17) # number of motifs
+      nm <- ifelse(six_node, yes = 44, no = 17) # number of motifs
       mp <- sapply(1:nm, function(x) motif_info(x, link = FALSE)) # motif positions
       for(i in mp){
         pc[,paste0("np",i)] <- pc[,paste0("np",i)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",i)]))

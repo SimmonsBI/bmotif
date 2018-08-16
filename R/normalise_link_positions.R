@@ -156,15 +156,15 @@ normalise_link_positions <- function(lp, type, six_node) {
     }
     lp <- replace(lp, which(is.nan(lp)), 0)
     return(lp)
-  }
-
-  if(type == "position"){
+  } else if(type == "position"){
     # divide by total number of times this edge position occurs
     # i.e. columnSums
     s <- colSums(lp)
     lp <- t(apply(lp, 1, function(x) {x / s}))
     lp <- replace(lp, which(is.nan(lp)), NA)
     return(lp)
+  } else {
+    stop("No valid normalisation method specified")
   }
 
 }

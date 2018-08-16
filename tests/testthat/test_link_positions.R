@@ -494,7 +494,7 @@ test_that("Test counts for the motifs with 6 nodes", {
 test_that("Check correct output formats", {
   lp <- link_positions(matrix(1,5,5), six_node = FALSE, weights = FALSE, normalisation = "none")
   lp_sum <- link_positions(matrix(1,5,5), six_node = FALSE, weights = FALSE, normalisation = "sum")
-  lp_sizeclass <- link_positions(matrix(1,5,5), six_node = FALSE, weights = FALSE, normalisation = "size class")
+  lp_sizeclass <- link_positions(matrix(1,5,5), six_node = FALSE, weights = FALSE, normalisation = "sizeclass")
   lp_pos <- link_positions(matrix(1,5,5), six_node = FALSE, weights = FALSE, normalisation = "position")
   lp_level <- link_positions(matrix(1,5,5), six_node = FALSE, weights = FALSE, normalisation = "levelsize")
   lp_motif <- link_positions(matrix(1,5,5), six_node = FALSE, weights = FALSE, normalisation = "motif")
@@ -513,7 +513,7 @@ test_that("Check correct output formats", {
 test_that("Check correct output formats", {
   lp <- link_positions(matrix(1,5,5), six_node = TRUE, weights = FALSE, normalisation = "none")
   lp_sum <- link_positions(matrix(1,5,5), six_node = TRUE, weights = FALSE, normalisation = "sum")
-  lp_sizeclass <- link_positions(matrix(1,5,5), six_node = TRUE, weights = FALSE, normalisation = "size class")
+  lp_sizeclass <- link_positions(matrix(1,5,5), six_node = TRUE, weights = FALSE, normalisation = "sizeclass")
   lp_pos <- link_positions(matrix(1,5,5), six_node = TRUE, weights = FALSE, normalisation = "position")
   lp_level <- link_positions(matrix(1,5,5), six_node = TRUE, weights = FALSE, normalisation = "levelsize")
   lp_motif <- link_positions(matrix(1,5,5), six_node = TRUE, weights = FALSE, normalisation = "motif")
@@ -547,16 +547,16 @@ test_that("Test sum-normalisation for single link matrix, six_node = TRUE", {
   expect_equal(rownames(lp), "r1 -- c1")
 })
 
-test_that("Test size class-normalisation for single link matrix", {
-  lp <- link_positions(matrix(1,1,1), six_node = FALSE, weights = FALSE, normalisation = "size class")
+test_that("Test sizeclass-normalisation for single link matrix", {
+  lp <- link_positions(matrix(1,1,1), six_node = FALSE, weights = FALSE, normalisation = "sizeclass")
   expect_equivalent(lp[1,1], 1)
   expect_equal(nrow(lp), 1)
   expect_equal(rownames(lp), "r1 -- c1")
   expect_true(all(is.na(lp[,2:29])))
 })
 
-test_that("Test size class-normalisation for single link matrix, six_node = TRUE", {
-  lp <- link_positions(matrix(1,1,1), six_node = TRUE, weights = FALSE, normalisation = "size class")
+test_that("Test sizeclass-normalisation for single link matrix, six_node = TRUE", {
+  lp <- link_positions(matrix(1,1,1), six_node = TRUE, weights = FALSE, normalisation = "sizeclass")
   expect_equivalent(lp[1,1], 1)
   expect_equal(nrow(lp), 1)
   expect_equal(ncol(lp), 106)
@@ -600,7 +600,7 @@ test_that("Test motif-normalisation for single link matrix, six_node = TRUE", {
 
 
 test_that("Test position-normalisation for single link matrix", {
-  lp <- link_positions(matrix(1,1,1), six_node = FALSE, weights = FALSE, normalisation = "size class")
+  lp <- link_positions(matrix(1,1,1), six_node = FALSE, weights = FALSE, normalisation = "sizeclass")
   expect_equivalent(lp[1,1], 1)
   expect_equal(nrow(lp), 1)
   expect_equal(rownames(lp), "r1 -- c1")
@@ -617,8 +617,8 @@ test_that("Test sum-normalised counts for the motif 4", {
   expect_equal( as.vector(lr[,5]), rep(0,3))
 })
 
-test_that("Test size class-normalised counts for the motif 4", {
-  lr <- link_positions( motifs[[4]], six_node = FALSE, weights = FALSE, normalisation = "size class" )
+test_that("Test sizeclass-normalised counts for the motif 4", {
+  lr <- link_positions( motifs[[4]], six_node = FALSE, weights = FALSE, normalisation = "sizeclass" )
   expect_equal( as.vector(lr[,1]), rep(1,3))
   expect_equal( as.vector(lr[,2]), rep(0,3))
   expect_equal( as.vector(lr[,3]), rep(1,3))
@@ -665,8 +665,8 @@ test_that("Test sum-normalised counts for the motif 6", {
   expect_true(all(lr[,9:29] == 0))
 })
 
-test_that("Test size class-normalised counts for motif 6", {
-  lr <- link_positions( motifs[[6]], six_node = FALSE, weights = FALSE, normalisation = "size class" )
+test_that("Test sizeclass-normalised counts for motif 6", {
+  lr <- link_positions( motifs[[6]], six_node = FALSE, weights = FALSE, normalisation = "sizeclass" )
   expect_equal( as.vector(lr[,1]), rep(1,4))
   expect_equal( as.vector(lr[,2]), rep(0.5,4))
   expect_equal( as.vector(lr[,3]), rep(0.5,4))
@@ -707,8 +707,8 @@ test_that("Test sum-normalised counts for the motif 9", {
   expect_equal( as.vector(lr[,30]), rep(0,4))
 })
 
-test_that("Test size class-normalised counts for the motif 9", {
-  lr <- link_positions( motifs[[9]], six_node = TRUE, weights = FALSE, normalisation = "size class" )
+test_that("Test sizeclass-normalised counts for the motif 9", {
+  lr <- link_positions( motifs[[9]], six_node = TRUE, weights = FALSE, normalisation = "sizeclass" )
   expect_equal( as.vector(lr[,1]), rep(1,4))
   expect_equal( as.vector(lr[,2]), c(0,0, 1/3, 1))
   expect_equal( as.vector(lr[,3]), c(1,1, 2/3, 0))
@@ -769,13 +769,13 @@ test_that("Test motif-normalised counts for the motif 10", {
 
 # ------------------- TEST EXTRA NORMALISATION METHODS ----------------------
 
-test_that("Test size class_plus1", {
-  lr <- link_positions(rbm(5,5), six_node = FALSE, weights = FALSE, normalisation = "size class_plus1")
+test_that("Test sizeclass_plus1", {
+  lr <- link_positions(rbm(5,5), six_node = FALSE, weights = FALSE, normalisation = "sizeclass_plus1")
   expect(!any(is.na(lr)))
 })
 
-test_that("Test size class_NAzero", {
-  lr <- link_positions(rbm(5,5), six_node = FALSE, weights = FALSE, normalisation = "size class_NAzero")
+test_that("Test sizeclass_NAzero", {
+  lr <- link_positions(rbm(5,5), six_node = FALSE, weights = FALSE, normalisation = "sizeclass_NAzero")
   expect(!any(is.na(lr)))
 })
 

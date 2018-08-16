@@ -7,7 +7,7 @@ link_positions <- function(M, six_node = FALSE, weights, normalisation = "none")
   #' otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
   #'
   #' @param six_node Logical; should positions in six node motifs be counted? Defaults to FALSE.
-  #' @param normalisation Which normalisation should be used: "none", "sum", "size class" or "position"?  Defaults to "none".
+  #' @param normalisation Which normalisation should be used: "none", "sum", "sizeclass" or "position"?  Defaults to "none".
   #' @param weights Logical; Should weights of the links be taken into account?
   #' @details Counts the number of times each link in a network occurs in each of the 29 (if \code{six_node} = FALSE) or 106 (if \code{six_node} = TRUE) unique link positions within motifs (to quantify a link's structural role).
   #' If \code{six_node} = FALSE, link positions in all motifs containing between 2 and 5 nodes are counted. If \code{six_node} = TRUE, link positions in all motifs containing between 2 and 6 nodes are counted. Analyses where \code{six_node} = FALSE are substantially faster
@@ -24,11 +24,11 @@ link_positions <- function(M, six_node = FALSE, weights, normalisation = "none")
   #'  \item{\strong{"position"}: divides position counts for each link by the total number of times any link occurs in that link position (divides each element in a column by the column sum). This gives a measure of how often a link occurs in a position relative to the other links in the network.}
   #'  \item{\strong{Size class normalisation}
   #'  \itemize{
-  #'  \item{\strong{"size class"}: divides position counts for each link by the total number of times that link appears in any position within the same motif size class (the number of nodes a motif contains).}
-  #'  \item{\strong{"size class_plus1"}: same as 'size class' but adds one to all position counts. If a link does not occur in any motifs in a given size class, 'size class' normalisation
-  #'  will return NAs. 'size class_plus1' avoids this by adding one to all counts.}
-  #'  \item{\strong{"size class_NAzero"}: same as 'size class' but replaces all NA values with 0. If a link does not occur in any motifs in a given size class, 'size class' normalisation
-  #'  will return NAs. 'size class_NAzero' avoids this by replacing NAs with zero.}
+  #'  \item{\strong{"sizeclass"}: divides position counts for each link by the total number of times that link appears in any position within the same motif size class (the number of nodes a motif contains).}
+  #'  \item{\strong{"sizeclass_plus1"}: same as 'sizeclass' but adds one to all position counts. If a link does not occur in any motifs in a given size class, 'sizeclass' normalisation
+  #'  will return NAs. 'sizeclass_plus1' avoids this by adding one to all counts.}
+  #'  \item{\strong{"sizeclass_NAzero"}: same as 'sizeclass' but replaces all NA values with 0. If a link does not occur in any motifs in a given size class, 'sizeclass' normalisation
+  #'  will return NAs. 'sizeclass_NAzero' avoids this by replacing NAs with zero.}
   #'  }
   #'  }
   #'  \item{\strong{Levelsize normalisation}
@@ -63,7 +63,7 @@ link_positions <- function(M, six_node = FALSE, weights, normalisation = "none")
   #'
   #' By default, the elements of the data frame will be the raw link position counts.
   #' If \code{weight = TRUE}, link position counts will be multiplied by the link weight.
-  #' If \code{normalisation} is set to "sum", "size class" or "position", the elements will be
+  #' If \code{normalisation} is set to "sum", "sizeclass" or "position", the elements will be
   #' normalised position counts as described above.
   #'
   #' @export
@@ -92,16 +92,11 @@ link_positions <- function(M, six_node = FALSE, weights, normalisation = "none")
   if(all(apply(M, 1:2, function(x) x == 0))){stop("The matrix has no links (all elements are zero)")} # make sure M has some links
   if(class(six_node) != "logical"){stop("'six_node' must be of class 'logical' i.e. TRUE or FALSE")} # make sure six_node is logical i.e. TRUE or FALSE
   if(class(normalisation) != "character"){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
-  if(!normalisation %in% c("none","sum","size class", "size class_plus1", "size class_NAzero", 
-                           "levelsize", "levelsize_plus1", "levelsize_NAzero", 
-                           "motif", "motif_plus1", "motif_NAzero",
-                           "position")){
-    stop("'normalisation' must equal 'none','sum','size class', 'size class_plus1', 'size class_NAzero', 
-                           'levelsize', 'levelsize_plus1', 'levelsize_NAzero', 
-        'motif', 'motif_plus1', 'motif_NAzero',
-         'position'")}
+  if(!normalisation %in% c("none","sum","sizeclass", "sizeclass_plus1", "sizeclass_NAzero","levelsize", "levelsize_plus1", "levelsize_NAzero", "motif", "motif_plus1", "motif_NAzero","position")){
+    stop("'normalisation' must equal 'none','sum', 'position', 'sizeclass', 'sizeclass_plus1', 'sizeclass_NAzero', 'levelsize', 'levelsize_plus1', 'levelsize_NAzero','motif', 'motif_plus1' or 'motif_NAzero'")
+  }
   if(any(duplicated(rownames(M))) | any(duplicated(colnames(M)))){stop("Input matrix must not have duplicate row or column names")}
-  if((normalisation == "sum" | normalisation == "size class" | normalisation == "levelsize" | normalisation == "motif") & weights == TRUE){warning("Please note that with 'sum', 'size class', 'levelsize' or 'motif' normalisation, the results won't change if weights are taken into account. This is because when weights = TRUE, each row of the output is multiplied by a fixed factor (the link's weight) and therefore the relative proportions are the same as if weights were not considered. Consider setting normalisation to 'position' or 'none'.")}
+  if((normalisation == "sum" | normalisation == "sizeclass" | normalisation == "levelsize" | normalisation == "motif") & weights == TRUE){warning("Please note that with 'sum', 'sizeclass', 'levelsize' or 'motif' normalisation, the results won't change if weights are taken into account. This is because when weights = TRUE, each row of the output is multiplied by a fixed factor (the link's weight) and therefore the relative proportions are the same as if weights were not considered. Consider setting normalisation to 'position' or 'none'.")}
 
   W <- M # store copy of weighted matrix
   M[M > 0] <- 1 # ensure M is binary

@@ -15,7 +15,7 @@ otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij
 
 \item{weights}{Logical; Should weights of the links be taken into account?}
 
-\item{normalisation}{Which normalisation should be used: "none", "sum", "size class" or "position"?  Defaults to "none".}
+\item{normalisation}{Which normalisation should be used: "none", "sum", "sizeclass" or "position"?  Defaults to "none".}
 }
 \value{
 Returns a data frame with one column for each link position: 29 columns if \code{six_node} is FALSE, and 106 columns if \code{six_node} is TRUE.
@@ -25,7 +25,7 @@ Each row corresponds to one link in the network. Row names are gives as "x -- y"
 
 By default, the elements of the data frame will be the raw link position counts.
 If \code{weight = TRUE}, link position counts will be multiplied by the link weight.
-If \code{normalisation} is set to "sum", "size class" or "position", the elements will be
+If \code{normalisation} is set to "sum", "sizeclass" or "position", the elements will be
 normalised position counts as described above.
 }
 \description{
@@ -47,11 +47,11 @@ Links between nodes with more interactions will tend to appear in more positions
  \item{\strong{"position"}: divides position counts for each link by the total number of times any link occurs in that link position (divides each element in a column by the column sum). This gives a measure of how often a link occurs in a position relative to the other links in the network.}
  \item{\strong{Size class normalisation}
  \itemize{
- \item{\strong{"size class"}: divides position counts for each link by the total number of times that link appears in any position within the same motif size class (the number of nodes a motif contains).}
- \item{\strong{"size class_plus1"}: same as 'size class' but adds one to all position counts. If a link does not occur in any motifs in a given size class, 'size class' normalisation
- will return NAs. 'size class_plus1' avoids this by adding one to all counts.}
- \item{\strong{"size class_NAzero"}: same as 'size class' but replaces all NA values with 0. If a link does not occur in any motifs in a given size class, 'size class' normalisation
- will return NAs. 'size class_NAzero' avoids this by replacing NAs with zero.}
+ \item{\strong{"sizeclass"}: divides position counts for each link by the total number of times that link appears in any position within the same motif size class (the number of nodes a motif contains).}
+ \item{\strong{"sizeclass_plus1"}: same as 'sizeclass' but adds one to all position counts. If a link does not occur in any motifs in a given size class, 'sizeclass' normalisation
+ will return NAs. 'sizeclass_plus1' avoids this by adding one to all counts.}
+ \item{\strong{"sizeclass_NAzero"}: same as 'sizeclass' but replaces all NA values with 0. If a link does not occur in any motifs in a given size class, 'sizeclass' normalisation
+ will return NAs. 'sizeclass_NAzero' avoids this by replacing NAs with zero.}
  }
  }
  \item{\strong{Levelsize normalisation}

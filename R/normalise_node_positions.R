@@ -1,7 +1,7 @@
 normalise_node_positions <- function(pc,type,six_node){
   if(!ncol(pc) %in% c(46, 148)){stop("Something has gone very wrong: pc does not have 46 or 148 columns")}
-  stopifnot(six_node == TRUE & ncol(pc) != 148)
-  stopifnot(six_node == FALSE & ncol(pc) != 46)
+  if(six_node == TRUE & ncol(pc) != 148){stop("")}
+  if(six_node == FALSE & ncol(pc) != 46){stop("")}
   if(type == "none"){
     return(pc)
   } else if(type == "sizeclass"){

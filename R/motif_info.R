@@ -1,11 +1,11 @@
 motif_info <- function(m, node = TRUE, link = TRUE) {
-# m is the number of the motif 
+# m is the number of the motif
 # the function returns which node and link positions are in that motif
 # result is a list, first component: vector of node positions
   # second component: vector of link positions
 # if node = FALSE, only second component of the list returned
   # likewise if link = FALSE, only first component returned
- 
+
   if (m == 1) {
     l <- list(c(1,2), c(1))
   }
@@ -73,7 +73,7 @@ motif_info <- function(m, node = TRUE, link = TRUE) {
     l <- list(62:64, 41:42)
   }
   if (m == 23) {
-    l <- list(66:68, 43:45)
+    l <- list(65:68, 43:45)
   }
   if (m == 24) {
     l <- list(69:70, 46)
@@ -138,7 +138,7 @@ motif_info <- function(m, node = TRUE, link = TRUE) {
   if (m == 44) {
     l <- list(147:148, 106)
   }
-  
+
   if(node & link) {
     return(l)
   }

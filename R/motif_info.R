@@ -88,7 +88,7 @@ motif_info <- function(m, node = TRUE, link = TRUE) {
     l <- list(79:82, 53:55)
   }
   if (m == 28) {
-    l <- list(83:87, 56:60)
+    l <- list(83:88, 56:60)
   }
   if (m == 29) {
     l <- list(89:94, 61:66)

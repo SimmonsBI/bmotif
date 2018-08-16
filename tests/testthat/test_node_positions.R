@@ -134,6 +134,86 @@ test_that("Test counts for motif 7", {
   expect_identical(all(np[,17:148] == 0), TRUE)
 })
 
+test_that("Test counts for motif 8", {
+  np <- node_positions(M = motifs[[8]], six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none", normalisation = "none")
+  expect_equal(np[,17], c(0,0,0,0,1))
+  expect_equal(np[,18], c(1,1,1,1,0))
+  expect_identical(all(np[,19:148] == 0), TRUE)
+})
+
+test_that("Test counts for motif 9", {
+  np <- node_positions(M = motifs[[9]], six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none", normalisation = "none")
+  expect_equal(np[,19], c(0,0,0,0,1))
+  expect_equal(np[,20], c(0,0,0,1,0))
+  expect_equal(np[,21], c(1,1,0,0,0))
+  expect_equal(np[,22], c(0,0,1,0,0))
+  expect_identical(all(np[,23:148] == 0), TRUE)
+})
+
+test_that("Test counts for motif 10", {
+  np <- node_positions(M = motifs[[10]], six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none", normalisation = "none")
+  expect_equal(np[,23], c(0,0,0,1,1))
+  expect_equal(np[,24], c(1,0,1,0,0))
+  expect_equal(np[,25], c(0,1,0,0,0))
+  expect_identical(all(np[,26:148] == 0), TRUE)
+})
+
+test_that("Test counts for motif 11", {
+  np <- node_positions(M = motifs[[11]], six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none", normalisation = "none")
+  expect_equal(np[,26], c(0,0,0,0,1))
+  expect_equal(np[,27], c(0,0,0,1,0))
+  expect_equal(np[,28], c(1,0,0,0,0))
+  expect_equal(np[,29], c(0,1,1,0,0))
+  expect_identical(all(np[,30:148] == 0), TRUE)
+})
+
+test_that("Test counts for motif 12", {
+  np <- node_positions(M = motifs[[12]], six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none", normalisation = "none")
+  expect_equal(np[,30], c(0,0,0,1,1))
+  expect_equal(np[,31], c(1,1,1,0,0))
+  expect_identical(all(np[,32:148] == 0), TRUE)
+})
+
+test_that("Test counts for motif 13", {
+  np <- node_positions(M = motifs[[13]], six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none", normalisation = "none")
+  expect_equal(np[,32], c(0,0,0,1,1))
+  expect_equal(np[,33], c(0,0,1,0,0))
+  expect_equal(np[,34], c(1,0,0,0,0))
+  expect_equal(np[,35], c(0,1,0,0,0))
+  expect_identical(all(np[,36:148] == 0), TRUE)
+})
+
+test_that("Test counts for motif 14", {
+  np <- node_positions(M = motifs[[14]], six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none", normalisation = "none")
+  expect_equal(np[,36], c(0,0,1,0,1))
+  expect_equal(np[,37], c(0,0,0,1,0))
+  expect_equal(np[,38], c(1,1,0,0,0))
+  expect_identical(all(np[,39:148] == 0), TRUE)
+})
+
+test_that("Test counts for motif 15", {
+  np <- node_positions(M = motifs[[15]], six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none", normalisation = "none")
+  expect_equal(np[,39], c(0,0,0,0,1))
+  expect_equal(np[,40], c(0,0,1,1,0))
+  expect_equal(np[,41], c(1,0,0,0,0))
+  expect_equal(np[,42], c(0,1,0,0,0))
+  expect_identical(all(np[,43:148] == 0), TRUE)
+})
+
+test_that("Test counts for motif 16", {
+  np <- node_positions(M = motifs[[16]], six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none", normalisation = "none")
+  expect_equal(np[,43], c(0,0,1,1,1))
+  expect_equal(np[,44], c(1,1,0,0,0))
+  expect_identical(all(np[,45:148] == 0), TRUE)
+})
+
+test_that("Test counts for motif 17", {
+  np <- node_positions(M = motifs[[17]], six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none", normalisation = "none")
+  expect_equal(np[,45], c(0,1,1,1,1))
+  expect_equal(np[,46], c(1,0,0,0,0))
+  expect_identical(all(np[,47:148] == 0), TRUE)
+})
+
 test_that("Error messages work",{
   expect_error(object = node_positions("a"), "'M' must be an object of class 'matrix'")
   expect_error(object = node_positions(matrix("a",3,3)), "Elements of 'M' must be numeric")

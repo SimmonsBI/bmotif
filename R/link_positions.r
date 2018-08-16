@@ -21,9 +21,38 @@ link_positions <- function(M, six_node = FALSE, weights, normalisation = "none")
   #' \itemize{
   #'  \item{\strong{"none"}: performs no normalisation and will return the raw position counts.}
   #'  \item{\strong{"sum"}: divides position counts for each link by the total number of times that link appears in any position (divides each element in a row by the row sum).}
-  #'  \item{\strong{"size class"}: divides position counts for each link by the total number of times that link appears in any position within the same motif size class.}
   #'  \item{\strong{"position"}: divides position counts for each link by the total number of times any link occurs in that link position (divides each element in a column by the column sum). This gives a measure of how often a link occurs in a position relative to the other links in the network.}
-  #' }
+  #'  \item{\strong{Size class normalisation}
+  #'  \itemize{
+  #'  \item{\strong{"size class"}: divides position counts for each link by the total number of times that link appears in any position within the same motif size class (the number of nodes a motif contains).}
+  #'  \item{\strong{"size class_plus1"}: same as 'size class' but adds one to all position counts. If a link does not occur in any motifs in a given size class, 'size class' normalisation
+  #'  will return NAs. 'size class_plus1' avoids this by adding one to all counts.}
+  #'  \item{\strong{"size class_NAzero"}: same as 'size class' but replaces all NA values with 0. If a link does not occur in any motifs in a given size class, 'size class' normalisation
+  #'  will return NAs. 'size class_NAzero' avoids this by replacing NAs with zero.}
+  #'  }
+  #'  }
+  #'  \item{\strong{Levelsize normalisation}
+  #'  \itemize{
+  #'  \item{\strong{"levelsize"}: divides position counts for each link by the total number of times that link appears in any position within a motif with a given number of nodes in the top level and the bottom level.
+  #'  For example, the relative frequencies of all position counts in motifs with three nodes in the top level and two nodes in the bottom level will sum to one, as will the relative frequency of all position counts in motifs with 2 nodes in the top level and
+  #'  two nodes in the bottom level, and so on.}
+  #'  \item{\strong{"levelsize_plus1"}: same as 'levelsize' but adds one to all position counts. If a link does not occur in any motifs with a given number of nodes in the top level and the bottom level, 'levelsize' normalisation
+  #'  will return NAs. 'levelsize_plus1' avoids this by adding one to all counts.}
+  #'  \item{\strong{"levelsize_NAzero"}: same as 'levelsize' but replaces all NA values with 0. If a link does not occur in any motifs with a given number of nodes in the top level and the bottom level, 'levelsize' normalisation
+  #'  will return NAs. 'levelsize_NAzero' avoids this by replacing NAs with zero.}
+  #'  }
+  #'  }
+  #'  \item{\strong{Motif normalisation}
+  #'  \itemize{
+  #'  \item{\strong{"motif"}: divides position counts for each link by the total number of times that link appears in any position within the same motif.
+  #'  For example, the relative frequencies of all position counts in motif 5 will sum to one, as will the relative frequency of all position counts in motif 10, and so on.}
+  #'  \item{\strong{"motif_plus1"}: same as 'motif' but adds one to all position counts. If a link does not occur in a particular motif, 'motif' normalisation
+  #'  will return NAs. 'motif_plus1' avoids this by adding one to all counts.}
+  #'  \item{\strong{"motif_NAzero"}: same as 'motif' but replaces all NA values with 0. If a link does not occur in a particular motif, 'levelsize' normalisation
+  #'  will return NAs. 'motif_NAzero' avoids this by replacing NAs with zero.}
+  #'  }
+  #'  }
+  #'  }
   #'
   #' If a matrix is provided without row or column names, default names will be assigned: the first row will be called called 'r1', the second row will be called 'r2' and so on. Similarly, the first column will be called 'c1', the second column will be called 'c2' and so on.
   #'
@@ -63,9 +92,16 @@ link_positions <- function(M, six_node = FALSE, weights, normalisation = "none")
   if(all(apply(M, 1:2, function(x) x == 0))){stop("The matrix has no links (all elements are zero)")} # make sure M has some links
   if(class(six_node) != "logical"){stop("'six_node' must be of class 'logical' i.e. TRUE or FALSE")} # make sure six_node is logical i.e. TRUE or FALSE
   if(class(normalisation) != "character"){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
-  if(!normalisation %in% c("none","sum","size class", "position")){stop("'normalisation' must equal 'none', sum', 'size class' or 'position'")}
+  if(!normalisation %in% c("none","sum","size class", "size class_plus1", "size class_NAzero", 
+                           "levelsize", "levelsize_plus1", "levelsize_NAzero", 
+                           "motif", "motif_plus1", "motif_NAzero",
+                           "position")){
+    stop("'normalisation' must equal 'none','sum','size class', 'size class_plus1', 'size class_NAzero', 
+                           'levelsize', 'levelsize_plus1', 'levelsize_NAzero', 
+        'motif', 'motif_plus1', 'motif_NAzero',
+         'position'")}
   if(any(duplicated(rownames(M))) | any(duplicated(colnames(M)))){stop("Input matrix must not have duplicate row or column names")}
-  if((normalisation == "sum" | normalisation == "size class") & weights == TRUE){warning("Please note that with 'sum' or 'size class' normalisation, the results won't change if weights are taken into account. This is because when weights = TRUE, each row of the output is multiplied by a fixed factor (the link's weight) and therefore the relative proportions are the same as if weights were not considered. Consider setting normalisation to 'position' or 'none'.")}
+  if((normalisation == "sum" | normalisation == "size class" | normalisation == "levelsize" | normalisation == "motif") & weights == TRUE){warning("Please note that with 'sum', 'size class', 'levelsize' or 'motif' normalisation, the results won't change if weights are taken into account. This is because when weights = TRUE, each row of the output is multiplied by a fixed factor (the link's weight) and therefore the relative proportions are the same as if weights were not considered. Consider setting normalisation to 'position' or 'none'.")}
 
   W <- M # store copy of weighted matrix
   M[M > 0] <- 1 # ensure M is binary
@@ -414,67 +450,20 @@ link_positions <- function(M, six_node = FALSE, weights, normalisation = "none")
   # now clean rows where the edge is not present
   lp <- subset(lp, lp[,1] == 1)
 
-  # --------------- CONSIDER WEIGHTS
+  # --------------- CONSIDER WEIGHTS -------------------------------------
   if (weights) {
     for (k in 1:nrow(lp)) {
       lp[k,] <- lp[k,] * edges[k,4]
     }
   }
 
-  # --------------- NORMALISE
-  norm_sum <- function(x) {
-    # basically does x/sum(x), not changing zero vectors
-    if (sum(x) == 0) {
-      return(x)
-    } else {
-      return (x/sum(x))
-    }
-  }
+  # --------------- NORMALISE --------------------------------------------
 
   if (normalisation == "none") {
     return(as.data.frame(lp))
-  }
-
-  if (normalisation == "sum") {
-    # divide by total number of times that each edge occurs in any position
-    # the required number is exactly the rowsum
-
-    lp <- t(apply(lp, 1, function(x) {norm_sum(x)}))
-    return(as.data.frame(lp))
-  }
-
-  if (normalisation == "size class") {
-    # divide by total number of times that each edge occurs in a position within the same motif size class
-    # edge 2 and 3: sum over columns 2 and 3
-    # edge 4-9:
-    norm_sizeclass <- function(x, i, j) {
-    # basically does x/rowSums(lp[,i:j]), leaving zeros untouched
-      s <- rowSums(lp[,i:j])
-
-      for (k in 1:length(x)) {
-        if (s[k] != 0) {
-          x[k] <- x[k] / s[k]
-        }
-      }
-      return(x)
-    }
-
-    lp[, 2:3] <- apply(lp, 2, function(x) {norm_sizeclass(x, 2, 3)})[,2:3]
-    # need apply(lp, 2, function(x) {x/rowSums(lp[,2:3])})[,2:3]
-    lp[, 4:9] <- apply(lp, 2, function(x) {norm_sizeclass(x, 4, 9)})[,4:9]
-    lp[, 10:29] <- apply(lp, 2, function(x) {norm_sizeclass(x, 10, 29)})[,10:29]
-
-    if (six_node) {
-      lp[, 30:106] <- apply(lp, 2, function(x) {norm_sizeclass(x, 30, 106)})[,30:106]
-    }
-    return(as.data.frame(lp))
-  }
-
-  if(normalisation == "position"){
-    # divide by total number of times this edge position occurs
-    # i.e. columnSums
-    lp <- apply(lp, 2, function(x) {norm_sum(x)})
-    return(as.data.frame(lp))
+  } else {
+    norm_lp <- normalise_link_positions(lp, type = normalisation, six_node = six_node)
+    return(as.data.frame(norm_lp))
   }
 
 }

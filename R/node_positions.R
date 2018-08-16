@@ -11,7 +11,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   #' @param level Which node level should positions be calculated for: "rows", "columns" or "all"?  Defaults to "all".
   #' @param weights_method does a thing
   #' @param weights_combine does another thing
-  #' @param normalisation Which normalisation should be used: "none", "sum" or "size class"?  Defaults to "none".
+  #' @param normalisation Which normalisation should be used: "none", "sum" or "sizeclass"?  Defaults to "none".
   #' @details Counts the number of times each node in a network occurs in each of the 46 (if \code{six_node} = FALSE) or 148 (if \code{six_node} = TRUE) unique positions within motifs (to quantify a node's structural role).
   #' If \code{six_node} = FALSE, node positions in all motifs containing between 2 and 5 nodes are counted. If \code{six_node} = TRUE, node positions in all motifs containing between 2 and 6 nodes are counted. Analyses where \code{six_node} = FALSE are substantially faster
   #' than when \code{six_node} = TRUE, especially for large networks. For large networks, counting six node motifs is also memory intensive. In some cases, R can crash if there is not enough memory.
@@ -26,11 +26,11 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   #'  \item{\strong{"position"}: divides position counts for each node by the total number of times any node occurs in that node position (divides each element in a column by the column sum). This gives a measure of how often a node occurs in a position relative to the other nodes in the network.}
   #'  \item{\strong{Size class normalisation}
   #'  \itemize{
-  #'  \item{\strong{"size class"}: divides position counts for each node by the total number of times that node appears in any position within the same motif size class (the number of nodes a motif contains).}
-  #'  \item{\strong{"size class_plus1"}: same as 'size class' but adds one to all position counts. If a species does not occur in any motifs in a given size class, 'size class' normalisation
-  #'  will return NAs. 'size class_plus1' avoids this by adding one to all counts.}
-  #'  \item{\strong{"size class_NAzero"}: same as 'size class' but replaces all NA values with 0. If a species does not occur in any motifs in a given size class, 'size class' normalisation
-  #'  will return NAs. 'size class_NAzero' avoids this by replacing NAs with zero.}
+  #'  \item{\strong{"sizeclass"}: divides position counts for each node by the total number of times that node appears in any position within the same motif size class (the number of nodes a motif contains).}
+  #'  \item{\strong{"sizeclass_plus1"}: same as 'sizeclass' but adds one to all position counts. If a species does not occur in any motifs in a given size class, 'sizeclass' normalisation
+  #'  will return NAs. 'sizeclass_plus1' avoids this by adding one to all counts.}
+  #'  \item{\strong{"sizeclass_NAzero"}: same as 'sizeclass' but replaces all NA values with 0. If a species does not occur in any motifs in a given size class, 'sizeclass' normalisation
+  #'  will return NAs. 'sizeclass_NAzero' avoids this by replacing NAs with zero.}
   #'  }
   #'  }
   #'  \item{\strong{Levelsize normalisation}
@@ -86,7 +86,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   if(class(level) != "character"){stop("'level' must be of class 'character'")} # make sure level is a character
   if(!level %in% c("rows","columns","all")){stop("'level' must equal 'rows', 'columns' or 'all'")} # make sure level equals 'rows', 'columns' or 'all'
   if(class(normalisation) != "character"){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
-  if(!normalisation %in% c("none","sum","size class", "size class_plus1", "size class_NAzero", "position","levelsize","levelsize_plus1","levelsize_NAzero","motif","motif_plus1","motif_NAzero")){stop("'normalisation' must equal 'none','sum','size class', 'size class_plus1', 'size class_NAzero', 'position','levelsize','levelsize_plus1', 'levelsize_NAzero', 'motif','motif_plus1','motif_NAzero'")} # make sure normalisation equals 'none', 'sum' or 'size class'
+  if(!normalisation %in% c("none","sum","sizeclass", "sizeclass_plus1", "sizeclass_NAzero", "position","levelsize","levelsize_plus1","levelsize_NAzero","motif","motif_plus1","motif_NAzero")){stop("'normalisation' must equal 'none','sum','sizeclass', 'sizeclass_plus1', 'sizeclass_NAzero', 'position','levelsize','levelsize_plus1', 'levelsize_NAzero', 'motif','motif_plus1','motif_NAzero'")} # make sure normalisation equals 'none', 'sum' or 'sizeclass'
   if(any(duplicated(rownames(M))) | any(duplicated(colnames(M)))){stop("Input matrix must not have duplicate row or column names")}
   if(!weights_method %in% c('none', 'mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all')) {
     stop("weights_method must be one of 'none', 'mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all'.")

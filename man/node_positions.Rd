@@ -22,7 +22,7 @@ matrix.}
 
 \item{weights_combine}{does another thing}
 
-\item{normalisation}{Which normalisation should be used: "none", "sum" or "size class"?  Defaults to "none".}
+\item{normalisation}{Which normalisation should be used: "none", "sum" or "sizeclass"?  Defaults to "none".}
 }
 \value{
 Returns a data frame with one column for each node position: 46 columns if \code{six_node} is FALSE, and 148 columns if \code{six_node} is TRUE.
@@ -52,11 +52,11 @@ Nodes with more interactions will tend to appear in more positions. Normalisatio
  \item{\strong{"position"}: divides position counts for each node by the total number of times any node occurs in that node position (divides each element in a column by the column sum). This gives a measure of how often a node occurs in a position relative to the other nodes in the network.}
  \item{\strong{Size class normalisation}
  \itemize{
- \item{\strong{"size class"}: divides position counts for each node by the total number of times that node appears in any position within the same motif size class (the number of nodes a motif contains).}
- \item{\strong{"size class_plus1"}: same as 'size class' but adds one to all position counts. If a species does not occur in any motifs in a given size class, 'size class' normalisation
- will return NAs. 'size class_plus1' avoids this by adding one to all counts.}
- \item{\strong{"size class_NAzero"}: same as 'size class' but replaces all NA values with 0. If a species does not occur in any motifs in a given size class, 'size class' normalisation
- will return NAs. 'size class_NAzero' avoids this by replacing NAs with zero.}
+ \item{\strong{"sizeclass"}: divides position counts for each node by the total number of times that node appears in any position within the same motif size class (the number of nodes a motif contains).}
+ \item{\strong{"sizeclass_plus1"}: same as 'sizeclass' but adds one to all position counts. If a species does not occur in any motifs in a given size class, 'sizeclass' normalisation
+ will return NAs. 'sizeclass_plus1' avoids this by adding one to all counts.}
+ \item{\strong{"sizeclass_NAzero"}: same as 'sizeclass' but replaces all NA values with 0. If a species does not occur in any motifs in a given size class, 'sizeclass' normalisation
+ will return NAs. 'sizeclass_NAzero' avoids this by replacing NAs with zero.}
  }
  }
  \item{\strong{Levelsize normalisation}

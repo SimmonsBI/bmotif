@@ -2,7 +2,7 @@ normalise_node_positions <- function(pc,type){
   if(!ncol(pc) %in% c(46, 148)){stop("Something has gone very wrong: pc does not have 46 or 148 columns")}
   if(type == "none"){
     return(pc)
-  } else if(type == "size class"){
+  } else if(type == "sizeclass"){
     pc[,paste0("np",1:2)] <- pc[,paste0("np",1:2)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",1:2)]))
     pc[,paste0("np",3:6)] <- pc[,paste0("np",3:6)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",3:6)]))
     pc[,paste0("np",7:16)] <- pc[,paste0("np",7:16)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",7:16)]))
@@ -10,7 +10,7 @@ normalise_node_positions <- function(pc,type){
     if(ncol(pc) == 148){
       pc[,paste0("np",47:148)] <- pc[,paste0("np",47:148)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",47:148)]))
     }
-  } else if(type == "size class_plus1"){
+  } else if(type == "sizeclass_plus1"){
     pc <- pc + 1
     pc[,paste0("np",1:2)] <- pc[,paste0("np",1:2)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",1:2)]))
     pc[,paste0("np",3:6)] <- pc[,paste0("np",3:6)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",3:6)]))
@@ -19,7 +19,7 @@ normalise_node_positions <- function(pc,type){
     if(ncol(pc) == 148){
       pc[,paste0("np",47:148)] <- pc[,paste0("np",47:148)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",47:148)]))
     }
-  } else if (type == "size class_NAzero"){
+  } else if (type == "sizeclass_NAzero"){
     pc[,paste0("np",1:2)] <- pc[,paste0("np",1:2)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",1:2)]))
     pc[,paste0("np",3:6)] <- pc[,paste0("np",3:6)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",3:6)]))
     pc[,paste0("np",7:16)] <- pc[,paste0("np",7:16)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",7:16)]))
@@ -110,7 +110,7 @@ normalise_node_positions <- function(pc,type){
       }
       pc[is.na(pc)] <- 0
     } else {
-    stop("'type' must be a character string equal to 'sum', 'size class', 'position' or 'levelsize'") # if 'type' does not equal 'sum' or 'size class' return an error
+    stop("'type' must be a character string equal to 'sum', 'sizeclass', 'position' or 'levelsize'") # if 'type' does not equal 'sum' or 'sizeclass' return an error
   }
   return(pc)
 }

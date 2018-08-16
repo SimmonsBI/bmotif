@@ -95,8 +95,6 @@ test_that("'sizeclass_plus1' removes all NAs/NaNs",{
   }
 })
 
-
-
 test_that("'levelsize_plus1' removes all NAs/NaNs",{
   for(i in 1:10){
     m <- motifs[[sample(44,size = 1)]]

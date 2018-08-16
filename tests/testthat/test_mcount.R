@@ -1,8 +1,14 @@
 context("mcount")
 
 # test against subgraph extraction method
-# rbm(m = , n = )
-# mcount_minors(W = m, six_node = FALSE)
+test_that("Comparing with motif extraction algorithm", {
+  for (i in 1:10) {
+    W <- rbm(6,6)
+    mc <- mcount(W, six_node = TRUE, mean_weight = FALSE, standard_dev = FALSE, normalisation = FALSE)$frequency
+    mc_minors <- mcount_minors(W = W, six_node = TRUE)
+    expect_equal(mc, mc_minors)
+  }
+})
 
 # tests with block matrices
 mlist2 <- motifs[1]

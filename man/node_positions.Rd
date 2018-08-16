@@ -31,7 +31,7 @@ Columns names are given as "npx" where x is the ID of the position as described 
 For a network with A rows and P columns, by default (where \code{level} = "all") the data frame has A + P rows, one for each node. If \code{level} = "rows", the data frame will have A rows, one for each row node;
 if \code{level} = "columns", it will have P rows, one for each column node.
 
-By default, the elements of this data frame will be the raw position counts. If \code{normalisation} is set to "sum" or "size class", the elements will be
+By default, the elements of this data frame will be the raw position counts. If \code{normalisation} is set to something other than "none", the elements will be
 normalised position counts as described above.
 }
 \description{
@@ -70,7 +70,6 @@ Nodes with more interactions will tend to appear in more positions. Normalisatio
  will return NAs. 'levelsize_NAzero' avoids this by replacing NAs with zero.}
  }
  }
-
  \item{\strong{Motif normalisation}
  \itemize{
  \item{\strong{"motif"}: divides position counts for each node by the total number of times that node appears in any position within the same motif.
@@ -82,7 +81,6 @@ Nodes with more interactions will tend to appear in more positions. Normalisatio
  }
  }
  }
-
 If a matrix is provided without row or column names, default names will be assigned: the first row will be called called 'r1', the second row will be called 'r2' and so on. Similarly, the first column will be called 'c1', the second column will be called 'c2' and so on.
 }
 \examples{

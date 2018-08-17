@@ -130,7 +130,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
 
   # ACTUAL COUNT, NEEDED FOR weights_combine = MEAN OR weights_method= NONE
 
-  if (weights_method== "none" | weights_method== "all" | weights_method== "contribution" | weights_combine == "mean") {
+  if (weights_method == "none" | weights_method == "all" | weights_method == "contribution" | weights_combine == "mean") {
     # calculate inputs
     Z <- nrow(M) # number of row species
     P <- ncol(M) # number of column species
@@ -245,7 +245,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
 
   # -------------------------- weights_method------------------------------
 
-  # ------------------------- SOME AUXILIARY STUFF
+  # ------------------------- SOME AUXILIARY STUFF ------------------------
 
   NZ <- nrow(W)
   NP <- ncol(W)
@@ -425,6 +425,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
       } else if(level == "columns"){
         out <- lapply(out, function(x) {x[(NZ + 1):(NZ + NP), ]})
       }
+      out <- lapply(out, function(x) {as.data.frame(x)})
       return(out)
     } # end weights_combine = "mean"
 
@@ -455,6 +456,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
       } else if(level == "columns"){
         out <- lapply(out, function(x) {x[(NZ + 1):(NZ + NP), ]})
       }
+      out <- lapply(out, function(x) {as.data.frame(x)})
       return(out)
     } # end weights_combine = "sum"
   } # end weights_method= "all"
@@ -504,6 +506,9 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
         mmw <- replace(mmw, which(is.nan(mmw)), NA)
 
         # no normalisation necessary
+        
+        # convert to data frame
+        mmw <- as.data.frame(mmw)
 
         # depending on level, delete unused rows
         if (level == "all") {
@@ -521,6 +526,9 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
         if(normalisation != "none"){
           mmw <- normalise_node_positions(pc = mmw, type = normalisation, six_node = six_node)
         }
+        
+        # convert to data frame
+        mmw <- as.data.frame(mmw)
 
         # depending on level, delete unused rows
         if (level == "all") {
@@ -546,6 +554,9 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
         tmw <- replace(tmw, which(is.nan(tmw)), NA)
 
         # no normalisation necessary
+        
+        # convert to data frame
+        tmw <- as.data.frame(tmw)
 
         # depending on level, delete unused rows
         if (level == "all") {
@@ -563,6 +574,9 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
         if(normalisation != "none"){
           tmw <- normalise_node_positions(pc = tmw, type = normalisation, six_node = six_node)
         }
+        
+        # convert to data frame
+        tmw <- as.data.frame(tmw)
 
         # depending on level, delete unused rows
         if (level == "all") {
@@ -619,6 +633,9 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
         mnw <- mnw / np_count
         mnw <- replace(mnw, which(is.nan(mnw)), NA)
 
+        # convert to data frame
+        mnw <- as.data.frame(mnw)
+        
         # again, normalisation does not make sense
         # depending on level, delete unused rows
         if (level == "all") {
@@ -635,6 +652,9 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
         if(normalisation != "none"){
           mnw <- normalise_node_positions(pc = mnw, type = normalisation, six_node = six_node)
         }
+        
+        # convert to data frame
+        mnw <- as.data.frame(mnw)
 
         # depending on level, delete unused rows
         if (level == "all") {
@@ -658,6 +678,9 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
         tnw <- tnw / np_count
         tnw <- replace(tnw, which(is.nan(tnw)), NA)
 
+        # convert to data frame
+        tnw <- as.data.frame(tnw)
+        
         # again, normalisation does not make sense
         # depending on level, delete unused rows
         if (level == "all") {
@@ -675,6 +698,9 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
           tnw <- normalise_node_positions(pc = tnw, type = normalisation, six_node = six_node)
         }
 
+        # convert to data frame
+        tnw <- as.data.frame(tnw)
+        
         # depending on level, delete unused rows
         if (level == "all") {
           return(tnw)
@@ -723,6 +749,9 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
       con <- con / np_count
       con <- replace(con, which(is.nan(con)), NA)
 
+      # convert to data frame
+      con <- as.data.frame(con)
+      
       # again, normalisation does not make sense
       # depending on level, delete unused rows
       if (level == "all") {
@@ -741,6 +770,8 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
       if(normalisation != "none"){
         con <- normalise_node_positions(pc = con, type = normalisation, six_node = six_node)
       }
+      
+      con <- as.data.frame(con)
 
       if (level == "all") {
         return(con)
@@ -792,6 +823,9 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
       py <- py / np_count
       py <- replace(py, which(is.nan(py)), NA)
 
+      # convert to data frame
+      py <- as.data.frame(py)
+      
       # again, normalisation does not make sense
       # depending on level, delete unused rows
       if (level == "all") {
@@ -810,6 +844,9 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
       if(normalisation != "none"){
         py <- normalise_node_positions(pc = py, type = normalisation, six_node = six_node)
       }
+      
+      # convert to data frame
+      py <- as.data.frame(py)
 
       if (level == "all") {
         return(py)

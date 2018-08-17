@@ -114,3 +114,44 @@ test_that("'motif_plus1' removes all NAs/NaNs",{
     expect_identical(all(!is.na(np_NAzero[is.na(np_normal)])), TRUE)
   }
 })
+
+test_that("Check that we never have NaNs, sum-normalisation", {
+  M <- matrix(1,1,1)
+  npc <- node_positions(M, normalisation = "none", six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none")
+  np <- normalise_node_positions(npc, type = "sum", six_node = TRUE)
+  l <- lapply(np, is.nan)
+  for (item in l) {
+    expect_true(!any(item))
+  }
+})
+
+test_that("Check that we never have NaNs, sizeclass-normalisation", {
+  M <- matrix(1,1,1)
+  npc <- node_positions(M, normalisation = "none", six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none")
+  np <- normalise_node_positions(npc, type = "sizeclass", six_node = TRUE)
+  l <- lapply(np, is.nan)
+  for (item in l) {
+    expect_true(!any(item))
+  }
+})
+
+test_that("Check that we never have NaNs, levelsize-normalisation", {
+  M <- matrix(1,1,1)
+  npc <- node_positions(M, normalisation = "none", six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none")
+  np <- normalise_node_positions(npc, type = "levelsize", six_node = TRUE)
+  l <- lapply(np, is.nan)
+  for (item in l) {
+    expect_true(!any(item))
+  }
+})
+
+test_that("Check that we never have NaNs, motif-normalisation", {
+  M <- matrix(1,1,1)
+  npc <- node_positions(M, normalisation = "none", six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none")
+  np <- normalise_node_positions(npc, type = "motif", six_node = TRUE)
+  l <- lapply(np, is.nan)
+  for (item in l) {
+    expect_true(!any(item))
+  }
+})
+

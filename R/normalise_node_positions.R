@@ -12,6 +12,7 @@ normalise_node_positions <- function(pc,type,six_node){
     if(six_node){
       pc[,paste0("np",47:148)] <- pc[,paste0("np",47:148)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",47:148)]))
     }
+    pc[do.call(cbind, lapply(pc, is.nan))] <- NA
   } else if(type == "sizeclass_plus1"){
     pc <- pc + 1
     pc[,paste0("np",1:2)] <- pc[,paste0("np",1:2)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",1:2)]))
@@ -35,6 +36,7 @@ normalise_node_positions <- function(pc,type,six_node){
     pc <- pc/apply(pc, 1, sum)
   } else if(type == "position"){
     pc <- apply(pc, MARGIN = 2, FUN = function(x) x/sum(x))
+    pc[do.call(cbind, lapply(pc, is.nan))] <- NA
   } else if(type == "levelsize"){
     pc[,paste0("np",1:2)] <- pc[,paste0("np",1:2)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",1:2)]))
     pc[,paste0("np",3:4)] <- pc[,paste0("np",3:4)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",3:4)]))
@@ -53,6 +55,7 @@ normalise_node_positions <- function(pc,type,six_node){
       pc[,paste0("np",125:146)] <- pc[,paste0("np",125:146)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",125:146)]))
       pc[,paste0("np",147:148)] <- pc[,paste0("np",147:148)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",147:148)]))
     }
+    pc[do.call(cbind, lapply(pc, is.nan))] <- NA
   } else if(type == "levelsize_plus1") {
     pc <- pc + 1
     pc[,paste0("np",1:2)] <- pc[,paste0("np",1:2)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",1:2)]))
@@ -97,6 +100,7 @@ normalise_node_positions <- function(pc,type,six_node){
       for(i in mp){
         pc[,paste0("np",i)] <- pc[,paste0("np",i)]/sapply(1:nrow(pc), function(x) sum(pc[x,paste0("np",i)]))
       }
+      pc[do.call(cbind, lapply(pc, is.nan))] <- NA
     } else if(type == "motif_plus1"){
       pc <- pc + 1
       nm <- ifelse(six_node, yes = 44, no = 17) # number of motifs

@@ -17,15 +17,16 @@ test_that("Test motif weights for binary, weights_combine = mean", {
    # print(np)
 
     npc <- as.matrix(node_positions(W, six_node = FALSE, level = "all", weights_method = "none", weights_combine = "none", normalisation = "none"))
-    mmw <- np[[1]]
+    mmw <- as.matrix(np[[1]])
     npc_zero <- which(npc == 0)
     expect_true(all(is.na(mmw[npc_zero]))) # when position count is zero, mean motif weights are NA
     expect_true(all(mmw[-npc_zero] == 1)) # all other motif weights are one
+    mmw <- np[[1]]
 
-    mnw <- np[[3]]
+    mnw <- as.matrix(np[[3]])
     expect_true(all(is.na(mnw[npc_zero]))) # when position count is zero,mean node weights are NA
     expect_true(all(mnw[-npc_zero] == 1)) # all other node weights are one
-
+    mnw <- np[[3]]
 
     # --- more stuff needed for testing tmw, tnw, con and py ---
 
@@ -49,6 +50,8 @@ test_that("Test motif weights for binary, weights_combine = mean", {
 
     # -------- actual testing ------------------
 
+
+
     tmw <- np[[2]]
     expect_equal(tmw / nedges, mmw)
 
@@ -56,7 +59,7 @@ test_that("Test motif weights for binary, weights_combine = mean", {
     expect_equal(tnw / degrees, mnw)
 
     # con is degree / number of edges in the motif
-    con <- np[[5]]
+    con <- as.matrix(np[[5]])
     con_res <- degrees / nedges
     con_not_na <- which(!is.na(con))
     expect_equal(con[con_not_na], con_res[con_not_na])
@@ -64,9 +67,10 @@ test_that("Test motif weights for binary, weights_combine = mean", {
     con_na <- which(is.na(con))
     expect_true(all(npc[con_na] == 0)) # check if we really only get NAs if the count is zero
     expect_true(all(is.na(con[npc_zero]))) # reverse: if the count is zero, we expect NAs
+    con <- np[[5]]
 
     # py is 1 / number of edges in the motif
-    py <- np[[6]]
+    py <- as.matrix(np[[6]])
     py_res <- 1 / nvertices
 
     py_not_na <- which(!is.na(py))
@@ -75,6 +79,7 @@ test_that("Test motif weights for binary, weights_combine = mean", {
     py_na <- which(is.na(py))
     expect_true(all(npc[py_na] == 0))
     expect_true(all(is.na(py[npc_zero])))
+    py <- np[[6]]
 
     # NOW TEST SINGLE METHODS
     np_mmw <- node_positions(W, six_node = FALSE, level = "all", weights_method = "mean_motifweights", weights_combine = "mean", normalisation = "none")
@@ -103,7 +108,7 @@ test_that("Test motif weights for binary, weights_combine = sum", {
     np <- node_positions(W, six_node = FALSE, level = "all", weights_method = "all", weights_combine = "sum", normalisation = "none")
     # print(np)
 
-    npc <- as.matrix(node_positions(W, six_node = FALSE, level = "all", weights_method = "none", weights_combine = "none", normalisation = "none"))
+    npc <- node_positions(W, six_node = FALSE, level = "all", weights_method = "none", weights_combine = "none", normalisation = "none")
     mmw <- np[[1]]
     expect_equal(mmw, npc) # mean motif weight is always one, so sum will equal the count
 

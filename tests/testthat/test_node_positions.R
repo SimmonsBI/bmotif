@@ -244,3 +244,34 @@ test_that("Matches validated results",{
   expect_equal(node_positions(M = mat, six_node = FALSE, level = "columns", weights_method = "none", weights_combine = "none", normalisation = "sum"), positions_F_columns_sum)
   expect_equal(node_positions(M = mat, six_node = FALSE, level = "columns", weights_method = "none", weights_combine = "none", normalisation = "sizeclass"), positions_F_columns_sc)
 })
+
+test_that({
+  param_comb <- as.matrix(expand.grid(c('none', 'mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all'),
+                                      c('none', 'mean', 'sum'),
+                                      c('none','sum','sizeclass', 'sizeclass_plus1', 'sizeclass_NAzero', 'position','levelsize','levelsize_plus1','levelsize_NAzero','motif','motif_plus1','motif_NAzero'),
+                                      c(TRUE, FALSE)))
+
+  M <- rbm(5,5)
+  n <- nrow(param_comb)
+  for (i in 1:n) {
+    wm <- param_comb[i,1]
+    wc <- param_comb[i,2]
+    norm <- param_comb[i,3]
+    sn <- ifelse(param_comb[i,4] == " TRUE" | param_comb[i,4] == "TRUE", yes = TRUE, no = FALSE)
+    found_err <- FALSE
+    tryCatch({
+      np <- node_positions(M, level = "all", six_node = sn, weights_method = wm, weights_combine = wc, normalisation = norm)
+      if (wm != 'all') {
+        expect_equal(class(np), "data.frame")
+      } else {
+        expect_equal(class(np), "list")
+        k <- length(np)
+        for (j in 1:k) {
+          expect_equal(class(np[[j]]), "data.frame")
+        }
+      }
+    },
+    error = function(e) {}
+    )
+  }
+})

@@ -4,7 +4,7 @@ mcount <- function(M, six_node = FALSE, normalisation, mean_weight, standard_dev
   #' Counts occurrences of motifs in a bipartite network
   #' @param M A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
   #' and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes do interact, and 0
-  #' otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
+  #' otherwise. Formally, M is a biadjacency matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
   #' @param six_node Logical; should six node motifs be counted? Defaults to FALSE.
   #' @param normalisation Logical; should motif frequencies be normalised to control for network size?
   #' @param mean_weight Logical; used for weighted networks. Should the mean weight of each motif be computed?

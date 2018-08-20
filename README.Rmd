@@ -62,12 +62,17 @@ install.packages("devtools")
 
 The motifs corresponding to each motif ID and the node positions corresponding to each motif node position ID can be found in **Simmons, B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks. bioRxiv. doi: 10.1101/302356**. These were defined following Baker et al (2015) Appendix 1 Figure A27.
 
+Weighted methods for `mcount`, `link_positions` and the 'mora' method in `node_positions` were originally defined by Mora et al. (2018).
+
 ## License
 The code is released under the MIT license (see LICENSE file).
 
 ## Citation
 If you use the package in your work, please cite:
 Simmons, B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks. bioRxiv. doi: 10.1101/302356
+
+If you use any of the weighted analyses originally defined by Mora et al. (2018) (weighted `mcount`, weighted `link_positions` and the 'mora' method in `node_positions`), please additionally cite:
+Mora, B.B., Cirtwill, A.R. and Stouffer, D.B., 2018. pymfinder: a tool for the motif analysis of binary and quantitative complex networks. bioRxiv, 364703.
 
 ## References
 Baker, N.J., Kaartinen, R., Roslin, T. and Stouffer, D.B., 2015. Species’ roles in food webs show fidelity across a highly variable oak forest. Ecography, 38(2), pp.130-139.

@@ -107,6 +107,9 @@ Clemente, R. bmotif: a package for counting motifs in bipartite
 networks. bioRxiv. doi: 10.1101/302356**. These were defined following
 Baker et al (2015) Appendix 1 Figure A27.
 
+Weighted methods for `mcount`, `link_positions` and the ‘mora’ method in
+`node_positions` were originally defined by Mora et al. (2018).
+
 ## License
 
 The code is released under the MIT license (see LICENSE file).
@@ -117,6 +120,12 @@ If you use the package in your work, please cite: Simmons, B. I.,
 Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R.
 bmotif: a package for counting motifs in bipartite networks. bioRxiv.
 doi: 10.1101/302356
+
+If you use any of the weighted analyses originally defined by Mora et
+al. (2018) (weighted `mcount`, weighted `link_positions` and the ‘mora’
+method in `node_positions`), please additionally cite: Mora, B.B.,
+Cirtwill, A.R. and Stouffer, D.B., 2018. pymfinder: a tool for the motif
+analysis of binary and quantitative complex networks. bioRxiv, 364703.
 
 ## References
 

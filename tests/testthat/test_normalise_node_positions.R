@@ -115,6 +115,7 @@ test_that("'motif_plus1' removes all NAs/NaNs",{
   }
 })
 
+### ------ Make sure we never have NaNs
 test_that("Check that we never have NaNs, sum-normalisation", {
   M <- matrix(1,1,1)
   npc <- node_positions(M, normalisation = "none", six_node = TRUE, level = "all", weights_method = "none", weights_combine = "none")

@@ -9,13 +9,13 @@ link_positions(M, six_node = FALSE, weights, normalisation = "none")
 \arguments{
 \item{M}{A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
 and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes interact, and 0
-otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.}
+otherwise. Formally, M is a biadjacency matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.}
 
 \item{six_node}{Logical; should positions in six node motifs be counted? Defaults to FALSE.}
 
 \item{weights}{Logical; Should weights of the links be taken into account?}
 
-\item{normalisation}{Which normalisation should be used: "none", "sum", "sizeclass" or "position"?  Defaults to "none".}
+\item{normalisation}{Which normalisation should be used: 'none','sum', 'position', 'sizeclass', 'sizeclass_plus1', 'sizeclass_NAzero', 'levelsize', 'levelsize_plus1', 'levelsize_NAzero','motif', 'motif_plus1' or 'motif_NAzero'?  Defaults to "none". (see details)}
 }
 \value{
 Returns a data frame with one column for each link position: 29 columns if \code{six_node} is FALSE, and 106 columns if \code{six_node} is TRUE.

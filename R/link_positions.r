@@ -7,7 +7,7 @@ link_positions <- function(M, six_node = FALSE, weights, normalisation = "none")
   #' otherwise. Formally, M is a biadjacency matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
   #'
   #' @param six_node Logical; should positions in six node motifs be counted? Defaults to FALSE.
-  #' @param normalisation Which normalisation should be used: "none", "sum", "sizeclass" or "position"?  Defaults to "none".
+  #' @param normalisation Which normalisation should be used: 'none','sum', 'position', 'sizeclass', 'sizeclass_plus1', 'sizeclass_NAzero', 'levelsize', 'levelsize_plus1', 'levelsize_NAzero','motif', 'motif_plus1' or 'motif_NAzero'?  Defaults to "none". (see details)
   #' @param weights Logical; Should weights of the links be taken into account?
   #' @details Counts the number of times each link in a network occurs in each of the 29 (if \code{six_node} = FALSE) or 106 (if \code{six_node} = TRUE) unique link positions within motifs (to quantify a link's structural role).
   #' If \code{six_node} = FALSE, link positions in all motifs containing between 2 and 5 nodes are counted. If \code{six_node} = TRUE, link positions in all motifs containing between 2 and 6 nodes are counted. Analyses where \code{six_node} = FALSE are substantially faster

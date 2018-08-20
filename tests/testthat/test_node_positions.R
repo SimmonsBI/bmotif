@@ -245,7 +245,7 @@ test_that("Matches validated results",{
   expect_equal(node_positions(M = mat, six_node = FALSE, level = "columns", weights_method = "none", weights_combine = "none", normalisation = "sizeclass"), positions_F_columns_sc)
 })
 
-test_that({
+test_that("Correct output class for all argument combinations", {
   param_comb <- as.matrix(expand.grid(c('none', 'mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all'),
                                       c('none', 'mean', 'sum'),
                                       c('none','sum','sizeclass', 'sizeclass_plus1', 'sizeclass_NAzero', 'position','levelsize','levelsize_plus1','levelsize_NAzero','motif','motif_plus1','motif_NAzero'),

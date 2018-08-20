@@ -132,3 +132,7 @@ analysis of binary and quantitative complex networks. bioRxiv, 364703.
 Baker, N.J., Kaartinen, R., Roslin, T. and Stouffer, D.B., 2015.
 Species’ roles in food webs show fidelity across a highly variable oak
 forest. Ecography, 38(2), pp.130-139.
+
+Mora, B.B., Cirtwill, A.R. and Stouffer, D.B., 2018. pymfinder: a tool
+for the motif analysis of binary and quantitative complex networks.
+bioRxiv, 364703.

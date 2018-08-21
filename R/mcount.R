@@ -1,93 +1,93 @@
-mcount <- function(M, six_node = FALSE, normalisation, mean_weight, standard_dev){
-  #' Count bipartite motifs
-  #'
-  #' Counts occurrences of motifs in a bipartite network
-  #' @param M A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
-  #' and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes do interact, and 0
-  #' otherwise. Formally, M is a biadjacency matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
-  #' @param six_node Logical; should six node motifs be counted? Defaults to FALSE.
-  #' @param normalisation Logical; should motif frequencies be normalised to control for network size?
-  #' @param mean_weight Logical; used for weighted networks. Should the mean weight of each motif be computed?
-  #' @param standard_dev Logical; should the standard deviation of the mean weight for each motif be computed? Warning: can be slow for larger networks.
-  #' @details Counts the number of times each of the 17 motifs up to five nodes (if \code{six_node} = FALSE), or 44 motifs up to six nodes (if \code{six_node} = TRUE), occurs in a network (note: if the network
-  #' has weights it will be converted to binary; see below for how to use the \code{weights} argument to account for network weights).
-  #'
-  #' \strong{Six-node motifs}
-  #'
-  #' If \code{six_node} = FALSE, all motifs containing between 2 and 5 nodes are counted. If \code{six_node} = TRUE, all motifs containing between 2 and 6 nodes are counted. Analyses where \code{six_node} = FALSE are substantially faster
-  #' than when \code{six_node} = TRUE, especially for large networks. For large networks, counting six node motifs is also memory intensive. In some cases, R can crash if there is not enough memory.
-  #'
-  #' \strong{Normalisation}
-  #'
-  #' Larger networks tend to contain more motifs. Controlling for this effect by normalising motif counts is important if different sized networks are being compared.
-  #' If \code{normalisation} = TRUE, motif frequencies are normalised in four ways:
-  #'
-  #' \itemize{
-  #'  \item{\strong{"normalise_sum"}:  converts each frequency to a relative frequency by expressing counts as a proportion of the total number of motifs in the network}
-  #'  \item{\strong{"normalise_sizeclass"}: expresses counts as a proportion of the total number of motifs within each motif size class (the number of nodes a motif contains).
-  #'  For example, the relative frequency of all two-node motifs will sum to one, as will the relative frequency of all three-, four-, five- and six-node motifs.}
-  #'  \item{\strong{"normalise_levelsize"}: expresses counts as a proportion of the total number of motifs with a given number of nodes in the top level and the bottom level.
-  #'  For example, the relative frequencies of all motifs with three nodes in the top level and two nodes in the bottom level will sum to one, as will the relative frequency of all motifs with 2 nodes in the top level and
-  #'  two nodes in the bottom level, and so on. This normalisation is helpful because each set of species with a given number of nodes in the top and bottom level is assigned to one motif that describes the interactions among
-  #'  those species (Cirtwill and Eklöf, 2018). For example, all sets of interacting species with two species in the top level and two in the bottom level will be assigned to either motif 5 or motif 6. 'normalise_levelsize' allows you to see the relative
-  #'  proportion of species which were assigned to each of these motifs. Note that some motifs will always return a value of 1 as they are the only motif with that particular combination of nodes in the top and bottom level. For example, motif 2 will
-  #'  always sum to 1 because it is the only motif with one node in the top level and two nodes in the bottom level.}
-  #'  \item{\strong{"normalise_nodesets"}: expresses frequencies as the number
-  #' of node sets that are involved in a motif as a proportion of the number of node sets that could be involved in that motif (Poisot and Stouffer, 2017). For example, in a motif
-  #' with three nodes in one level (A) and two nodes in the other level (P), the maximum number of node sets which could be involved in the motif is
-  #' given by the product of binomial coefficients, choosing three nodes from A and two from P.}
-  #' }
-  #'
-  #' \strong{Weighted networks}
-  #'
-  #' \code{mcount} also supports weighted networks.
-  #' We let the weight of a given subgraph be the arithmetic mean of the weights of its links (note: we only consider links which are actually present).
-  #'
-  #'
-  #' For each motif we do the following: \cr
-  #' We calculate the weights of all subgraphs of the same type as (formally: isomorphic to) the motif.\cr
-  #' If \code{mean_weight = TRUE}, we compute the arithmetic mean of the subgraph weights.\cr
-  #' If \code{standard_dev = TRUE}, we compute the standard deviation of the subgraph weights.
-  #'
-  #' For example, let there be two subgraphs, A and B, which are isomorphic to motif 5. Subgraph A has three links with weights 1, 2 and 3;
-  #' subgraph B has three links with weights 4, 5 and 6.
-  #' The weight of subgraph A is the mean of 1, 2 and 3, which is 2. The weight of subgraph B is the mean of 4, 5 and 6 which is 5.
-  #' The mean weight of motif 5 which would be returned by \code{mcount} is therefore the mean of 2 and 5 which is 3.5.
-  #'
-  #' @return
-  #' Returns a data frame with one row for each motif: either 17 rows (if \code{six_node} = FALSE) or 44 rows (if \code{six_node} = TRUE). The data frame has three columns.
-  #' The first column ("motif") indicates the motif ID as described in Simmons et al. (2017) (and originally in Appendix 1 of Baker et al. (2015)). The second column
-  #' ("nodes") indicates how many nodes the motif contains. The third column ("frequency") is the number of times each motif appears in the network.
-  #'
-  #' If \code{normalisation} = TRUE, three additional columns are added to the output data frame, each corresponding to a different method of normalising motif
-  #' frequencies as described above.
-  #' If \code{mean_weight} = TRUE, an additional column with the mean weight values is added.
-  #' If \code{standard_dev} = TRUE, an additional column with the standard deviation values is added.
-  #'
-  #' @export
-  #' @useDynLib bmotif
-  #' @importFrom Rcpp sourceCpp
-  #' @references
-  #' Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ roles in food webs show fidelity across a highly variable oak forest. Ecography, 38(2):130–139.
-  #'
-  #' Cirtwill, A. R. and Eklöf, A (2018), Feeding environment and other traits shape species’ roles in marine food webs. Ecol Lett, 21: 875-884. doi:10.1111/ele.12955
-  #'
-  #' Poisot, T. & Stouffer, D. (2016). How ecological networks evolve. bioRxiv.
-  #'
-  #' Simmons, B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks. bioRxiv. doi: 10.1101/302356
-  #' @examples
-  #' set.seed(123)
-  #' row <- 10
-  #' col <- 10
-  #'
-  #' # motif counts for a binary network
-  #' m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
-  #' mcount(M = m, six_node = TRUE, normalisation = TRUE, mean_weight = FALSE, standard_dev = FALSE)
-  #'
-  #' # motif counts in a weighted network
-  #' m[m>0] <- stats::runif(sum(m), 0, 100)
-  #' mcount(M = m, six_node = TRUE, normalisation = TRUE, mean_weight = TRUE, standard_dev = TRUE)
+#' Count bipartite motifs
+#'
+#' Counts occurrences of motifs in a bipartite network
+#' @param M A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
+#' and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes do interact, and 0
+#' otherwise. Formally, M is a biadjacency matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
+#' @param six_node Logical; should six node motifs be counted? Defaults to FALSE.
+#' @param normalisation Logical; should motif frequencies be normalised to control for network size?
+#' @param mean_weight Logical; used for weighted networks. Should the mean weight of each motif be computed?
+#' @param standard_dev Logical; should the standard deviation of the mean weight for each motif be computed? Warning: can be slow for larger networks.
+#' @details Counts the number of times each of the 17 motifs up to five nodes (if \code{six_node} = FALSE), or 44 motifs up to six nodes (if \code{six_node} = TRUE), occurs in a network (note: if the network
+#' has weights it will be converted to binary; see below for how to use the \code{weights} argument to account for network weights).
+#'
+#' \strong{Six-node motifs}
+#'
+#' If \code{six_node} = FALSE, all motifs containing between 2 and 5 nodes are counted. If \code{six_node} = TRUE, all motifs containing between 2 and 6 nodes are counted. Analyses where \code{six_node} = FALSE are substantially faster
+#' than when \code{six_node} = TRUE, especially for large networks. For large networks, counting six node motifs is also memory intensive. In some cases, R can crash if there is not enough memory.
+#'
+#' \strong{Normalisation}
+#'
+#' Larger networks tend to contain more motifs. Controlling for this effect by normalising motif counts is important if different sized networks are being compared.
+#' If \code{normalisation} = TRUE, motif frequencies are normalised in four ways:
+#'
+#' \itemize{
+#'  \item{\strong{"normalise_sum"}:  converts each frequency to a relative frequency by expressing counts as a proportion of the total number of motifs in the network}
+#'  \item{\strong{"normalise_sizeclass"}: expresses counts as a proportion of the total number of motifs within each motif size class (the number of nodes a motif contains).
+#'  For example, the relative frequency of all two-node motifs will sum to one, as will the relative frequency of all three-, four-, five- and six-node motifs.}
+#'  \item{\strong{"normalise_levelsize"}: expresses counts as a proportion of the total number of motifs with a given number of nodes in the top level and the bottom level.
+#'  For example, the relative frequencies of all motifs with three nodes in the top level and two nodes in the bottom level will sum to one, as will the relative frequency of all motifs with 2 nodes in the top level and
+#'  two nodes in the bottom level, and so on. This normalisation is helpful because each set of species with a given number of nodes in the top and bottom level is assigned to one motif that describes the interactions among
+#'  those species (Cirtwill and Eklöf, 2018). For example, all sets of interacting species with two species in the top level and two in the bottom level will be assigned to either motif 5 or motif 6. 'normalise_levelsize' allows you to see the relative
+#'  proportion of species which were assigned to each of these motifs. Note that some motifs will always return a value of 1 as they are the only motif with that particular combination of nodes in the top and bottom level. For example, motif 2 will
+#'  always sum to 1 because it is the only motif with one node in the top level and two nodes in the bottom level.}
+#'  \item{\strong{"normalise_nodesets"}: expresses frequencies as the number
+#' of node sets that are involved in a motif as a proportion of the number of node sets that could be involved in that motif (Poisot and Stouffer, 2017). For example, in a motif
+#' with three nodes in one level (A) and two nodes in the other level (P), the maximum number of node sets which could be involved in the motif is
+#' given by the product of binomial coefficients, choosing three nodes from A and two from P.}
+#' }
+#'
+#' \strong{Weighted networks}
+#'
+#' \code{mcount} also supports weighted networks.
+#' We let the weight of a given subgraph be the arithmetic mean of the weights of its links (note: we only consider links which are actually present).
+#'
+#'
+#' For each motif we do the following: \cr
+#' We calculate the weights of all subgraphs of the same type as (formally: isomorphic to) the motif.\cr
+#' If \code{mean_weight = TRUE}, we compute the arithmetic mean of the subgraph weights.\cr
+#' If \code{standard_dev = TRUE}, we compute the standard deviation of the subgraph weights.
+#'
+#' For example, let there be two subgraphs, A and B, which are isomorphic to motif 5. Subgraph A has three links with weights 1, 2 and 3;
+#' subgraph B has three links with weights 4, 5 and 6.
+#' The weight of subgraph A is the mean of 1, 2 and 3, which is 2. The weight of subgraph B is the mean of 4, 5 and 6 which is 5.
+#' The mean weight of motif 5 which would be returned by \code{mcount} is therefore the mean of 2 and 5 which is 3.5.
+#'
+#' @return
+#' Returns a data frame with one row for each motif: either 17 rows (if \code{six_node} = FALSE) or 44 rows (if \code{six_node} = TRUE). The data frame has three columns.
+#' The first column ("motif") indicates the motif ID as described in Simmons et al. (2017) (and originally in Appendix 1 of Baker et al. (2015)). The second column
+#' ("nodes") indicates how many nodes the motif contains. The third column ("frequency") is the number of times each motif appears in the network.
+#'
+#' If \code{normalisation} = TRUE, three additional columns are added to the output data frame, each corresponding to a different method of normalising motif
+#' frequencies as described above.
+#' If \code{mean_weight} = TRUE, an additional column with the mean weight values is added.
+#' If \code{standard_dev} = TRUE, an additional column with the standard deviation values is added.
+#'
+#' @export
+#' @useDynLib bmotif
+#' @importFrom Rcpp sourceCpp
+#' @references
+#' Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ roles in food webs show fidelity across a highly variable oak forest. Ecography, 38(2):130–139.
+#'
+#' Cirtwill, A. R. and Eklöf, A (2018), Feeding environment and other traits shape species’ roles in marine food webs. Ecol Lett, 21: 875-884. doi:10.1111/ele.12955
+#'
+#' Poisot, T. & Stouffer, D. (2016). How ecological networks evolve. bioRxiv.
+#'
+#' Simmons, B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks. bioRxiv. doi: 10.1101/302356
+#' @examples
+#' set.seed(123)
+#' row <- 10
+#' col <- 10
+#'
+#' # motif counts for a binary network
+#' m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
+#' mcount(M = m, six_node = TRUE, normalisation = TRUE, mean_weight = FALSE, standard_dev = FALSE)
+#'
+#' # motif counts in a weighted network
+#' m[m>0] <- stats::runif(sum(m), 0, 100)
+#' mcount(M = m, six_node = TRUE, normalisation = TRUE, mean_weight = TRUE, standard_dev = TRUE)
 
+mcount <- function(M, six_node = FALSE, normalisation, mean_weight, standard_dev){
   # check inputs
   if(class(M) != "matrix"){stop("'M' must be an object of class 'matrix'")} # make sure M is a matrix
   if(!all(apply(M, 1:2, is.numeric))){stop("Elements of 'M' must be numeric")} # make sure all elements of M are numbers

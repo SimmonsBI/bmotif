@@ -6,25 +6,25 @@
 #' otherwise. Formally, M is a biadjacency matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
 #'
 #' @param six_node Logical; should positions in six node motifs be counted? Defaults to FALSE.
-#' @param normalisation Which normalisation should be used: 'none','sum', 'position', 'sizeclass', 'sizeclass_plus1', 'sizeclass_NAzero', 'levelsize', 'levelsize_plus1', 'levelsize_NAzero','motif', 'motif_plus1' or 'motif_NAzero'?  Defaults to "none". (see details)
 #' @param weights Logical; Should weights of the links be taken into account?
+#' @param normalisation Which normalisation should be used: 'none','sum', 'position', 'sizeclass', 'sizeclass_plus1', 'sizeclass_NAzero', 'levelsize', 'levelsize_plus1', 'levelsize_NAzero','motif', 'motif_plus1' or 'motif_NAzero'?  Defaults to "none". (see details)
 #' @details Counts the number of times each link in a network occurs in each of the 29 (if \code{six_node} = FALSE) or 106 (if \code{six_node} = TRUE) unique link positions within motifs (to quantify a link's structural role).
 #' If \code{six_node} = FALSE, link positions in all motifs containing between 2 and 5 nodes are counted. If \code{six_node} = TRUE, link positions in all motifs containing between 2 and 6 nodes are counted. Analyses where \code{six_node} = FALSE are substantially faster
 #' than when \code{six_node} = TRUE, especially for large networks. For large networks, counting six node motifs is also memory intensive. In some cases, R can crash if there is not enough memory.
 #'
 #' If interactions are weighted (non-zero matrix elements take values other than 1), these can be incorporated by setting \code{weights = TRUE}.
 #' If \code{weights = TRUE}, the function will return the number of times each link occurs in each position,
-#' multiplied by the weight of the link.
+#' multiplied by the weight of the link, following Mora et al. (2018).
 #'
 #' Links between nodes with more interactions will tend to appear in more positions. Normalisation helps control for this effect. bmotif include four types of normalisation:
 #' \itemize{
 #'  \item{\strong{"none"}: performs no normalisation and will return the raw position counts.}
-#'  \item{\strong{"sum"}: divides position counts for each link by the total number of times that link appears in any position (divides each element in a row by the row sum).}
-#'  \item{\strong{"position"}: divides position counts for each link by the total number of times any link occurs in that link position (divides each element in a column by the column sum). This gives a measure of how often a link occurs in a position relative to the other links in the network.}
+#'  \item{\strong{"sum"}: divides the position measure for each link by the total number of times that link appears in any position (divides each element in a row by the row sum).}
+#'  \item{\strong{"position"}: divides the position measure for each link by the total number of times any link occurs in that link position (divides each element in a column by the column sum). This gives a measure of how often a link occurs in a position relative to the other links in the network.}
 #'  \item{\strong{Size class normalisation}
 #'  \itemize{
-#'  \item{\strong{"sizeclass"}: divides position counts for each link by the total number of times that link appears in any position within the same motif size class (the number of nodes a motif contains).}
-#'  \item{\strong{"sizeclass_plus1"}: same as 'sizeclass' but adds one to all position counts. If a link does not occur in any motifs in a given size class, 'sizeclass' normalisation
+#'  \item{\strong{"sizeclass"}: divides the position measure for each link by the total number of times that link appears in any position within the same motif size class (the number of nodes a motif contains).}
+#'  \item{\strong{"sizeclass_plus1"}: same as 'sizeclass' but adds one to all position measure values. If a link does not occur in any motifs in a given size class, 'sizeclass' normalisation
 #'  will return NAs. 'sizeclass_plus1' avoids this by adding one to all counts.}
 #'  \item{\strong{"sizeclass_NAzero"}: same as 'sizeclass' but replaces all NA values with 0. If a link does not occur in any motifs in a given size class, 'sizeclass' normalisation
 #'  will return NAs. 'sizeclass_NAzero' avoids this by replacing NAs with zero.}
@@ -32,10 +32,10 @@
 #'  }
 #'  \item{\strong{Levelsize normalisation}
 #'  \itemize{
-#'  \item{\strong{"levelsize"}: divides position counts for each link by the total number of times that link appears in any position within a motif with a given number of nodes in the top level and the bottom level.
-#'  For example, the relative frequencies of all position counts in motifs with three nodes in the top level and two nodes in the bottom level will sum to one, as will the relative frequency of all position counts in motifs with 2 nodes in the top level and
+#'  \item{\strong{"levelsize"}: divides the position measure for each link by the total number of times that link appears in any position within a motif with a given number of nodes in the top level and the bottom level.
+#'  For example, the relative frequencies of all position measures in motifs with three nodes in the top level and two nodes in the bottom level will sum to one, as will the relative frequency of all position measures in motifs with 2 nodes in the top level and
 #'  two nodes in the bottom level, and so on.}
-#'  \item{\strong{"levelsize_plus1"}: same as 'levelsize' but adds one to all position counts. If a link does not occur in any motifs with a given number of nodes in the top level and the bottom level, 'levelsize' normalisation
+#'  \item{\strong{"levelsize_plus1"}: same as 'levelsize' but adds one to all position measure values. If a link does not occur in any motifs with a given number of nodes in the top level and the bottom level, 'levelsize' normalisation
 #'  will return NAs. 'levelsize_plus1' avoids this by adding one to all counts.}
 #'  \item{\strong{"levelsize_NAzero"}: same as 'levelsize' but replaces all NA values with 0. If a link does not occur in any motifs with a given number of nodes in the top level and the bottom level, 'levelsize' normalisation
 #'  will return NAs. 'levelsize_NAzero' avoids this by replacing NAs with zero.}
@@ -43,9 +43,9 @@
 #'  }
 #'  \item{\strong{Motif normalisation}
 #'  \itemize{
-#'  \item{\strong{"motif"}: divides position counts for each link by the total number of times that link appears in any position within the same motif.
-#'  For example, the relative frequencies of all position counts in motif 5 will sum to one, as will the relative frequency of all position counts in motif 10, and so on.}
-#'  \item{\strong{"motif_plus1"}: same as 'motif' but adds one to all position counts. If a link does not occur in a particular motif, 'motif' normalisation
+#'  \item{\strong{"motif"}: divides the position measure for each link by the total number of times that link appears in any position within the same motif.
+#'  For example, the relative frequencies of all position measures in motif 5 will sum to one, as will the relative frequency of all position measures in motif 10, and so on.}
+#'  \item{\strong{"motif_plus1"}: same as 'motif' but adds one to all position measure values. If a link does not occur in a particular motif, 'motif' normalisation
 #'  will return NAs. 'motif_plus1' avoids this by adding one to all counts.}
 #'  \item{\strong{"motif_NAzero"}: same as 'motif' but replaces all NA values with 0. If a link does not occur in a particular motif, 'levelsize' normalisation
 #'  will return NAs. 'motif_NAzero' avoids this by replacing NAs with zero.}
@@ -67,6 +67,8 @@
 #'
 #' @export
 #' @references
+#' Mora, B.B., Cirtwill, A.R. and Stouffer, D.B., 2018. pymfinder: a tool for the motif analysis of binary and quantitative complex networks. bioRxiv, 364703.
+#'
 #' Simmons, B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R. bmotif: a package for counting motifs in bipartite networks. bioRxiv. doi: 10.1101/302356
 #' @examples
 #' set.seed(123)

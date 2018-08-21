@@ -10,7 +10,7 @@ node_positions(M, six_node = FALSE, level = "all", weights_method,
 \arguments{
 \item{M}{A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level
 and each column corresponds to a node in the other level. Elements of M are positive numbers if nodes do interact, and 0
-otherwise. Formally, M is an incidence matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
+otherwise. Formally, M is a biadjacency matrix. When nodes i and j interact, m_ij > 0; if they do not interact, m_ij = 0.
 If interactions are weighted (non-zero matrix elements take values other than 1), the function will automatically convert the matrix to a binary
 matrix.}
 
@@ -20,9 +20,9 @@ matrix.}
 
 \item{weights_method}{The method for calculating weighted positions; must be one of 'none', 'mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora' or 'all' (see details).}
 
-\item{weights_combine}{Method for combining weighted position measures; must be one of 'none', 'mean' or 'sum' (see details).}
+\item{weights_combine}{Method for combining weighted position measures; must be one of 'none', 'mean' or 'sum' (see details). Defaults to 'none'.}
 
-\item{normalisation}{Which normalisation should be used: "none", "sum" or "sizeclass"?  Defaults to "none".}
+\item{normalisation}{Which normalisation should be used: "none","sum","sizeclass", "sizeclass_plus1", "sizeclass_NAzero", "position","levelsize","levelsize_plus1","levelsize_NAzero","motif","motif_plus1" or "motif_NAzero" (see details)?  Defaults to "none".}
 }
 \value{
 Returns a data frame with one column for each node position: 46 columns if \code{six_node} is FALSE, and 148 columns if \code{six_node} is TRUE.
@@ -31,25 +31,26 @@ Columns names are given as "npx" where x is the ID of the position as described 
 For a network with A rows and P columns, by default (where \code{level} = "all") the data frame has A + P rows, one for each node. If \code{level} = "rows", the data frame will have A rows, one for each row node;
 if \code{level} = "columns", it will have P rows, one for each column node.
 
-By default, the elements of this data frame will be the raw binary or weighted position counts (depending on which was requested). If \code{normalisation} is set to something other than "none", the elements will be
+By default, the elements of this data frame will be the raw binary or weighted position measures (depending on which was requested). If \code{normalisation} is set to something other than "none", the elements will be
 normalised position counts as described above.
 
-If \code{weights_method} is set to 'all', \code{node_positions} instead returns a list of length five, each containing a data.frame as described above, each corresponding to
-one of the five weighting methods.
+If \code{weights_method} is set to 'all', \code{node_positions} instead returns a list of length five, each containing a data.frame corresponding to
+one of the five weighting methods described above.
 }
 \description{
-Counts the frequency with which nodes occur in different positions within motifs.
+For binary networks, counts the number of times each node appears in each unique node position within motifs; for weighted networks calculates a range of weighted node position measures.
 }
 \details{
-Counts the number of times each node in a network occurs in each of the 46 (if \code{six_node} = FALSE) or 148 (if \code{six_node} = TRUE) unique positions within motifs (to quantify a node's structural role).
+For binary networks, counts the number of times each node occurs in each unique position within motifs (to quantify a node's structural role).
+If networks are weighted, \code{node_positions} can also calculate various weighted node position measures.
+
+If a matrix is provided without row or column names, default names will be assigned: the first row will be called called 'r1', the second row will be called 'r2' and so on. Similarly, the first column will be called 'c1', the second column will be called 'c2' and so on.
 
 \strong{Six node}
 
 If \code{six_node} = FALSE, node positions in all motifs containing between 2 and 5 nodes are counted. If \code{six_node} = TRUE, node positions in all motifs containing between 2 and 6 nodes are counted.
 Analyses where \code{six_node} = FALSE are substantially faster than when \code{six_node} = TRUE, especially for large networks. For large networks, counting six node motifs is also memory intensive.
 In some cases, R can crash if there is not enough memory.
-
-If a matrix is provided without row or column names, default names will be assigned: the first row will be called called 'r1', the second row will be called 'r2' and so on. Similarly, the first column will be called 'c1', the second column will be called 'c2' and so on.
 
 \strong{Level}
 
@@ -58,9 +59,9 @@ returns position counts for all nodes in columns, and "all" return counts for al
 
 \strong{Weighted networks}
 
-\code{node_positions} also supports weighted networks. Weighted analyses are controlled using two arguments: \code{weights_method} and \code{weights_combine}. These are described in detail below:
+\code{node_positions} also supports weighted networks for motifs up to five nodes. Weighted analyses are controlled using two arguments: \code{weights_method} and \code{weights_combine}. These are described in detail below:
 
-\itemize{\item{\strong{'weights_method'}: determines how the weighted position a each node in each given position in each motif occurrence is calculated
+\itemize{\item{\strong{'weights_method'}: determines how the weighted position of a node is calculated in each motif occurrence.
 
 \itemize{
 \item{\strong{'none'}: weights are ignored and \code{node_positions} returns the frequency with which each node occurs in each unique position within motifs. \code{'weights_combine'} must also be 'none'.}
@@ -68,15 +69,15 @@ returns position counts for all nodes in columns, and "all" return counts for al
  i.e. the mean of all link strengths in that motif occurrence.}
 \item{\strong{'total_motifweights'}: for a given node in a given position in a motif occurrence (formally a subgraph isomorphic to a particular motif), returns the total weight of that motif occurrence
  i.e. the sum of all link strengths in that motif occurrence.}
-\item{\strong{'mean_nodeweights'}: for a given node in a given position in a motif occurrence (formally a subgraph isomorphic to a particular motif), returns the mean weight of the node's links.}
-\item{\strong{'total_nodeweights'}: for a given node in a given position in a motif occurrence (formally a subgraph isomorphic to a particular motif), returns the total weight of the node's links.}
-\item{\strong{'contribution'}: for a given node in a given position in a motif occurrence (formally a subgraph isomorphic to a particular motif), returns the total weight of the node's links as a proportion of the total
+\item{\strong{'mean_nodeweights'}: for a given node in a given position in a motif occurrence (formally a subgraph isomorphic to a particular motif), returns the mean weight of that focal node's links.}
+\item{\strong{'total_nodeweights'}: for a given node in a given position in a motif occurrence (formally a subgraph isomorphic to a particular motif), returns the total weight of that focal node's links.}
+\item{\strong{'contribution'}: for a given node in a given position in a motif occurrence (formally a subgraph isomorphic to a particular motif), returns the total weight of that focal node's links as a proportion of the total
 weight of that motif occurrence. i.e. the sum of the focal node's links divided by the sum of all link strengths in that motif occurrence.}
 \item{\strong{'mora'}: calculates a contribution measure following Mora et al. (2018).}
 \item{\strong{'all'}: calculates all the above measures (except 'none') and returns them as a list of length five.}
 }
 }
-\item{\strong{'weights_combine'}: determines how weighted position measures are combined across occurrences to give an overall measure for a each node in a each position.
+\item{\strong{'weights_combine'}: determines how weighted position measures are combined across motif occurrences to give an overall measure for a each node in a each position.
 \itemize{
 \item{\strong{'none'}: weights are ignored and \code{node_positions} returns the frequency with which each node occurs in each unique positions within motifs. \code{'weights_method'} must also be 'none'.}
 \item{\strong{'sum'}: weighted measures are summed across occurrences.}
@@ -89,13 +90,13 @@ weight of that motif occurrence. i.e. the sum of the focal node's links divided 
 
 Nodes with more interactions will tend to appear in more positions. Normalisation helps control for this effect. bmotif include six main types of normalisation:
 \itemize{
- \item{\strong{"none"}: performs no normalisation and will return the raw position counts.}
- \item{\strong{"sum"}: divides position counts for each node by the total number of times that node appears in any position (divides each element in a row by the row sum).}
- \item{\strong{"position"}: divides position counts for each node by the total number of times any node occurs in that node position (divides each element in a column by the column sum). This gives a measure of how often a node occurs in a position relative to the other nodes in the network.}
+ \item{\strong{"none"}: performs no normalisation and will return the raw position measure}
+ \item{\strong{"sum"}: divides the position measure for each node by the total number of times that node appears in any position (divides each element in a row by the row sum).}
+ \item{\strong{"position"}: divides the position measure for each node by the total number of times any node occurs in that node position (divides each element in a column by the column sum). This gives a measure of how often a node occurs in a position relative to the other nodes in the network.}
  \item{\strong{Size class normalisation}
  \itemize{
- \item{\strong{"sizeclass"}: divides position counts for each node by the total number of times that node appears in any position within the same motif size class (the number of nodes a motif contains).}
- \item{\strong{"sizeclass_plus1"}: same as 'sizeclass' but adds one to all position counts. If a species does not occur in any motifs in a given size class, 'sizeclass' normalisation
+ \item{\strong{"sizeclass"}: divides the position measure for each node by the total number of times that node appears in any position within the same motif size class (the number of nodes a motif contains).}
+ \item{\strong{"sizeclass_plus1"}: same as 'sizeclass' but adds one to all position measures If a species does not occur in any motifs in a given size class, 'sizeclass' normalisation
  will return NAs. 'sizeclass_plus1' avoids this by adding one to all counts.}
  \item{\strong{"sizeclass_NAzero"}: same as 'sizeclass' but replaces all NA values with 0. If a species does not occur in any motifs in a given size class, 'sizeclass' normalisation
  will return NAs. 'sizeclass_NAzero' avoids this by replacing NAs with zero.}
@@ -103,10 +104,10 @@ Nodes with more interactions will tend to appear in more positions. Normalisatio
  }
  \item{\strong{Levelsize normalisation}
  \itemize{
- \item{\strong{"levelsize"}: divides position counts for each node by the total number of times that node appears in any position within a motif with a given number of nodes in the top level and the bottom level.
- For example, the relative frequencies of all position counts in motifs with three nodes in the top level and two nodes in the bottom level will sum to one, as will the relative frequency of all position counts in motifs with 2 nodes in the top level and
+ \item{\strong{"levelsize"}: divides the position measure for each node by the total number of times that node appears in any position within a motif with a given number of nodes in the top level and the bottom level.
+ For example, the relative frequencies of all position measures in motifs with three nodes in the top level and two nodes in the bottom level will sum to one, as will the relative frequency of all position counts in motifs with 2 nodes in the top level and
  two nodes in the bottom level, and so on.}
- \item{\strong{"levelsize_plus1"}: same as 'levelsize' but adds one to all position counts. If a species does not occur in any motifs with a given number of nodes in the top level and the bottom level, 'levelsize' normalisation
+ \item{\strong{"levelsize_plus1"}: same as 'levelsize' but adds one to all position measures If a species does not occur in any motifs with a given number of nodes in the top level and the bottom level, 'levelsize' normalisation
  will return NAs. 'levelsize_plus1' avoids this by adding one to all counts.}
  \item{\strong{"levelsize_NAzero"}: same as 'levelsize' but replaces all NA values with 0. If a species does not occur in any motifs with a given number of nodes in the top level and the bottom level, 'levelsize' normalisation
  will return NAs. 'levelsize_NAzero' avoids this by replacing NAs with zero.}
@@ -114,9 +115,9 @@ Nodes with more interactions will tend to appear in more positions. Normalisatio
  }
  \item{\strong{Motif normalisation}
  \itemize{
- \item{\strong{"motif"}: divides position counts for each node by the total number of times that node appears in any position within the same motif.
- For example, the relative frequencies of all position counts in motif 5 will sum to one, as will the relative frequency of all position counts in motif 10, and so on.}
- \item{\strong{"motif_plus1"}: same as 'motif' but adds one to all position counts. If a species does not occur in a particular motif, 'motif' normalisation
+ \item{\strong{"motif"}: divides the position measure for each node by the total number of times that node appears in any position within the same motif.
+ For example, the relative frequencies of all position measures in motif 5 will sum to one, as will the relative frequency of all position counts in motif 10, and so on.}
+ \item{\strong{"motif_plus1"}: same as 'motif' but adds one to all position measures. If a species does not occur in a particular motif, 'motif' normalisation
  will return NAs. 'motif_plus1' avoids this by adding one to all counts.}
  \item{\strong{"motif_NAzero"}: same as 'motif' but replaces all NA values with 0. If a species does not occur in a particular motif, 'levelsize' normalisation
  will return NAs. 'motif_NAzero' avoids this by replacing NAs with zero.}
@@ -128,8 +129,14 @@ Nodes with more interactions will tend to appear in more positions. Normalisatio
 set.seed(123)
 row <- 10
 col <- 10
+
+# node positions in a binary network
 m <- matrix(sample(0:1, row*col, replace=TRUE), row, col)
 node_positions(M = m, six_node = TRUE, weights_method = "none", weights_combine = "none")
+
+# node positions in a weighted network
+m[m>0] <- stats::runif(sum(m), 0, 100)
+node_positions(M = m, six_node = FALSE, weights_method = "all", weights_combine = "sum")
 }
 \references{
 Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ roles in food webs show fidelity across a highly variable oak forest. Ecography, 38(2):130–139.

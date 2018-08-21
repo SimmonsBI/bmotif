@@ -65,7 +65,7 @@ given by the product of binomial coefficients, choosing three nodes from A and t
 \strong{Weighted networks}
 
 \code{mcount} also supports weighted networks.
-We let the weight of a given subgraph be the arithmetic mean of the weights of its links (note: we only consider links which are actually present).
+We let the weight of a given subgraph be the arithmetic mean of the weights of its links (note: we only consider links which are actually present), following Mora et al. (2018).
 
 
 For each motif we do the following: \cr
@@ -95,6 +95,8 @@ mcount(M = m, six_node = TRUE, normalisation = TRUE, mean_weight = TRUE, standar
 Baker, N., Kaartinen, R., Roslin, T., and Stouffer, D. B. (2015). Species’ roles in food webs show fidelity across a highly variable oak forest. Ecography, 38(2):130–139.
 
 Cirtwill, A. R. and Eklöf, A (2018), Feeding environment and other traits shape species’ roles in marine food webs. Ecol Lett, 21: 875-884. doi:10.1111/ele.12955
+
+Mora, B.B., Cirtwill, A.R. and Stouffer, D.B., 2018. pymfinder: a tool for the motif analysis of binary and quantitative complex networks. bioRxiv, 364703.
 
 Poisot, T. & Stouffer, D. (2016). How ecological networks evolve. bioRxiv.
 

@@ -370,7 +370,6 @@ test_that("Dimension names are passed through correctly for weighted node positi
             expect_identical(rownames(npw), paste0("c",1:nrow(M)))
           }
         } else if(l == "all"){
-
           if(j == 1){
             expect_identical(rownames(npw), c(rownames(M), colnames(M)))
           } else if(j == 2){
@@ -405,7 +404,6 @@ test_that("Dimension names are passed through correctly for weighted node positi
               expect_identical(rownames(npw[[k]]), paste0("c",1:nrow(M)))
             }
           } else if(l == "all"){
-
             if(j == 1){
               expect_identical(rownames(npw[[k]]), c(rownames(M), colnames(M)))
             } else if(j == 2){

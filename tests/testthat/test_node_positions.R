@@ -275,3 +275,86 @@ test_that("Correct output class for all argument combinations", {
     )
   }
 })
+
+test_that("Default dimension names are not used for weighted node positions when the original matrix has dimension names",{
+  param_comb <- as.matrix(expand.grid(c("rows","columns","all"),
+                                      c('mean', 'sum'),
+                                      c('mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all'),
+                                      c('none','sum','sizeclass', 'sizeclass_plus1', 'sizeclass_NAzero', 'position','levelsize','levelsize_plus1','levelsize_NAzero','motif','motif_plus1','motif_NAzero')))
+  param_comb <- param_comb[!(param_comb[,2] == "mean" & param_comb[,4] != "none"),]
+  M <- rwm(5,5)
+  dimnames(M) <- list(LETTERS[1:5], LETTERS[6:10])
+  n <- nrow(param_comb)
+  for (i in 1:n) {
+    l <- param_comb[i,1]
+    wc <- param_comb[i,2]
+    wm <- param_comb[i,3]
+    norm <- param_comb[i,4]
+
+    npw <- node_positions(M, level = l, six_node = FALSE, weights_method = wm, weights_combine = wc, normalisation = norm)
+
+    if(wm != "all"){
+      if(l == "rows"){
+        expect_false(any(paste0("r", 1:nrow(M)) %in% rownames(npw)))
+      } else if(l == "columns"){
+        expect_false(any(paste0("c", 1:ncol(M)) %in% rownames(npw)))
+      } else if(l == "all"){
+        expect_false(any(paste0("r", 1:nrow(M)) %in% rownames(npw)))
+        expect_false(any(paste0("c", 1:ncol(M)) %in% rownames(npw)))
+      }
+    } else if(wm == "all"){
+      for(i in 1:length(npw)){
+        if(l == "rows"){
+          expect_false(any(paste0("r", 1:nrow(M)) %in% rownames(npw[[i]])))
+        } else if(l == "columns"){
+          expect_false(any(paste0("c", 1:ncol(M)) %in% rownames(npw[[i]])))
+        } else if(l == "all"){
+          expect_false(any(paste0("r", 1:nrow(M)) %in% rownames(npw[[i]])))
+          expect_false(any(paste0("c", 1:ncol(M)) %in% rownames(npw[[i]])))
+        }
+      }
+    }
+  }
+})
+
+test_that("Dimension names are passed through correctly for weighted node positions when the original matrix has dimension names",{
+  param_comb <- as.matrix(expand.grid(c("rows","columns","all"),
+                                      c('mean', 'sum'),
+                                      c('mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all'),
+                                      c('none','sum','sizeclass', 'sizeclass_plus1', 'sizeclass_NAzero', 'position','levelsize','levelsize_plus1','levelsize_NAzero','motif','motif_plus1','motif_NAzero')))
+  param_comb <- param_comb[!(param_comb[,2] == "mean" & param_comb[,4] != "none"),]
+  M <- rwm(5,5)
+  dimnames(M) <- list(LETTERS[1:5], LETTERS[6:10])
+  n <- nrow(param_comb)
+  for (i in 1:n) {
+    l <- param_comb[i,1]
+    wc <- param_comb[i,2]
+    wm <- param_comb[i,3]
+    norm <- param_comb[i,4]
+
+    npw <- node_positions(M, level = l, six_node = FALSE, weights_method = wm, weights_combine = wc, normalisation = norm)
+    np <- node_positions(M, level = l, six_node = FALSE, weights_method = "none", weights_combine = "none", normalisation = "none")
+
+    if(wm != "all"){
+      expect_identical(rownames(npw), rownames(np))
+      if(l == "rows"){
+        expect_identical(rownames(npw), rownames(M))
+      } else if(l == "columns"){
+        expect_identical(rownames(npw), colnames(M))
+      } else if(l == "all"){
+        expect_identical(rownames(npw), c(rownames(M), colnames(M)))
+      }
+    } else if(wm == "all"){
+      for(i in 1:length(npw)){
+        expect_identical(rownames(npw[[i]]), rownames(np))
+        if(l == "rows"){
+          expect_identical(rownames(npw[[i]]), rownames(M))
+        } else if(l == "columns"){
+          expect_identical(rownames(npw[[i]]), colnames(M))
+        } else if(l == "all"){
+          expect_identical(rownames(npw[[i]]), c(rownames(M), colnames(M)))
+        }
+      }
+    }
+  }
+})

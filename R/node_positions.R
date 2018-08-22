@@ -348,19 +348,19 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
     # mmw gives back the sum of the mean motif weights whenever species x is in position p
     mmw <- matrix(NA, nrow = NZ + NP, ncol = 46) # mean motif weights
     colnames(mmw) <- paste('np', 1:46, sep = '')
-    rownames(mmw) <- c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
+    rownames(mmw) <- weighted_node_positions_output_row_names(x = W, NZ = NZ, NP = NP) #c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
     # mnw gives back the sum of the mean weights that species x is in when in pos p (mean node weights)
     mnw <- matrix(NA, nrow = NZ + NP, ncol = 46) # mean node weights
     colnames(mnw) <- paste('np', 1:46, sep = '')
-    rownames(mnw) <- c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
+    rownames(mnw) <- weighted_node_positions_output_row_names(x = W, NZ = NZ, NP = NP) #c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
     # con gives back the sum of contributions of species x to the motif weights
     con <- matrix(NA, nrow = NZ + NP, ncol = 46) # mean contribution
     colnames(con) <- paste('np', 1:46, sep = '')
-    rownames(con) <- c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
+    rownames(con) <- weighted_node_positions_output_row_names(x = W, NZ = NZ, NP = NP) #c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
     # py gives back the summed pymfinder measure
     py <- matrix(NA, nrow = NZ + NP, ncol = 46) # pymfinder contribution
     colnames(py) <- paste('np', 1:46, sep = '')
-    rownames(py) <- c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
+    rownames(py) <- weighted_node_positions_output_row_names(x = W, NZ = NZ, NP = NP) #c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
 
     # I also need the node_position count
     np_count <- rbind(pos_row, pos_col)
@@ -520,7 +520,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
 
     mmw <- matrix(NA, nrow = NZ + NP, ncol = 46)
     colnames(mmw) <- paste('np', 1:46, sep = '')
-    rownames(mmw) <- c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
+    rownames(mmw) <- weighted_node_positions_output_row_names(x = W, NZ = NZ, NP = NP) #c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
 
     # position 1
 
@@ -651,7 +651,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
 
     mnw <- matrix(NA, nrow = NZ + NP, ncol = 46)
     colnames(mnw) <- paste('np', 1:46, sep = '')
-    rownames(mnw) <- c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
+    rownames(mnw) <- weighted_node_positions_output_row_names(x = W, NZ = NZ, NP = NP) #c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
 
     # position 1
     mnw[1:NZ,1] <- 0
@@ -773,7 +773,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
 
     con <- matrix(NA, nrow = NZ + NP, ncol = 46)
     colnames(con) <- paste('np', 1:46, sep = '')
-    rownames(con) <- c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
+    rownames(con) <- weighted_node_positions_output_row_names(x = W, NZ = NZ, NP = NP) #c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
 
     # position 1
     np_count <- rbind(pos_row, pos_col)
@@ -842,7 +842,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
 
     py <- matrix(NA, nrow = NZ + NP, ncol = 46)
     colnames(py) <- paste('np', 1:46, sep = '')
-    rownames(py) <- c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
+    rownames(py) <- weighted_node_positions_output_row_names(x = W, NZ = NZ, NP = NP) #c(paste('r', 1:NZ, sep = ''), paste('c', 1:NP, sep = ''))
 
     # position 1
 

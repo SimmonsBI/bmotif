@@ -324,35 +324,98 @@ test_that("Dimension names are passed through correctly for weighted node positi
                                       c('none','sum','sizeclass', 'sizeclass_plus1', 'sizeclass_NAzero', 'position','levelsize','levelsize_plus1','levelsize_NAzero','motif','motif_plus1','motif_NAzero')))
   param_comb <- param_comb[!(param_comb[,2] == "mean" & param_comb[,4] != "none"),]
   M <- rwm(5,5)
-  dimnames(M) <- list(LETTERS[1:5], LETTERS[6:10])
   n <- nrow(param_comb)
-  for (i in 1:n) {
-    l <- param_comb[i,1]
-    wc <- param_comb[i,2]
-    wm <- param_comb[i,3]
-    norm <- param_comb[i,4]
+  for(j in 1:4){
+    if(j == 1){
+      dimnames(M) <- list(LETTERS[1:5], LETTERS[6:10])
+    } else if(j == 2){
+      dimnames(M) <- list(LETTERS[1:5], LETTERS[6:10])
+      rownames(M) <- NULL
+    } else if(j == 3){
+      dimnames(M) <- list(LETTERS[1:5], LETTERS[6:10])
+      colnames(M) <- NULL
+    } else if(j == 4){
+      dimnames(M) <- list(LETTERS[1:5], LETTERS[6:10])
+      dimnames(M) <- NULL
+    }
+    for (i in 1:n) {
+      l <- param_comb[i,1]
+      wc <- param_comb[i,2]
+      wm <- param_comb[i,3]
+      norm <- param_comb[i,4]
 
-    npw <- node_positions(M, level = l, six_node = FALSE, weights_method = wm, weights_combine = wc, normalisation = norm)
-    np <- node_positions(M, level = l, six_node = FALSE, weights_method = "none", weights_combine = "none", normalisation = "none")
+      npw <- node_positions(M, level = l, six_node = FALSE, weights_method = wm, weights_combine = wc, normalisation = norm)
+      np <- node_positions(M, level = l, six_node = FALSE, weights_method = "none", weights_combine = "none", normalisation = "none")
 
-    if(wm != "all"){
-      expect_identical(rownames(npw), rownames(np))
-      if(l == "rows"){
-        expect_identical(rownames(npw), rownames(M))
-      } else if(l == "columns"){
-        expect_identical(rownames(npw), colnames(M))
-      } else if(l == "all"){
-        expect_identical(rownames(npw), c(rownames(M), colnames(M)))
-      }
-    } else if(wm == "all"){
-      for(i in 1:length(npw)){
-        expect_identical(rownames(npw[[i]]), rownames(np))
+      if(wm != "all"){
+        expect_identical(rownames(npw), rownames(np))
         if(l == "rows"){
-          expect_identical(rownames(npw[[i]]), rownames(M))
+          if(j == 1){
+            expect_identical(rownames(npw), rownames(M))
+          } else if(j == 2){
+            expect_identical(rownames(npw), paste0("r",1:nrow(M)))
+          } else if(j == 3){
+            expect_identical(rownames(npw), rownames(M))
+          } else if(j == 4){
+            expect_identical(rownames(npw), paste0("r",1:nrow(M)))
+          }
         } else if(l == "columns"){
-          expect_identical(rownames(npw[[i]]), colnames(M))
+          if(j == 1){
+            expect_identical(rownames(npw), colnames(M))
+          } else if(j == 2){
+            expect_identical(rownames(npw), colnames(M))
+          } else if(j == 3){
+            expect_identical(rownames(npw), paste0("c",1:nrow(M)))
+          } else if(j == 4){
+            expect_identical(rownames(npw), paste0("c",1:nrow(M)))
+          }
         } else if(l == "all"){
-          expect_identical(rownames(npw[[i]]), c(rownames(M), colnames(M)))
+
+          if(j == 1){
+            expect_identical(rownames(npw), c(rownames(M), colnames(M)))
+          } else if(j == 2){
+            expect_identical(rownames(npw), c(paste0("r",1:nrow(M)), colnames(M)))
+          } else if(j == 3){
+            expect_identical(rownames(npw), c(rownames(M), paste0("c",1:nrow(M))))
+          } else if(j == 4){
+            expect_identical(rownames(npw), c(paste0("r",1:nrow(M)), paste0("c",1:nrow(M))))
+          }
+        }
+      } else if(wm == "all"){
+        for(k in 1:length(npw)){
+          expect_identical(rownames(npw[[k]]), rownames(np))
+          if(l == "rows"){
+            if(j == 1){
+              expect_identical(rownames(npw[[k]]), rownames(M))
+            } else if(j == 2){
+              expect_identical(rownames(npw[[k]]), paste0("r",1:nrow(M)))
+            } else if(j == 3){
+              expect_identical(rownames(npw[[k]]), rownames(M))
+            } else if(j == 4){
+              expect_identical(rownames(npw[[k]]), paste0("r",1:nrow(M)))
+            }
+          } else if(l == "columns"){
+            if(j == 1){
+              expect_identical(rownames(npw[[k]]), colnames(M))
+            } else if(j == 2){
+              expect_identical(rownames(npw[[k]]), colnames(M))
+            } else if(j == 3){
+              expect_identical(rownames(npw[[k]]), paste0("c",1:nrow(M)))
+            } else if(j == 4){
+              expect_identical(rownames(npw[[k]]), paste0("c",1:nrow(M)))
+            }
+          } else if(l == "all"){
+
+            if(j == 1){
+              expect_identical(rownames(npw[[k]]), c(rownames(M), colnames(M)))
+            } else if(j == 2){
+              expect_identical(rownames(npw[[k]]), c(paste0("r",1:nrow(M)), colnames(M)))
+            } else if(j == 3){
+              expect_identical(rownames(npw[[k]]), c(rownames(M), paste0("c",1:nrow(M))))
+            } else if(j == 4){
+              expect_identical(rownames(npw[[k]]), c(paste0("r",1:nrow(M)), paste0("c",1:nrow(M))))
+            }
+          }
         }
       }
     }

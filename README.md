@@ -87,21 +87,23 @@ position IDs used by the package and returned by the functions.
 "Motif dictionary")
 
 Large numbers above and to the left of each motif represent the ID of a
-motif. Small numbers at the end of links represent unique node positions
-within motifs. Small numbers to the left of each motif represent unique
-link positions within motifs: the colour of the link position number
+motif. Small numbers at the end of links represent node position IDs
+within motifs. Small numbers to the left of each motif represent link
+position IDs within motifs: the colour of the link position number
 corresponds to the colour of the links in the motif. Colours are
 colourblind safe following the palette proposed by Wong et al (2011).
+Node positions were defined following Baker et al (2015) Appendix 1
+Figure A27.
 
 Consider the example of motif 5:
 
 ![Motif 5](./man/figures/motif5.png?raw=true "Motif 5")
 
 We know this is motif 5 because the large number above and to the left
-of the motif gives the motif ID. This motif contains four unique node
-positions, given by the numbers at the ends of each link: 9, 10, 11 and
-12. This motif also contains three unique link positions given by the
-three coloured numbers to the left of the motif. The leftmost link
+of the motif gives the motif ID as 5. This motif contains four unique
+node positions, given by the numbers at the ends of each link: 9, 10, 11
+and 12. This motif also contains three unique link positions given by
+the three coloured numbers to the left of the motif. The leftmost link
 between positions 9 and 12 is in link position 5, the rightmost link
 between positions 10 and 11 is in link position 6, and the middle
 diagonal link between positions 10 and 12 is in link position 7.
@@ -132,8 +134,9 @@ The motifs corresponding to each motif ID and the node positions
 corresponding to each motif node position ID can be found in **Simmons,
 B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di
 Clemente, R. bmotif: a package for counting motifs in bipartite
-networks. bioRxiv. doi: 10.1101/302356**. These were defined following
-Baker et al (2015) Appendix 1 Figure A27.
+networks. bioRxiv. doi: 10.1101/302356** or the Figure above. Link
+position IDs can be found in the Figure above. Node positions were
+defined following Baker et al (2015) Appendix 1 Figure A27.
 
 Weighted methods for `mcount`, `link_positions` and the ‘mora’ method in
 `node_positions` were originally defined by Mora et al. (2018).

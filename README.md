@@ -39,7 +39,7 @@ To install the development version from GitHub:
 
 ``` r
 install.packages("devtools") # install the devtools package
-devtools::install_github("SimmonsBI/bmotif") # install bmotif
+devtools::install_github("SimmonsBI/bmotif", build_vignettes = TRUE) # install bmotif
 ```
 
 ### Common issue when installing on Windows

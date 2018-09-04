@@ -80,7 +80,7 @@ install.packages("devtools")
 Within these motifs there are 148 unique node positions and 106 unique
 link positions. All motifs, node positions and link positions considered
 by `bmotif` are shown in the Figure below. This is the ‘dictionary’ used
-my bmotif: the canonical reference for all motif, node position and link
+by bmotif: the canonical reference for all motif, node position and link
 position IDs used by the package and returned by the functions.
 
 ![Motif dictionary](./man/figures/dictionary.png?raw=true
@@ -92,6 +92,10 @@ within motifs. Small numbers to the left of each motif represent link
 position IDs within motifs: the colour of the link position number
 corresponds to the colour of the links in the motif. Colours are
 colourblind safe following the palette proposed by Wong et al (2011).
+Motif IDs and node position IDS can also be found in **Simmons, B. I.,
+Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R.
+bmotif: a package for counting motifs in bipartite networks. bioRxiv.
+doi: 10.1101/302356**. Link position IDs are only in the Figure above.
 Node positions were defined following Baker et al (2015) Appendix 1
 Figure A27.
 
@@ -129,14 +133,6 @@ weighted networks:
         each of the unique link positions within the motifs.
       - **Weighted**: calculates the number of times each link occurs in
         each unique link position, multiplied by each link’s strength
-
-The motifs corresponding to each motif ID and the node positions
-corresponding to each motif node position ID can be found in **Simmons,
-B. I., Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di
-Clemente, R. bmotif: a package for counting motifs in bipartite
-networks. bioRxiv. doi: 10.1101/302356** or the Figure above. Link
-position IDs can be found in the Figure above. Node positions were
-defined following Baker et al (2015) Appendix 1 Figure A27.
 
 Weighted methods for `mcount`, `link_positions` and the ‘mora’ method in
 `node_positions` were originally defined by Mora et al. (2018).

@@ -23,5 +23,8 @@ Imports: tensor (>= 1.5),
     reshape2 (>= 1.4.3),
     gtools (>= 3.8.1),
     stats (>= 3.5.0)
-Suggests: testthat
+Suggests: testthat,
+    knitr,
+    rmarkdown
 LinkingTo: Rcpp
+VignetteBuilder: knitr

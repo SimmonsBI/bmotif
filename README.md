@@ -74,11 +74,39 @@ install.packages("devtools")
     should now return `TRUE`
 5.  Try installing bmotif again and it should work\!
 
-## Use
+## Dictionary
 
 `bmotif` considers all 44 unique bipartite motifs up to six nodes.
 Within these motifs there are 148 unique node positions and 106 unique
-link positions.
+link positions. All motifs, node positions and link positions considered
+by `bmotif` are shown in the Figure below. This is the ‘dictionary’ used
+my bmotif: the canonical reference for all motif, node position and link
+position IDs used by the package and returned by the functions.
+
+![Motif dictionary](./man/figures/dictionary.png?raw=true
+"Motif dictionary")
+
+Large numbers above and to the left of each motif represent the ID of a
+motif. Small numbers at the end of links represent unique node positions
+within motifs. Small numbers to the left of each motif represent unique
+link positions within motifs: the colour of the link position number
+corresponds to the colour of the links in the motif. Colours are
+colourblind safe following the palette proposed by Wong et al (2011).
+
+Consider the example of motif 5:
+
+![Motif 5](./man/figures/motif5.png?raw=true "Motif 5")
+
+We know this is motif 5 because the large number above and to the left
+of the motif gives the motif ID. This motif contains four unique node
+positions, given by the numbers at the ends of each link: 9, 10, 11 and
+12. This motif also contains three unique link positions given by the
+three coloured numbers to the left of the motif. The leftmost link
+between positions 9 and 12 is in link position 5, the rightmost link
+between positions 10 and 11 is in link position 6, and the middle
+diagonal link between positions 10 and 12 is in link position 7.
+
+## Use
 
 `bmotif` has three functions, with can all be used with binary or
 weighted networks:
@@ -136,3 +164,5 @@ forest. Ecography, 38(2), pp.130-139.
 Mora, B.B., Cirtwill, A.R. and Stouffer, D.B., 2018. pymfinder: a tool
 for the motif analysis of binary and quantitative complex networks.
 bioRxiv, 364703.
+
+Wong, B. Points of view: Color blindness. Nat. Methods 8, 441 (2011).

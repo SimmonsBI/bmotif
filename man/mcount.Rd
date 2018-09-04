@@ -21,7 +21,8 @@ otherwise. Formally, M is a biadjacency matrix. When nodes i and j interact, m_i
 }
 \value{
 Returns a data frame with one row for each motif: either 17 rows (if \code{six_node} = FALSE) or 44 rows (if \code{six_node} = TRUE). The data frame has three columns.
-The first column ("motif") indicates the motif ID as described in Simmons et al. (2017) (and originally in Appendix 1 of Baker et al. (2015)). The second column
+The first column ("motif") indicates the motif ID as described in Simmons et al. (2017). \strong{To view the 'motif dictionary' showing
+which motif a given ID corresponds to, enter \code{vignette("bmotif-dictionary")}.} The second column
 ("nodes") indicates how many nodes the motif contains. The third column ("frequency") is the number of times each motif appears in the network.
 
 If \code{normalisation} = TRUE, three additional columns are added to the output data frame, each corresponding to a different method of normalising motif

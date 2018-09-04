@@ -19,7 +19,8 @@ otherwise. Formally, M is a biadjacency matrix. When nodes i and j interact, m_i
 }
 \value{
 Returns a data frame with one column for each link position: 29 columns if \code{six_node} is FALSE, and 106 columns if \code{six_node} is TRUE.
-Columns names are given as "lpx" where x is the ID of the position as described in Simmons et al. (2017).
+Columns names are given as "lpx" where x is the ID of the position as described in the motif dictionary. \strong{To view the 'motif dictionary' showing
+which link position a given ID corresponds to, enter \code{vignette("bmotif-dictionary")}.}
 
 Each row corresponds to one link in the network. Row names are gives as "x -- y", where x is the species in the first level (rows) and y is the species in the second level (columns).
 

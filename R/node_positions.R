@@ -162,7 +162,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   }
 
   if(weights_combine == "mean" & normalisation != "none"){
-    stop("Taking the mean is already a form of normalisation. Set normalisation = 'none' if you want to use weights_combine = 'mean'")
+    stop("Taking the mean is already a form of normalisation. Set normalisation = 'none' if you want to use weights_combine = 'mean'. Alternatively, set weights_combine to something other than 'mean' if you want to use one of the normalisation methods")
   }
 
   # clean matrix

@@ -150,7 +150,7 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
 
   # Give warnings or errors if two arguments can't be used together
   if(weights_method != "none" & six_node == TRUE){
-    stop("Sorry, weighted methods are not available for six node motifs. Set six_node = FALSE if you want to use weighted position measures")
+    stop("Sorry, weighted methods are not available for six node motifs. Set six_node = FALSE if you want to use weighted position measures.")
   }
 
   if(weights_method == "none" & weights_combine != "none"){
@@ -158,11 +158,11 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   }
 
   if(weights_method != "none" & weights_combine == "none"){
-    stop("Need to set a weights_combine method. Cannot have weights_method != 'none' and weights_combine = 'none'. Set weights_combine to 'sum' or 'mean' if you want to use weighted position measures")
+    stop("Need to set a weights_combine method. Cannot have weights_method != 'none' and weights_combine = 'none'. Set weights_combine to 'sum' or 'mean' if you want to use weighted position measures.")
   }
 
   if(weights_combine == "mean" & normalisation != "none"){
-    stop("Taking the mean is already a form of normalisation. Set normalisation = 'none' if you want to use weights_combine = 'mean'. Alternatively, set weights_combine to something other than 'mean' if you want to use one of the normalisation methods")
+    stop("Taking the mean is already a form of normalisation. Set normalisation = 'none' if you want to use weights_combine = 'mean'. Alternatively, set weights_combine to something other than 'mean' if you want to use one of the normalisation methods.")
   }
 
   # clean matrix

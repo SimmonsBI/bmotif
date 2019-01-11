@@ -93,11 +93,11 @@ position IDs within motifs: the colour of the link position number
 corresponds to the colour of the links in the motif. Colours are
 colourblind safe following the palette proposed by Wong et al (2011).
 Motif IDs and node position IDS can also be found in **Simmons, B. I.,
-Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R.
-bmotif: a package for counting motifs in bipartite networks. bioRxiv.
-doi: 10.1101/302356**. Link position IDs are only in the Figure above.
-Node positions were defined following Baker et al (2015) Appendix 1
-Figure A27.
+Sweering, M. J. M., Schillinger, M., Dicks, L. V., Sutherland W. J., Di
+Clemente, R. bmotif: a package for motif analyses of bipartite networks.
+Methods in Ecology and Evolution (accepted)**. Link position IDs are
+only in the Figure above. Node positions were defined following Baker et
+al (2015) Appendix 1 Figure A27.
 
 Consider the example of motif 5:
 
@@ -144,9 +144,9 @@ The code is released under the MIT license (see LICENSE file).
 ## Citation
 
 If you use the package in your work, please cite: Simmons, B. I.,
-Sweering, M. J. M., Dicks, L. V., Sutherland, W. J. and Di Clemente, R.
-bmotif: a package for counting motifs in bipartite networks. bioRxiv.
-doi: 10.1101/302356
+Sweering, M. J. M., Schillinger, M., Dicks, L. V., Sutherland W. J., Di
+Clemente, R. bmotif: a package for motif analyses of bipartite networks.
+Methods in Ecology and Evolution (accepted)
 
 If you use any of the weighted analyses originally defined by Mora et
 al. (2018) (weighted `mcount`, weighted `link_positions` and the ‘mora’

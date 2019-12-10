@@ -1,7 +1,7 @@
 normalise_link_positions <- function(lp, type, six_node) {
 
   n <- 29 + six_node *(106 - 29)
-  if(class(lp) != "matrix") {
+  if(inherits(lp,"matrix") != TRUE) {
     lp <- as.matrix(lp, ncol = n)
   }
 

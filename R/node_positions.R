@@ -136,9 +136,9 @@ node_positions <- function(M, six_node = FALSE, level = "all", weights_method, w
   if(!all(apply(M, 1:2, is.numeric))){stop("Elements of 'M' must be numeric")} # make sure all elements of M are numbers
   if(!all(apply(M, 1:2, function(x) length(x) > 0))){stop("Elements of 'M' cannot have length 0")} # make sure no elements of M have 0 length e.g. numeric(0)
   if(!all(apply(M, 1:2, function(x) x >= 0))){stop("Elements of 'M' must be greater than or equal to zero")} # make sure all elements of M are >= zero
-  if(class(level) != "character"){stop("'level' must be of class 'character'")} # make sure level is a character
+  if(inherits(level,"character") != TRUE){stop("'level' must be of class 'character'")} # make sure level is a character
   if(!level %in% c("rows","columns","all")){stop("'level' must equal 'rows', 'columns' or 'all'")} # make sure level equals 'rows', 'columns' or 'all'
-  if(class(normalisation) != "character"){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
+  if(inherits(normalisation,"character") != TRUE){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
   if(!normalisation %in% c("none","sum","sizeclass", "sizeclass_plus1", "sizeclass_NAzero", "position","levelsize","levelsize_plus1","levelsize_NAzero","motif","motif_plus1","motif_NAzero")){stop("'normalisation' must equal 'none','sum','sizeclass', 'sizeclass_plus1', 'sizeclass_NAzero', 'position','levelsize','levelsize_plus1', 'levelsize_NAzero', 'motif','motif_plus1','motif_NAzero'")} # make sure normalisation equals 'none', 'sum' or 'sizeclass'
   if(any(duplicated(rownames(M))) | any(duplicated(colnames(M)))){stop("Input matrix must not have duplicate row or column names")}
   if(!weights_method %in% c('none', 'mean_motifweights', 'total_motifweights', 'mean_nodeweights', 'total_nodeweights', 'contribution', 'mora', 'all')) {

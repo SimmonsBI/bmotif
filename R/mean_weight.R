@@ -69,7 +69,7 @@ mean_weight <- function(W, mc = NA, six_node = FALSE) {
   rownames(lr_sum) <- rownames(lr)
   # multiply each frequency with the weight of the link
   lr_w <- apply(lr_sum, 2, function(x) {x * wl$value})
-  if(class(lr_w) == "numeric") {
+  if(inherits(lr_w,"numeric") == TRUE) {
     lr_w <- t(as.matrix(lr_w))
   }
 

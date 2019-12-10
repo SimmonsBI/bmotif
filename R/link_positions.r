@@ -93,8 +93,8 @@ link_positions <- function(M, six_node = FALSE, weights, normalisation = "none")
   if(!all(apply(M, 1:2, function(x) length(x) > 0))){stop("Elements of 'M' cannot have length zero")} # make sure no elements of M have 0 length e.g. numeric(0)
   if(!all(apply(M, 1:2, function(x) x >= 0))){stop("Elements of 'M' must be greater than or equal to zero")} # make sure all elements of M are >= zero
   if(all(apply(M, 1:2, function(x) x == 0))){stop("The matrix has no links (all elements are zero)")} # make sure M has some links
-  if(class(six_node) != "logical"){stop("'six_node' must be of class 'logical' i.e. TRUE or FALSE")} # make sure six_node is logical i.e. TRUE or FALSE
-  if(class(normalisation) != "character"){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
+  if(inherits(six_node,"logical") != TRUE){stop("'six_node' must be of class 'logical' i.e. TRUE or FALSE")} # make sure six_node is logical i.e. TRUE or FALSE
+  if(inherits(normalisation,"character") != TRUE){stop("'normalisation' must be of class 'character'")} # make sure 'normalisation' is a character
   if(!normalisation %in% c("none","sum","sizeclass", "sizeclass_plus1", "sizeclass_NAzero","levelsize", "levelsize_plus1", "levelsize_NAzero", "motif", "motif_plus1", "motif_NAzero","position")){
     stop("'normalisation' must equal 'none','sum', 'position', 'sizeclass', 'sizeclass_plus1', 'sizeclass_NAzero', 'levelsize', 'levelsize_plus1', 'levelsize_NAzero','motif', 'motif_plus1' or 'motif_NAzero'")
   }

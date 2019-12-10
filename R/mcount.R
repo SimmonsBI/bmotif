@@ -96,8 +96,8 @@ mcount <- function(M, six_node = FALSE, normalisation, mean_weight, standard_dev
   if(!all(apply(M, 1:2, is.numeric))){stop("Elements of 'M' must be numeric")} # make sure all elements of M are numbers
   if(!all(apply(M, 1:2, function(x) length(x) > 0))){stop("Elements of 'M' cannot have length zero")} # make sure no elements of M have 0 length e.g. numeric(0)
   if(!all(apply(M, 1:2, function(x) x >= 0))){stop("Elements of 'M' must be greater than or equal to zero")} # make sure all elements of M are >= zero
-  if(class(normalisation) != "logical"){stop("'normalisation' must be of class 'logical' i.e. TRUE or FALSE")} # make sure normalisation is logical i.e. TRUE or FALSE
-  if(class(six_node) != "logical"){stop("'six_node' must be of class 'logical' i.e. TRUE or FALSE")} # make sure six_node is logical i.e. TRUE or FALSE
+  if(inherits(normalisation,"logical") != TRUE){stop("'normalisation' must be of class 'logical' i.e. TRUE or FALSE")} # make sure normalisation is logical i.e. TRUE or FALSE
+  if(inherits(six_node,"logical") != TRUE){stop("'six_node' must be of class 'logical' i.e. TRUE or FALSE")} # make sure six_node is logical i.e. TRUE or FALSE
   if(mean_weight == FALSE & standard_dev == TRUE){stop("Cannot have standard_dev = TRUE and mean_weight = FALSE. If you want the standard deviations, set standard_dev = TRUE and mean_weight = TRUE")}
   if(six_node == TRUE & standard_dev == TRUE){warning("Standard deviation values are not available for six node motifs. Standard deviation will only be returned for 2-5 node motifs")}
 

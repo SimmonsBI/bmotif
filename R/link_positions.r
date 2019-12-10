@@ -88,7 +88,7 @@ link_positions <- function(M, six_node = FALSE, weights, normalisation = "none")
   # M is the adjacence matrix
 
   # check inputs
-  if(class(M) != "matrix"){stop("'M' must be an object of class 'matrix'")} # make sure M is a matrix
+  if(inherits(M, "matrix") != TRUE){stop("'M' must be an object of class 'matrix'")} # make sure M is a matrix
   if(!all(apply(M, 1:2, is.numeric))){stop("Elements of 'M' must be numeric")} # make sure all elements of M are numbers
   if(!all(apply(M, 1:2, function(x) length(x) > 0))){stop("Elements of 'M' cannot have length zero")} # make sure no elements of M have 0 length e.g. numeric(0)
   if(!all(apply(M, 1:2, function(x) x >= 0))){stop("Elements of 'M' must be greater than or equal to zero")} # make sure all elements of M are >= zero

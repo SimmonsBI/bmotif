@@ -1,7 +1,7 @@
 Package: bmotif
 Title: Motif Analyses of Bipartite Networks
-Version: 1.0.0.9000
-Date: 2018-08-06
+Version: 2.0.0
+Date: 2019-12-10
 Authors@R: c(
     person("Benno", "Simmons", email = "benno.simmons@gmail.com", role = c("aut", "cre")),
     person("Michelle", "Sweering", email = "michelle.sweering@gmail.com", role = c("aut")),
@@ -17,7 +17,7 @@ Depends:
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Imports: tensor (>= 1.5),
     Rcpp (>= 0.12.18),
     reshape2 (>= 1.4.3),

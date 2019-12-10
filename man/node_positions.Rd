@@ -4,8 +4,14 @@
 \alias{node_positions}
 \title{Calculate node position vectors}
 \usage{
-node_positions(M, six_node = FALSE, level = "all", weights_method,
-  weights_combine = "none", normalisation = "none")
+node_positions(
+  M,
+  six_node = FALSE,
+  level = "all",
+  weights_method,
+  weights_combine = "none",
+  normalisation = "none"
+)
 }
 \arguments{
 \item{M}{A numeric matrix representing interactions between two groups of nodes. Each row corresponds to a node in one level

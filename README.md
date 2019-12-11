@@ -42,6 +42,16 @@ install.packages("devtools") # install the devtools package
 devtools::install_github("SimmonsBI/bmotif", build_vignettes = TRUE) # install bmotif
 ```
 
+### Common issue when installing
+
+Some users have reported issues installing `bmotif` without the `Rcpp`
+package being installed. Therefore we recommend installing `Rcpp` before
+installing `bmotif`:
+
+``` r
+install.packages("Rcpp")
+```
+
 ### Common issue when installing on Windows
 
 If installing on Windows, you might get an error saying something like
@@ -95,9 +105,9 @@ colourblind safe following the palette proposed by Wong et al (2011).
 Motif IDs and node position IDS can also be found in **Simmons, B. I.,
 Sweering, M. J. M., Schillinger, M., Dicks, L. V., Sutherland W. J., Di
 Clemente, R. bmotif: a package for motif analyses of bipartite networks.
-Methods in Ecology and Evolution (accepted)**. Link position IDs are
-only in the Figure above. Node positions were defined following Baker et
-al (2015) Appendix 1 Figure A27.
+Methods in Ecology and Evolution, 10(5), 695-701.**. Link position IDs
+are only in the Figure above. Node positions were defined following
+Baker et al (2015) Appendix 1 Figure A27.
 
 Consider the example of motif 5:
 
@@ -146,7 +156,7 @@ The code is released under the MIT license (see LICENSE file).
 If you use the package in your work, please cite: Simmons, B. I.,
 Sweering, M. J. M., Schillinger, M., Dicks, L. V., Sutherland W. J., Di
 Clemente, R. bmotif: a package for motif analyses of bipartite networks.
-Methods in Ecology and Evolution (accepted)
+Methods in Ecology and Evolution 10(5), 695-701.
 
 If you use any of the weighted analyses originally defined by Mora et
 al. (2018) (weighted `mcount`, weighted `link_positions` and the ‘mora’

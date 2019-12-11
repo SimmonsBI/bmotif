@@ -28,6 +28,12 @@ install.packages("devtools") # install the devtools package
 devtools::install_github("SimmonsBI/bmotif", build_vignettes = TRUE) # install bmotif
 ```
 
+### Common issue when installing
+Some users have reported issues installing `bmotif` without the `Rcpp` package being installed. Therefore we recommend installing `Rcpp` before installing `bmotif`:
+```{r, eval = FALSE}
+install.packages("Rcpp")
+```
+
 ### Common issue when installing on Windows  
 If installing on Windows, you might get an error saying something like 'Rtools is required to build R packages, but no compatible version was found'. Even after you install the latest version of Rtools you may get 'ERROR: compilation failed for package 'bmotif'. If you get these errors, try these steps:
 

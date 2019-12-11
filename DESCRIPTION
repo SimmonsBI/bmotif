@@ -28,3 +28,4 @@ Suggests: testthat,
     rmarkdown
 LinkingTo: Rcpp
 VignetteBuilder: knitr
+Language: en-GB

@@ -1,17 +1,11 @@
 ## Test environments
-* local OS X install, R 3.4.3
-* ubuntu 14.04.5 (on travis-ci), R 3.4.2
-* win-builder (devel and release)
+* local OS X install, R 3.6.1
+* ubuntu 16.04.6 (on travis-ci), release and devel
+* win-builder, release
+* rhub, windows-x86_64-devel
 
 ## R CMD check results
-There were no ERRORs or WARNINGs. 
-
-There was 1 NOTE:
-  
-* checking CRAN incoming feasibility ... NOTE
-  New submission
-
-  This is the first submission 
+There were no ERRORs or WARNINGs or NOTEs. 
 
 ## Downstream dependencies
-There are currently no downstream dependencies for this package.
+There are currently no known downstream dependencies for this package.

@@ -18,5 +18,5 @@ for(i in 1:17) {
 
   numb <- check_motif(mot3, all_mot_perm)
 
-  expect(numb == i)
+  expect(numb == i, failure_message = "failed")
 }

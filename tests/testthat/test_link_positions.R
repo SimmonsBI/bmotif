@@ -771,30 +771,30 @@ test_that("Test motif-normalised counts for the motif 10", {
 
 test_that("Test sizeclass_plus1", {
   lr <- link_positions(rbm(5,5), six_node = FALSE, weights = FALSE, normalisation = "sizeclass_plus1")
-  expect(!any(is.na(lr)))
+  expect(!any(is.na(lr)), failure_message = "failed")
 })
 
 test_that("Test sizeclass_NAzero", {
   lr <- link_positions(rbm(5,5), six_node = FALSE, weights = FALSE, normalisation = "sizeclass_NAzero")
-  expect(!any(is.na(lr)))
+  expect(!any(is.na(lr)), failure_message = "failed")
 })
 
 test_that("Test levelsize_plus1", {
   lr <- link_positions(rbm(5,5), six_node = FALSE, weights = FALSE, normalisation = "levelsize_plus1")
-  expect(!any(is.na(lr)))
+  expect(!any(is.na(lr)), failure_message = "failed")
 })
 
 test_that("Test levelsize_NAzero", {
   lr <- link_positions(rbm(5,5), six_node = FALSE, weights = FALSE, normalisation = "levelsize_NAzero")
-  expect(!any(is.na(lr)))
+  expect(!any(is.na(lr)), failure_message = "failed")
 })
 
 test_that("Test motif_plus1", {
   lr <- link_positions(rbm(5,5), six_node = FALSE, weights = FALSE, normalisation = "motif_plus1")
-  expect(!any(is.na(lr)))
+  expect(!any(is.na(lr)), failure_message = "failed")
 })
 
 test_that("Test motif_NAzero", {
   lr <- link_positions(rbm(5,5), six_node = FALSE, weights = FALSE, normalisation = "motif_NAzero")
-  expect(!any(is.na(lr)))
+  expect(!any(is.na(lr)), failure_message = "failed")
 })

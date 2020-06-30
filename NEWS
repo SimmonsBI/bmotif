@@ -1,3 +1,8 @@
+# bmotif 2.0.1
+=====
+## Bug fixes
+- Fixed noLD issue in unit tests that would occur when checking normalised motif frequencies sum to 1
+
 # bmotif 2.0.0
 =====
 ## New features

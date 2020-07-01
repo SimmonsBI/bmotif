@@ -2,6 +2,7 @@
 =====
 ## Bug fixes
 - Fixed noLD issue in unit tests that would occur when checking normalised motif frequencies sum to 1
+- Added failure message to expect() unit tests to remove WARNINGS
 
 # bmotif 2.0.0
 =====

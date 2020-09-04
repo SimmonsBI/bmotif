@@ -1,7 +1,7 @@
 Package: bmotif
 Title: Motif Analyses of Bipartite Networks
 Version: 2.0.2
-Date: 2020-07-30
+Date: 2020-09-04
 Authors@R: c(
     person("Benno", "Simmons", email = "benno.simmons@gmail.com", role = c("aut", "cre")),
     person("Michelle", "Sweering", email = "michelle.sweering@gmail.com", role = c("aut")),
@@ -11,7 +11,8 @@ Description: Counts occurrences of motifs in bipartite networks, as well as the 
     times each node or link appears in each unique position within motifs. Has support for both
     binary and weighted motifs: can calculate the mean weight of motifs and the standard deviation 
     of their mean weights. Intended for use in ecology, but its methods are general and can be
-    applied to any bipartite network.
+    applied to any bipartite network. Full details are given in Simmons et al. (2019)
+    <doi:10.1111/2041-210X.13149>.
 Depends:
     R (>= 3.5.0)
 License: MIT + file LICENSE

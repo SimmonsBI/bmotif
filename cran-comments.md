@@ -13,12 +13,7 @@ This is an update to fix the noLD issue, as requested by Brian Ripley.
 ## R CMD check results
 There were no ERRORs or WARNINGs.
 
-There were 2 NOTES:
-
-* checking CRAN incoming feasibility ... NOTE
-The Date field is over a month old.
-
-I have now updated the date field to be current
+There was 1 NOTE:
   
 * checking installed package size ... NOTE
   installed size is  5.9Mb

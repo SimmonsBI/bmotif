@@ -2,10 +2,11 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 [![Build
-Status](https://travis-ci.org/SimmonsBI/bmotif.svg?branch=master)](https://travis-ci.org/SimmonsBI/bmotif)
+Status](https://travis-ci.com/SimmonsBI/bmotif.svg?branch=master)](https://travis-ci.com/SimmonsBI/bmotif)
 [![codecov](https://codecov.io/gh/SimmonsBI/bmotif/branch/master/graph/badge.svg)](https://codecov.io/gh/SimmonsBI/bmotif)
 
-## Overview
+Overview
+--------
 
 `bmotif` is software for motif analyses of bipartite networks. It can
 count occurrences of motifs in bipartite networks, as well as the number
@@ -27,20 +28,17 @@ for link positions or weighted networks, which are currently only
 available in the development version (these will be added to the CRAN
 version when development is finalised).
 
-## Installation
+Installation
+------------
 
 To install the released version from CRAN:
 
-``` r
-install.packages("bmotif")
-```
+    install.packages("bmotif")
 
 To install the development version from GitHub:
 
-``` r
-install.packages("devtools") # install the devtools package
-devtools::install_github("SimmonsBI/bmotif", build_vignettes = TRUE) # install bmotif
-```
+    install.packages("devtools") # install the devtools package
+    devtools::install_github("SimmonsBI/bmotif", build_vignettes = TRUE) # install bmotif
 
 ### Common issue when installing
 
@@ -48,9 +46,7 @@ Some users have reported issues installing `bmotif` without the `Rcpp`
 package being installed. Therefore we recommend installing `Rcpp` before
 installing `bmotif`:
 
-``` r
-install.packages("Rcpp")
-```
+    install.packages("Rcpp")
 
 ### Common issue when installing on Windows
 
@@ -62,13 +58,11 @@ errors, try these steps:
 
 1.  Install the latest version of the ‘devtools’ package:
 
-<!-- end list -->
+<!-- -->
 
-``` r
-install.packages("devtools")
-```
+    install.packages("devtools")
 
-2.  Download the latest version of Rtools and follow the guidelines
+1.  Download the latest version of Rtools and follow the guidelines
     [here](https://thecoatlessprofessor.com/programming/installing-rtools-for-compiled-code-via-rcpp/)
     (archived version
     [here](https://web.archive.org/web/20180814151143/https://thecoatlessprofessor.com/programming/installing-rtools-for-compiled-code-via-rcpp/))
@@ -76,15 +70,16 @@ install.packages("devtools")
     Essentially, when given the option to modify the Window PATH
     variables during the Rtools installation, choose to do this, then
     add the following to the top of the PATH variables text field:
-      - `c:\Rtools\bin;`
-      - `c:\Rtools\mingw_32\bin;`
-3.  Now you can use `Sys.getenv('PATH')` in R to make sure the correct
+    -   `c:\Rtools\bin;`
+    -   `c:\Rtools\mingw_32\bin;`
+2.  Now you can use `Sys.getenv('PATH')` in R to make sure the correct
     PATH variables appear.
-4.  If the PATH variables are there, run `devtools::find_rtools()` which
+3.  If the PATH variables are there, run `devtools::find_rtools()` which
     should now return `TRUE`
-5.  Try installing bmotif again and it should work\!
+4.  Try installing bmotif again and it should work!
 
-## Dictionary
+Dictionary
+----------
 
 `bmotif` considers all 44 unique bipartite motifs up to six nodes.
 Within these motifs there are 148 unique node positions and 106 unique
@@ -93,8 +88,8 @@ by `bmotif` are shown in the Figure below. This is the ‘dictionary’ used
 by bmotif: the canonical reference for all motif, node position and link
 position IDs used by the package and returned by the functions.
 
-![Motif dictionary](./man/figures/dictionary.png?raw=true
-"Motif dictionary")
+![Motif
+dictionary](./man/figures/dictionary.png?raw=true "Motif dictionary")
 
 Large numbers above and to the left of each motif represent the ID of a
 motif. Small numbers at the end of links represent node position IDs
@@ -122,36 +117,39 @@ between positions 9 and 12 is in link position 5, the rightmost link
 between positions 10 and 11 is in link position 6, and the middle
 diagonal link between positions 10 and 12 is in link position 7.
 
-## Use
+Use
+---
 
 `bmotif` has three functions, with can all be used with binary or
 weighted networks:
 
 1.  `mcount`
-      - **Unweighted**: counts how many times each motif occurs in a
+    -   **Unweighted**: counts how many times each motif occurs in a
         bipartite network
-      - **Weighted**: calculates the mean weight of motifs and the
+    -   **Weighted**: calculates the mean weight of motifs and the
         standard deviation of their weights
 2.  `node_positions`:
-      - **Unweighted**: counts the number of times each node occurs in
+    -   **Unweighted**: counts the number of times each node occurs in
         each of the unique node positions within the motifs.  
-      - **Weighted**: calculates a range of weighted metrics, such as
+    -   **Weighted**: calculates a range of weighted metrics, such as
         the mean link strength of a each node in each position or the
         contribution of each node to each motif’s total weight
 3.  `link_positions`:
-      - **Unweighted**: counts the number of times each link occurs in
+    -   **Unweighted**: counts the number of times each link occurs in
         each of the unique link positions within the motifs.
-      - **Weighted**: calculates the number of times each link occurs in
+    -   **Weighted**: calculates the number of times each link occurs in
         each unique link position, multiplied by each link’s strength
 
 Weighted methods for `mcount`, `link_positions` and the ‘mora’ method in
-`node_positions` were originally defined by Mora et al. (2018).
+`node_positions` were originally defined by Mora et al. (2018).
 
-## License
+License
+-------
 
 The code is released under the MIT license (see LICENSE file).
 
-## Citation
+Citation
+--------
 
 If you use the package in your work, please cite: Simmons, B. I.,
 Sweering, M. J. M., Schillinger, M., Dicks, L. V., Sutherland W. J., Di
@@ -159,12 +157,13 @@ Clemente, R. bmotif: a package for motif analyses of bipartite networks.
 Methods in Ecology and Evolution 10(5), 695-701.
 
 If you use any of the weighted analyses originally defined by Mora et
-al. (2018) (weighted `mcount`, weighted `link_positions` and the ‘mora’
+al. (2018) (weighted `mcount`, weighted `link_positions` and the ‘mora’
 method in `node_positions`), please additionally cite: Mora, B.B.,
 Cirtwill, A.R. and Stouffer, D.B., 2018. pymfinder: a tool for the motif
 analysis of binary and quantitative complex networks. bioRxiv, 364703.
 
-## References
+References
+----------
 
 Baker, N.J., Kaartinen, R., Roslin, T. and Stouffer, D.B., 2015.
 Species’ roles in food webs show fidelity across a highly variable oak
